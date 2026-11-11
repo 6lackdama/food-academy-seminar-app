@@ -1494,6 +1494,18 @@ button.nftile{padding:0;border:0;text-align:start}
 .nfrow-h a{display:inline-flex;align-items:center;gap:2px;font-size:13px;font-weight:700;color:#FFD200;text-decoration:none}.nfrow-h a svg{width:15px;height:15px;stroke:#FFD200;fill:none;stroke-width:2.4}
 .nfmore{margin-top:26px}
 .nfsc{display:flex;gap:12px;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;padding:6px 18px 14px;scroll-padding:0 18px;scrollbar-width:none}.nfsc::-webkit-scrollbar{display:none}
+.nfsc-wrap{position:relative}
+.nfarr{display:none;position:absolute;top:50%;z-index:3;width:44px;height:44px;margin-top:-22px;border:0;border-radius:50%;padding:0;cursor:pointer;color:#17181a;background:linear-gradient(180deg,#ffe24d,#FFD200);box-shadow:0 10px 24px -10px rgba(255,180,0,.8),0 0 0 1px rgba(255,220,80,.5),inset 0 1px 0 rgba(255,255,255,.7);place-items:center;transition:transform .35s var(--spring),opacity .3s}
+.nfarr svg{width:22px;height:22px;stroke:#17181a;fill:none;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.nfarr-l{left:6px}.nfarr-r{right:6px}
+.nfarr:hover{transform:scale(1.08)}.nfarr:active{transform:scale(.95)}
+.nfarr:disabled{opacity:.3;pointer-events:none;transform:none}
+.nfsc-wrap.no-scroll .nfarr{display:none!important}
+@media (hover:hover) and (pointer:fine){.nfsc-wrap .nfarr{display:grid}}
+@media (min-width:900px){.nfsc-wrap .nfarr{display:grid}}
+@media (hover:none) and (pointer:coarse) and (max-width:899px){.nfsc-wrap .nfarr{display:none!important}}
+.vp-next .nfsc-wrap{margin:0}.vp-next .nfarr-l{left:0}.vp-next .nfarr-r{right:0}
+
 .nfc{position:relative;flex:none;scroll-snap-align:start;border-radius:18px;overflow:hidden;color:#fff;text-decoration:none;background:#1a1a1a;box-shadow:0 18px 36px -20px rgba(0,0,0,.9),0 0 0 1px rgba(255,255,255,.07);transition:transform .45s var(--spring),box-shadow .45s;animation:nfin .7s var(--ease) backwards;animation-delay:calc(var(--i)*70ms + .15s)}
 @keyframes nfin{from{opacity:0;transform:translateX(24px)}}
 .nfc.po{width:46vw;max-width:200px;aspect-ratio:2/3}.nfc.ls{width:76vw;max-width:340px;aspect-ratio:16/10}
@@ -2121,13 +2133,16 @@ const thumbSrc=id=>new URL('thumbs/'+id+'.webp', document.baseURI).href;
 const fxNorm=s=>s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/ß/g,'ss');
 function fdRow(g,sec,ri){const name=g.n?T(g.g,g.n):T(g.g);
   return `<section class="nfrow" style="--ri:${ri||0}"><div class="nfrow-h"><h3>${esc(name)}<small class="nfcnt">${g.v.length}</small></h3><a href="${g.u}" ${NFX}>${T('Alle auf Vimeo')}${svg('chev')}</a></div>
-  <div class="nfsc">${g.v.map(([t,id],i)=>`<a class="nfc nfv${sec==='hg'?' po9':''}" href="https://vimeo.com/${id}" ${NFX} data-vid="${id}" data-vt="${esc(t)}" data-t="${esc(fxNorm(t))}" style="--i:${Math.min(i,8)};--r:${(i%3-1)*1.4}deg"><span class="nfv-fb nofb"><b>${String(i+1).padStart(2,'0')}</b></span><img src="${thumbSrc(id)}" alt="" decoding="async" onload="this.classList.add('ok')"><span class="nfc-g"></span><span class="nfc-p">${svg('play')}</span><span class="nfc-t"><b>${esc(t)}</b><small>${esc(name)} · Vimeo</small></span></a>`).join('')}</div></section>`}
-function initFx(v){if(!v.classList.contains('fdv'))return;{const fan=v.querySelector('.fxfan.intro');if(fan)setTimeout(()=>fan.classList.remove('intro'),1800);if(v.dataset.alb){const sec=v.querySelector(`.fxsec[data-sec="${v.dataset.alb}"]`);if(sec)fdEager(sec)}}
+  <div class="nfsc-wrap"><button type="button" class="nfarr nfarr-l" data-nfarr="-1" aria-label="${T('Zurück')}">${svg('prev')}</button><div class="nfsc">${g.v.map(([t,id],i)=>`<a class="nfc nfv${sec==='hg'?' po9':''}" href="https://vimeo.com/${id}" ${NFX} data-vid="${id}" data-vt="${esc(t)}" data-t="${esc(fxNorm(t))}" style="--i:${Math.min(i,8)};--r:${(i%3-1)*1.4}deg"><span class="nfv-fb nofb"><b>${String(i+1).padStart(2,'0')}</b></span><img src="${thumbSrc(id)}" alt="" decoding="async" onload="this.classList.add('ok')"><span class="nfc-g"></span><span class="nfc-p">${svg('play')}</span><span class="nfc-t"><b>${esc(t)}</b><small>${esc(name)} · Vimeo</small></span></a>`).join('')}</div><button type="button" class="nfarr nfarr-r" data-nfarr="1" aria-label="${T('Weiter')}">${svg('next')}</button></div></section>`}
+
+function updNfArr(wrap){const sc=wrap.querySelector('.nfsc,.nfscroll');if(!sc)return;const max=Math.max(0,sc.scrollWidth-sc.clientWidth);const sl=sc.scrollLeft;const eps=8;const l=wrap.querySelector('.nfarr-l'),r=wrap.querySelector('.nfarr-r');if(l)l.disabled=sl<=eps;if(r)r.disabled=sl>=max-eps;wrap.classList.toggle('no-scroll',max<=eps)}
+function initNfArr(root){(root||document).querySelectorAll('.nfsc-wrap').forEach(wrap=>{if(wrap.dataset.nfarrOn){updNfArr(wrap);return}wrap.dataset.nfarrOn=1;const sc=wrap.querySelector('.nfsc,.nfscroll');if(!sc)return;wrap.addEventListener('click',e=>{const b=e.target.closest('[data-nfarr]');if(!b||!wrap.contains(b))return;e.preventDefault();e.stopPropagation();const step=Math.max(sc.clientWidth*.9,120);sc.scrollBy({left:(+b.dataset.nfarr)*step,behavior:'smooth'})});sc.addEventListener('scroll',()=>updNfArr(wrap),{passive:true});if(window.ResizeObserver){const ro=new ResizeObserver(()=>updNfArr(wrap));ro.observe(sc);ro.observe(wrap)}updNfArr(wrap)})}
+function initFx(v){if(!v.classList.contains('fdv'))return;initNfArr(v);{const fan=v.querySelector('.fxfan.intro');if(fan)setTimeout(()=>fan.classList.remove('intro'),1800);if(v.dataset.alb){const sec=v.querySelector(`.fxsec[data-sec="${v.dataset.alb}"]`);if(sec)fdEager(sec)}}
   v.querySelectorAll('.nfv img').forEach(im=>{const ok=()=>im.classList.add('ok');if(im.complete&&im.naturalWidth)ok();else im.addEventListener('load',ok,{once:true});});
   const q=v.querySelector('#fxq');if(!q)return;const cnt=v.querySelector('#fxcnt'),none=v.querySelector('.fxnone'),clr=v.querySelector('.fxclr');
   const run=()=>{const s=fxNorm(q.value.trim());v.classList.toggle('fxs',!!s);clr.hidden=!s;let n=0;
     v.querySelectorAll('.fxsec .nfrow').forEach(r=>{let k=0;const cs=r.querySelectorAll('.nfv');cs.forEach(c=>{const m=!s||c.dataset.t.includes(s);c.hidden=!m;if(m)k++});r.hidden=!!s&&!k;const b=r.querySelector('.nfcnt');if(b)b.textContent=s?k:cs.length;n+=k});
-    cnt.textContent=s?T('{0} Videos',n):'';none.hidden=!s||n>0};
+    cnt.textContent=s?T('{0} Videos',n):'';none.hidden=!s||n>0;v.querySelectorAll('.nfsc-wrap').forEach(updNfArr)};
   q.addEventListener('input',run);clr.addEventListener('click',()=>{q.value='';run();q.focus()});
   if(S.fdQ){q.value=S.fdQ;run()}q.addEventListener('change',()=>{S.fdQ=q.value})}
 function vFreshDigital(){const tab=S.fdTab||'hg';const alb=(history.state&&history.state.alb)||'';S.fdAlb=alb;const A=fdAlbums();
@@ -2170,7 +2185,7 @@ function openAlbum(k,fromPop){const v=document.querySelector('.fdv');if(!v||v.da
   const from=card&&card.offsetParent?fdBox(card):null,rot=alb?fdRot(alb):0,src=card?card.querySelector('img').src:'';
   fb('open',10);S.fdAlb=k;if(!fromPop){try{history.pushState({...(history.state||{}),alb:k},'',location.href)}catch(_){}}
   v.dataset.alb=k;const sec=v.querySelector(`.fxsec[data-sec="${k}"]`);sec.classList.remove('alb-in');void sec.offsetWidth;sec.classList.add('alb-in');
-  window.scrollTo({top:0,behavior:'instant'});fdEager(sec);
+  window.scrollTo({top:0,behavior:'instant'});fdEager(sec);sec.querySelectorAll('.nfsc-wrap').forEach(updNfArr);
   const tgt=sec.querySelector('.fxah-c');if(from&&tgt)fdFly(src,from,rot,fdBox(tgt),0,tgt)}
 function closeAlbum(fromPop){const v=document.querySelector('.fdv');if(!v||!v.dataset.alb)return;const k=v.dataset.alb;
   const hc=v.querySelector(`.fxsec[data-sec="${k}"] .fxah-c`);const from=hc&&hc.offsetParent?fdBox(hc):null;
@@ -2188,8 +2203,8 @@ function openVideo(id,hh,title){id=String(id);const hit=vpFind(id);const tall=hi
   if(fresh){o=document.createElement('div');o.id='vplayer';document.body.appendChild(o);try{history.pushState({...(history.state||{}),vp:1},'',location.href)}catch(_){}
     o.addEventListener('click',e=>{const n=e.target.closest('[data-vid]');if(n){fb('sel',8);openVideo(n.dataset.vid,'',n.dataset.vt);return}if(e.target.closest('.vp-fsb')){vpFS(true);return}if(e.target.closest('.vp-fsx')){vpFS(false);return}if(e.target.closest('.vp-rot')){vpRotate();return}if(e.target===o||e.target.closest('.vp-x'))closeVideo()})}
   o.innerHTML=`<div class="vp-box${tall?' tall':''}"><div class="vp-top"><span class="vp-tt"><b>${esc(title||'')}</b>${grp?`<small>${esc(grp)}</small>`:''}</span><span class="vp-btns"><a class="vp-ext" href="https://vimeo.com/${id}" target="_blank" rel="noopener">${T('Auf Vimeo')}${svg('chev')}</a><button class="iconbtn vp-fsb" aria-label="${T('Vollbild')}" title="${T('Vollbild')}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button><button class="iconbtn vp-x" aria-label="${T('Schließen')}">${svg('x')}</button></span></div><div class="vp-fsbar"><button class="iconbtn vp-rot" aria-label="${T('Drehen')}" title="${T('Drehen')}"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="3" width="10" height="18" rx="2"/><path d="M20 14a8 8 0 0 1-6 6.5M20 20.5v-6h-6" transform="translate(0 -1)"/></svg></button><button class="iconbtn vp-fsx" aria-label="${T('Vollbild beenden')}" title="${T('Vollbild beenden')}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5"/></svg></button></div><div class="vp-frame${tall?' tall':''}" style="--a:${tall?.5625:1.7778}"><div class="vp-load">${[0,1,2].map(i=>`<img src="img/ui/6e072e6aa8.png" alt="" style="--i:${i}">`).join('')}</div><iframe src="https://player.vimeo.com/video/${id}?${hh?'h='+hh+'&':''}autoplay=1&title=0&byline=0&portrait=0&color=FFD200&dnt=1" title="${esc(title||'Video')}" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen onload="this.classList.add('ld')"></iframe></div>
-   ${next.length?`<div class="vp-next"><small>${T('Als Nächstes')}</small><div class="nfscroll">${next.map(([t,vid])=>`<button class="nftile sm${tall?' tall':''}" data-vid="${vid}" data-vt="${esc(t)}"><img src="${thumbSrc(vid)}" alt="" loading="lazy" decoding="async"><span class="nfgrad"></span><span class="nfplay">${svg('play')}</span><span class="nftx"><b>${esc(t)}</b></span></button>`).join('')}</div></div>`:''}</div>`;
-  if(fresh)requestAnimationFrame(()=>o.classList.add('on'))}
+   ${next.length?`<div class="vp-next"><small>${T('Als Nächstes')}</small><div class="nfsc-wrap"><button type="button" class="nfarr nfarr-l" data-nfarr="-1" aria-label="${T('Zurück')}">${svg('prev')}</button><div class="nfscroll">${next.map(([t,vid])=>`<button class="nftile sm${tall?' tall':''}" data-vid="${vid}" data-vt="${esc(t)}"><img src="${thumbSrc(vid)}" alt="" loading="lazy" decoding="async"><span class="nfgrad"></span><span class="nfplay">${svg('play')}</span><span class="nftx"><b>${esc(t)}</b></span></button>`).join('')}</div><button type="button" class="nfarr nfarr-r" data-nfarr="1" aria-label="${T('Weiter')}">${svg('next')}</button></div></div>`:''}</div>`;
+  initNfArr(o);if(fresh)requestAnimationFrame(()=>o.classList.add('on'))}
 window.addEventListener('popstate',()=>{const st=history.state||{};const o=document.getElementById('vplayer');if(o&&o.classList.contains('on')&&!st.vp)closeVideo(true);
   const v=document.querySelector('.fdv');if(v){const want=st.alb||'';if((v.dataset.alb||'')!==want){want?openAlbum(want,true):closeAlbum(true)}}});
 /* Vollbild: echtes Vollbild wo möglich (Android/Desktop), sonst bildschirmfüllend (iPhone). „Drehen“ wechselt hochkant/quer – auch bei gesperrter Bildschirmdrehung */
@@ -2467,8 +2482,8 @@ function vAnmeldung(id){const s=id?byId[id]:null;if(id&&!s)return null;const L=s
    <div class="way glass">
      <div class="wtop"><span class="wn">2</span><span class="wl">${T('Über Semiro')}</span><span class="wi">${svg('cal')}</span></div>
      <p class="wtxt">${T('Direkt online im Buchungsportal der Food Academy buchen:')}</p>
-     <a class="mailplate small mlink" href="https://edeka-nst.semiro.de" target="_blank" rel="noopener"><span class="fit" data-fit="20" dir="ltr">edeka-nst.semiro.de</span></a>
-     <a class="cta semiro" href="https://edeka-nst.semiro.de" target="_blank" rel="noopener">${T('Semiro öffnen')} ${svg('ext')}</a>
+     <a class="mailplate small mlink" href="${SEMIRO}" target="_blank" rel="noopener"><span class="fit" data-fit="20" dir="ltr">edeka-nst.semiro.de</span></a>
+     <a class="cta semiro" href="${SEMIRO}" target="_blank" rel="noopener">${T('Semiro öffnen')} ${svg('ext')}</a>
    </div>`:''}
    <div class="info glass rv"><div class="nh">${T('Gut zu wissen')}</div>
      <div class="tl"><div><i></i><span>${T('<b>Bestätigung</b> kommt nach der Anmeldung per E-Mail.')}</span></div>

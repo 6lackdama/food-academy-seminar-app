@@ -3,7 +3,7 @@
    - Bilder & Schriften: sofort aus dem Zwischenspeicher, im Hintergrund aktualisieren
    - Fremde Seiten (Vimeo, Instagram …) werden nicht angefasst
    Bei grundlegenden Änderungen VERSION erhöhen → alter Zwischenspeicher wird gelöscht. */
-const VERSION = 'v1';
+const VERSION = 'v2';
 const CACHE = 'food-academy-' + VERSION;
 const PRECACHE = [
   './',

@@ -10,7 +10,8 @@
 <meta name="apple-mobile-web-app-title" content="Food Academy">
 <meta name="format-detection" content="telephone=no, email=no, address=no, date=no">
 <link rel="icon" href="img/ui/569bf16adb.png">
-<link rel="apple-touch-icon" href="img/ui/569bf16adb.png">
+<link rel="apple-touch-icon" href="img/app/apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
 <title>EDEKA Food Academy – Seminar-Finder 2027</title>
 <meta name="description" content="Finde in wenigen Schritten die Seminare der Food Academy, die wirklich zu deiner Stelle passen.">
 <meta property="og:type" content="website">
@@ -2391,6 +2392,10 @@ window.addEventListener('scroll',()=>{if(ticking)return;ticking=true;requestAnim
 window.addEventListener('keydown',e=>{if(!vOpen)return;if(e.key==='ArrowRight')gotoV(vIdx+1,true);if(e.key==='ArrowLeft')gotoV(vIdx-1,true);if(e.key==='Escape')closeViewer()});
 
 applyDir();loadLang(LANG,()=>{if(LANG!=='de'&&!(I18N[LANG]&&I18N[LANG].ui))LANG='de';applyDir();buildBgRows();runIntro(()=>render())});
+</script>
+<script>
+/* PWA: Service Worker für Home-Bildschirm & Offline */
+if('serviceWorker' in navigator&&(location.protocol==='https:'||location.hostname==='localhost')){window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{})})}
 </script>
 </body>
 </html>

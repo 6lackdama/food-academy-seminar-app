@@ -1620,7 +1620,8 @@ button.nftile{padding:0;border:0;text-align:start}
  .kdet{display:grid;grid-template-columns:1fr 1fr;gap:16px}
  .kintro .pad{display:grid;grid-template-columns:minmax(0,1fr) clamp(320px,32vw,440px);column-gap:56px;align-items:center}
  .kintro .pad>*{grid-column:1}
- .kintro .pad>.kwheel{grid-column:2;grid-row:1/span 7;width:100%!important;height:auto!important;max-width:440px;justify-self:center;margin:0}
+ .kintro .pad>.kwheel,.kintro .pad>.kwbox{grid-column:2;grid-row:1/span 7;width:100%!important;max-width:440px;justify-self:center;margin:0}
+ .kintro .kwbox .kwheel{width:100%!important;height:auto!important;margin:0}
  .kintro .pad>.dock{position:static;background:none;padding:22px 0 30px;margin:0}
  .kintro .pad>.dock .cta{margin:0}
  .kh1{font-size:clamp(40px,3.8vw,58px)!important}
@@ -1700,6 +1701,46 @@ button.nftile{padding:0;border:0;text-align:start}
 .po9 .nfc-t small{font-size:10.5px;color:#ffcf6b;padding-left:0}
 @media (min-width:700px) and (max-width:1023px){.nfc.nfv.po9{width:190px}}
 @media (min-width:1024px){.nfc.nfv.po9{width:calc((min(100vw,var(--dw)) - 2*var(--dpx) - 5*18px)/6.2);max-width:none}.po9 .nfc-t b{font-size:13px!important}}
+
+/* ===== Kompetenz-Check Intro: Hinweis hervorgehoben, Infos als Kacheln ===== */
+.kintro .kinfo{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:18px 0 4px;color:#e9eaec;font-size:12.5px}
+.kintro .kinfo span{display:flex;flex-direction:column;align-items:flex-start;gap:7px;padding:11px 11px 12px;border-radius:16px;background:linear-gradient(160deg,rgba(255,255,255,.075),rgba(255,255,255,.025));border:1px solid rgba(255,255,255,.09);line-height:1.25;animation:rise .6s var(--ease) backwards;animation-delay:calc(.35s + var(--k,0) * .08s)}
+.kintro .kinfo span:nth-child(2){--k:1}.kintro .kinfo span:nth-child(3){--k:2}
+.kintro .kinfo i{display:grid;place-items:center;width:28px;height:28px;border-radius:9px;background:rgba(252,229,49,.13)}
+.kintro .kinfo i svg{width:15px;height:15px;stroke:var(--y);fill:none;stroke-width:2.2}
+.kintro .kinfo b{font-weight:700}
+.kwbox{position:relative;display:flex;flex-direction:column;align-items:center}
+.kintro .kftap{position:relative;display:inline-flex;align-items:center;gap:12px;margin:14px auto 4px;padding:10px 18px 10px 10px;max-width:100%;border-radius:999px;background:linear-gradient(180deg,rgba(252,229,49,.16),rgba(252,229,49,.07));border:1px solid rgba(252,229,49,.45);box-shadow:0 12px 30px -16px rgba(252,229,49,.55),inset 0 1px 0 rgba(255,255,255,.08);color:#fff;font-size:14px;font-weight:700;line-height:1.3;text-align:left;animation:kftapIn .7s var(--ease) 1.6s backwards;transition:opacity .5s ease,transform .5s ease,border-color .5s ease}
+.kintro .kftap::before{content:"";position:absolute;left:50%;top:-7px;width:12px;height:12px;margin-left:-6px;transform:rotate(45deg);background:rgba(252,229,49,.17);border-left:1px solid rgba(252,229,49,.45);border-top:1px solid rgba(252,229,49,.45);border-radius:3px 0 0 0}
+.kftap-i{position:relative;flex:none;display:grid;place-items:center;width:36px;height:36px;border-radius:50%;background:var(--y);box-shadow:0 0 0 0 rgba(252,229,49,.6)}
+.kftap-i svg{width:20px;height:20px;stroke:#17181a;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;animation:kftapPress 2.4s ease-in-out 2.4s infinite}
+.kftap-i::before,.kftap-i::after{content:"";position:absolute;inset:0;border-radius:50%;border:2px solid var(--y);opacity:0;animation:kftapRing 2.4s cubic-bezier(.22,1,.36,1) 2.4s infinite}
+.kftap-i::after{animation-delay:2.8s}
+@keyframes kftapRing{0%{opacity:.75;transform:scale(1)}70%,100%{opacity:0;transform:scale(1.9)}}
+@keyframes kftapPress{0%,30%,100%{transform:translateY(0) scale(1)}12%{transform:translateY(1px) scale(.88)}}
+@keyframes kftapIn{from{opacity:0;transform:translateY(10px) scale(.96)}}
+.kintro.kfused .kftap{opacity:.5;border-color:rgba(255,255,255,.14);box-shadow:none;animation:none}
+.kintro.kfused .kftap-i svg,.kintro.kfused .kftap-i::before,.kintro.kfused .kftap-i::after{animation:none}
+/* Rad lädt zum Tippen ein: Felder leuchten nacheinander auf, bis zum ersten Antippen */
+.kintro:not(.kfused) .kwheel:not([data-sel]) .kw-seg[data-kf] .kw-glow{animation:kwInvite 6s ease-in-out infinite;animation-delay:calc(3s + var(--i) * 1.5s)}
+@keyframes kwInvite{0%,26%,100%{opacity:0}9%{opacity:.6}}
+.kintro #kfpop{margin:0 0 6px}
+.kintro .lead{margin-top:14px}
+@media (max-width:899px){
+ .kintro .kinfo{display:flex;flex-wrap:wrap;gap:7px;margin-top:14px}
+ .kintro .kinfo span{flex-direction:row;align-items:center;gap:7px;padding:5px 12px 5px 5px;border-radius:999px;white-space:nowrap}
+ .kintro .kinfo i{flex:none;width:24px;height:24px;border-radius:50%}
+ .kintro .kinfo i svg{width:13px;height:13px}
+ .kintro .kwbox .kwheel{width:min(232px,60vw);margin:6px auto 0}
+ .kintro .kftap{margin-top:8px}
+}
+@media (max-width:359px){.kintro .kinfo{font-size:11.5px;gap:6px}.kintro .kftap{font-size:13px;padding-right:14px}}
+@media (min-width:900px){
+ .kintro .pad>.kicker{text-align:left;justify-self:start;margin-left:0;margin-right:0}
+ .kintro .pad>.lead{order:1}.kintro .pad>.kinfo{order:2;margin:22px 0 0;max-width:560px}.kintro .pad>#kfpop{order:3}.kintro .pad>.dock{order:4}
+ .kintro .kinfo{font-size:13.5px}
+ .kintro .kftap{margin-top:22px}
+}
 </style>
 </head>
 <body>
@@ -2281,10 +2322,10 @@ function toggleKF(f){const pop=document.getElementById('kfpop'),w=app.querySelec
 document.addEventListener('keydown',e=>{if(e.key!=='Enter'&&e.key!==' ')return;const k=e.target.closest&&e.target.closest('.kw-seg[data-kf]');if(!k)return;e.preventDefault();toggleKF(k.dataset.kf)});
 function vCheckIntro(){return `<div class="view kintro">${bar(T('Kompetenz-Check'))}<div class="pad">
   <div class="kicker">${T('Das EDEKA Kompetenzmodell')}</div><h1 class="kh1">${T('Die berufliche und persönliche Entwicklung im Fokus.')}</h1>
-  ${bigWheel()}
+  <div class="kinfo"><span><i>${svg('clock')}</i><b>${T('ca. 5 Minuten')}</b></span><span><i>${svg('check')}</i><b>${T('22 Aussagen')}</b></span><span><i>${svg('heart')}</i><b>${T('Bleibt auf deinem Gerät')}</b></span></div>
+  <div class="kwbox">${bigWheel()}<div class="kftap" role="note"><span class="kftap-i"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 11V5.5a1.5 1.5 0 0 1 3 0V11"/><path d="M13 10.5a1.5 1.5 0 0 1 3 0V12"/><path d="M16 11.5a1.5 1.5 0 0 1 3 0V15a6 6 0 0 1-6 6h-1.2a6 6 0 0 1-4.5-2l-3.1-3.6a1.5 1.5 0 0 1 2.2-2L10 15.5"/></svg></span><span class="kftap-t">${T('Tippe auf ein Farbfeld im Rad, um es kennenzulernen.')}</span></div></div>
+  <div id="kfpop"></div>
   <p class="lead">${T('Vier Kompetenzfelder, 22 Kompetenzen. Du schätzt dich bei jeder Kompetenz kurz selbst ein – ehrlich, nur für dich. Daraus entsteht dein Kompetenz-Profil und die Seminare, die dich gezielt weiterbringen.')}</p>
-  <div class="kftap">${svg('spark')}${T('Tippe auf ein Farbfeld im Rad, um es kennenzulernen.')}</div><div id="kfpop"></div>
-  <div class="kinfo"><span>${svg('clock')}${T('ca. 5 Minuten')}</span><span>${svg('check')}${T('22 Aussagen')}</span><span>${svg('heart')}${T('Bleibt auf deinem Gerät')}</span></div>
   <div class="dock"><button class="cta" data-act="cgo" data-to="check-rolle">${T('Check starten')} ${svg('arrow')}</button></div></div></div>`}
 function vCheckRole(){return `<div class="view">${chkHead(0,null)}<div class="q"><h2>${T('Deine Position?')}</h2><p class="hint"><span class="pill">${T('Mehrfachauswahl')}</span>${T('Wir zeigen nur Seminare, die für deine Position gedacht sind.')}</p><div class="opts">${ROLES.map(r=>opt(S.roles.includes(r.k),T(r.t),T(r.s),r.ic,`data-tog="roles" data-v="${r.k}"`,1)).join('')}</div></div>
   <div class="dock${S.roles.length?'':' hide'}"><div class="selcount">${selTxt(S.roles.length,'Position','Positionen')}</div><button class="cta" data-act="cgo" data-to="check-bereich">${T('Weiter')} ${svg('arrow')}</button></div></div>`}

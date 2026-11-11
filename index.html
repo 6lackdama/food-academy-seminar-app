@@ -746,8 +746,8 @@ h1,h2,h3{margin:0;font-family:var(--hf);font-weight:800;line-height:1.04;letter-
 @keyframes kwpop{0%{opacity:0;transform:var(--t,none) scale(.2)}100%{opacity:1}}
 .kw-seg{transform-origin:center;transition:opacity .5s,transform .6s var(--spring)}
 .kw-seg.dim{opacity:.28}.kw-seg.act .kw-arc{stroke-width:30}
-.kw-heart{position:absolute;left:50%;top:50%;width:26%;transform:translate(-50%,-50%);animation:kbeat 2.4s ease-in-out 2s infinite;filter:drop-shadow(0 8px 20px rgba(255,200,0,.35))}
-@keyframes kbeat{0%,100%{transform:translate(-50%,-50%) scale(1)}12%{transform:translate(-50%,-50%) scale(1.09)}24%{transform:translate(-50%,-50%) scale(1)}36%{transform:translate(-50%,-50%) scale(1.05)}}
+.kw-heart{position:absolute;inset:0;margin:auto;height:auto;aspect-ratio:203/169;transform:none;width:26%;animation:kbeat 2.4s ease-in-out 2s infinite;filter:drop-shadow(0 8px 20px rgba(255,200,0,.35))}
+@keyframes kbeat{0%,100%{transform:scale(1)}12%{transform:scale(1.09)}24%{transform:scale(1)}36%{transform:scale(1.05)}}
 .kwheel.small{width:96px;margin:0;flex:none}.kwheel.small .kw-ic{display:none}.kwheel.small .kw-arc{stroke-width:30}.kwheel.small .kw-seg.act .kw-arc{stroke-width:38}
 .kh1{font-size:clamp(26px,7vw,40px);margin-top:8px;line-height:1.08}
 .kfields{display:grid;gap:10px;margin-top:20px}
@@ -1110,8 +1110,8 @@ button.nftile{padding:0;border:0;text-align:start}
 #vplayer.vp-fs{background:#000}
 #vplayer.vp-fs .vp-box{position:fixed;inset:0;width:auto;max-height:none;overflow:hidden;padding:0}
 #vplayer.vp-fs .vp-top,#vplayer.vp-fs .vp-next{display:none}
-#vplayer.vp-fs .vp-frame{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(100vw,100dvh * var(--a));height:auto;aspect-ratio:var(--a);margin:0;border-radius:0;box-shadow:none;transition:transform .35s var(--ease,ease)}
-#vplayer.vp-fs.vp-rot .vp-frame{width:min(100dvh,100vw * var(--a));transform:translate(-50%,-50%) rotate(90deg)}
+#vplayer.vp-fs .vp-frame{position:absolute;inset:-100vmax;margin:auto;transform:none;--fw:min(100vw,100dvh * var(--a));width:var(--fw);height:calc(var(--fw) / var(--a));aspect-ratio:auto;border-radius:0;box-shadow:none;transition:transform .35s var(--ease,ease)}
+#vplayer.vp-fs.vp-rot .vp-frame{--fw:min(100dvh,100vw * var(--a));transform:rotate(90deg)}
 @media (hover:hover) and (pointer:fine){.vp-rot{display:none!important}}
 @media (max-height:500px){.vp-frame.tall{width:min(100%,calc((100svh - 80px)*9/16))}}
 #vplayer.vp-fs .vp-fsbar{display:flex;gap:10px;position:fixed;z-index:5;top:calc(12px + var(--safe-t,0px));right:calc(12px + env(safe-area-inset-right,0px))}
@@ -1167,8 +1167,8 @@ button.nftile{padding:0;border:0;text-align:start}
 .s2orb .o1,.s2orb .o2{position:absolute;inset:0;border-radius:50%}
 .s2orb .o1{background:conic-gradient(from 0deg,rgba(255,210,0,0),rgba(255,210,0,.55),rgba(255,140,0,0) 40%,rgba(255,210,0,.35) 70%,rgba(255,210,0,0));-webkit-mask:radial-gradient(circle,transparent 62%,#000 63%,#000 66%,transparent 67%);mask:radial-gradient(circle,transparent 62%,#000 63%,#000 66%,transparent 67%);animation:spin 9s linear infinite}
 .s2orb .o2{background:radial-gradient(circle,rgba(255,200,0,.28),transparent 62%);animation:fglow 4s ease-in-out infinite}
-.s2orb img{position:absolute;left:50%;top:50%;width:64px;transform:translate(-50%,-50%);opacity:.95;filter:drop-shadow(0 10px 28px rgba(255,200,0,.6));animation:orbHeart 4.5s ease-in-out infinite}
-@keyframes orbHeart{0%,100%{transform:translate(-50%,-50%) scale(1)}50%{transform:translate(-50%,-50%) scale(1.07)}}
+.s2orb img{position:absolute;inset:0;margin:auto;height:auto;aspect-ratio:203/169;transform:none;width:64px;opacity:.95;filter:drop-shadow(0 10px 28px rgba(255,200,0,.6));animation:orbHeart 4.5s ease-in-out infinite}
+@keyframes orbHeart{0%,100%{transform:scale(1)}50%{transform:scale(1.07)}}
 .s2stats{display:flex;gap:10px;margin-top:20px;animation:rise .9s var(--ease) 1.2s backwards}
 .s2stats span{flex:1;display:flex;flex-direction:column;padding:12px 12px 10px;border-radius:16px;background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.03));border:1px solid rgba(255,255,255,.08);font-size:11.5px;font-weight:600;color:var(--muted);letter-spacing:.02em}
 .s2stats b{font-family:var(--hf);font-size:24px;color:#fff;letter-spacing:-.02em;line-height:1.1}
@@ -1307,7 +1307,7 @@ button.nftile{padding:0;border:0;text-align:start}
 .s2ring{position:absolute;inset:0;width:100%;height:100%;animation:spin 26s linear infinite;overflow:visible}
 .s2ring text{font-family:var(--hf);font-weight:700;font-size:13.5px;letter-spacing:.12em;fill:var(--y)}
 .s2rl{fill:none;stroke:rgba(255,210,0,.25);stroke-width:1;stroke-dasharray:2 5}
-.s2orb img{position:absolute;left:50%;top:50%;width:52px!important;transform:translate(-50%,-50%);filter:drop-shadow(0 8px 22px rgba(255,200,0,.6));animation:orbHeart 4.5s ease-in-out infinite}
+.s2orb img{position:absolute;inset:0;margin:auto;height:auto;aspect-ratio:203/169;transform:none;width:52px!important;filter:drop-shadow(0 8px 22px rgba(255,200,0,.6));animation:orbHeart 4.5s ease-in-out infinite}
 /* ===== loader hearts ===== */
 .hl-ring{display:none}
 .hl-hearts{gap:12px}
@@ -1400,7 +1400,7 @@ button.nftile{padding:0;border:0;text-align:start}
 .kw-seg.act .kw-arc{stroke-width:30!important;filter:drop-shadow(0 0 16px var(--c))}
 .kw-seg.dim{opacity:.25!important}
 .kw-seg.act .kw-ic circle{fill:color-mix(in srgb,var(--c) 30%,#151618)}
-.kwheel[data-sel] .kw-heart{animation:none;transform:translate(-50%,-50%) scale(.85);transition:transform .5s var(--spring)}
+.kwheel[data-sel] .kw-heart{scale:.85;transition:scale .5s var(--spring)}
 .kw-seg{transition:opacity .45s ease}
 /* Kompetenzmodell-Rad – Premium-Interaktion (nur transform/opacity animiert) */
 @property --kwc{syntax:'<color>';inherits:true;initial-value:#FFD200}
@@ -1422,7 +1422,7 @@ button.nftile{padding:0;border:0;text-align:start}
 .kw-seg.act .kw-glow{opacity:.7}
 .kw-wave{fill:none;stroke:var(--c);stroke-width:2.5;pointer-events:none;transform-box:fill-box;transform-origin:center;animation:kwwave .8s cubic-bezier(.22,1,.36,1) forwards}
 @keyframes kwwave{0%{opacity:.9;transform:scale(1)}100%{opacity:0;transform:scale(2.4)}}
-.kwheel[data-sel] img.kw-heart{animation:kbeat 2.4s ease-in-out 2s infinite;transform:translate(-50%,-50%);transition:none}
+.kwheel[data-sel] img.kw-heart{animation:kbeat 2.4s ease-in-out 2s infinite}
 .kwheel img.kw-heart{z-index:2;transition:scale .7s var(--sp)}
 .kwheel[data-sel] img.kw-heart{scale:.84}
 #kfpop{position:relative}
@@ -2037,7 +2037,7 @@ function vStart(){const n=(k,t)=>`<div class="s2h rv"><span class="s2n">${k}</sp
    <div class="kicker" style="animation:rise .8s var(--ease) .3s backwards">${T('Dein Seminar-Finder · Katalog 2027')}</div>
    <h1><span class="ln">${words(T('Finde dein'),.4)}</span><span class="ln"><span class="hl">${words(T('Seminar.'),.6)}</span></span></h1>
    <div class="s2row"><p>${T('Finde in wenigen Schritten die Seminare der Food Academy, die wirklich zu deiner Stelle passen.')}</p>
-    <div class="s2orb"><span class="o2"></span><svg class="s2ring" viewBox="0 0 200 200"><defs><path id="s2c" d="M100,100 m-78,0 a78,78 0 1,1 156,0 a78,78 0 1,1 -156,0"/></defs><circle cx="100" cy="100" r="94" class="s2rl"/><text><textPath href="#s2c" textLength="486" lengthAdjust="spacing">${esc(T('INSPIRIEREN · BEFÄHIGEN · ERMÖGLICHEN · '))}</textPath></text></svg><img src="img/ui/6e072e6aa8.png" alt=""></div></div></section>
+    <div class="s2orb"><span class="o2"></span><svg class="s2ring" viewBox="0 0 200 200"><defs><path id="s2c" d="M100,100 m-78,0 a78,78 0 1,1 156,0 a78,78 0 1,1 -156,0"/></defs><circle cx="100" cy="100" r="94" class="s2rl"/><text><textPath href="#s2c" textLength="486" lengthAdjust="spacing">${esc(T('INSPIRIEREN · BEFÄHIGEN · ERMÖGLICHEN · '))}</textPath></text></svg><img src="img/ui/6e072e6aa8.png" width="203" height="169" alt=""></div></div></section>
   <section class="s2sec">${n('01',T('Seminar finden'))}
    <div class="s2paths">
    <button class="path p1" data-act="startQuiz"><span class="pic">${svg('bolt')}</span><span class="ptx"><b>${T('Schnell finden')}</b><small>${T('4 kurze Fragen · 1 Minute')}</small></span>${svg('arrow','pa')}</button>
@@ -2242,7 +2242,7 @@ function bigWheel(active){const R=112;
      return `<g class="kw-seg${active&&active!==f?' dim':''}${active===f?' act':''}"${active?'':` data-kf="${f}" role="button" tabindex="0" aria-label="${esc(T(KF[f].n))}"`} style="--c:${KF[f].c};--i:${i};--dx:${(9*Math.cos(ma)).toFixed(1)}px;--dy:${(9*Math.sin(ma)).toFixed(1)}px">
       ${active?'':`<path class="kw-glow" d="${arcP(R,a0,a1)}" stroke="${KF[f].c}"/>`}<path class="kw-arc" d="${arcP(R,a0,a1)}" stroke="url(#kg${f})" style="stroke-dasharray:${L};stroke-dashoffset:${L}"/>
       <g transform="translate(${(R*Math.cos(ma)).toFixed(1)} ${(R*Math.sin(ma)).toFixed(1)})"><g class="kw-ic"><circle r="27"/><g transform="translate(-13 -13) scale(1.08)">${IC[KF[f].ic]}</g></g></g></g>`}).join('')}
-  </g></svg><img class="kw-heart" src="img/ui/6e072e6aa8.png" alt=""></div>`}
+  </g></svg><img class="kw-heart" src="img/ui/6e072e6aa8.png" width="203" height="169" alt=""></div>`}
 function dotline(cur){let i=0;return `<div class="kdots">${KFO.map(f=>`<span class="kdg${f===cur?' cur':''}" style="--c:${KF[f].c}">${KOMP.filter(x=>x[0]===f).map(x=>`<i class="${S.k[x[2]]?'on':''}" style="--i:${i++}"></i>`).join('')}</span>`).join('')}</div>`}
 const CHK=['check-rolle','check-bereich','check-I','check-F','check-P','check-G'];
 function chkHead(step,title){const L=['Position','Bereich',...KFO.map(f=>KF[f].n.replace('kompetenz',''))];return `<div class="bar qbar">${step>0?`<button class="iconbtn" data-act="back" aria-label="${T('Zurück')}">${svg('back')}</button>`:'<span class="iconbtn ghostbtn"></span>'}<div class="steplbl"><small>${T('Kompetenz-Check')}</small><span>${T('Schritt {0} von {1}','<b>'+(step+1)+'</b>',CHK.length)}</span></div>${sndBtn()}<button class="iconbtn" data-act="home" aria-label="${T('Startseite')}" title="${T('Startseite')}">${svg('home')}</button></div>${qprog(['Position','Bereich','Interaktion','Fach','Perspektive','Gestaltung'],['user','store',...KFO.map(f=>KF[f].ic)],step,['#FFD200','#FFD200',...KFO.map(f=>KF[f].c)])}${dotline(title)}`}

@@ -1049,7 +1049,7 @@ button.nftile{padding:0;border:0;text-align:start}
 .nfsoon{position:absolute;left:10px;top:10px;font-size:10.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;padding:4px 8px;border-radius:6px;background:rgba(0,0,0,.6);color:#ffb34d;border:1px solid rgba(255,179,77,.5)}
 .nfdur{position:absolute;right:10px;bottom:10px;font-size:11px;font-weight:700;padding:2px 6px;border-radius:5px;background:rgba(0,0,0,.65)}
 .vp-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px}.vp-top b{font-family:var(--hf);font-size:18px}
-.vp-x{position:static}
+.vp-x{position:relative;top:auto;right:auto}
 .vp-load{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:10px}
 .vp-load img{width:34px;height:28px;object-fit:contain;animation:hlbeat 1.2s infinite;animation-delay:calc(var(--i)*.18s)}
 .vp-frame iframe{opacity:0;transition:opacity .5s}.vp-frame iframe.ld{opacity:1}
@@ -1061,6 +1061,61 @@ button.nftile{padding:0;border:0;text-align:start}
 .vp-box.tall{width:min(94vw,520px)}
 .vp-frame.tall{aspect-ratio:9/16;width:min(100%,calc((100svh - 250px)*9/16));margin:0 auto}
 .nftile.sm.tall{width:110px;aspect-ratio:9/16}
+.vp-fsbar{display:none}
+/* Fresh Digital – Album-Fächer */
+.fdv[data-alb=""] .fxsec{display:none}
+.fdv[data-alb=hg] .fxsec[data-sec=lege],.fdv[data-alb=lege] .fxsec[data-sec=hg]{display:none}
+.fdv:not([data-alb=""]) .fxfan{display:none}
+.fdv.fxs .fxfan,.fdv.fxs .fxah{display:none!important}
+.fxfan{position:relative;margin:0 0 4px;padding:30px 0 6px;overflow:hidden}
+.fxfan-in{display:flex;justify-content:center;align-items:flex-start;padding:0 18px}
+.fxalb{--w:min(38vw,250px);position:relative;z-index:calc(1 + var(--k));flex:none;width:var(--w);margin:0 -8px;padding:0;border:0;background:none;color:#fff;cursor:pointer;text-align:center;font:inherit;transform-origin:50% 140%;transform:rotate(var(--r));transition:transform .5s var(--ease);-webkit-tap-highlight-color:transparent}
+.fxalb:hover,.fxalb:focus-visible{transform:rotate(calc(var(--r) * .55)) translateY(-8px);outline:none}
+.fxalb:active{transform:rotate(calc(var(--r) * .55)) translateY(-3px) scale(.97)}
+.fxalb-s{position:relative;z-index:2;display:block;aspect-ratio:1;border-radius:14px;overflow:hidden;background:#151515;box-shadow:0 26px 46px -18px rgba(0,0,0,.95),0 0 0 1px rgba(255,255,255,.1),0 16px 44px -22px rgba(255,140,0,.6)}
+.fxalb-s img{display:block;width:100%;height:100%;object-fit:cover}
+.fxalb-s::after{content:"";position:absolute;inset:0;background:linear-gradient(140deg,rgba(255,255,255,.2),transparent 38%);pointer-events:none}
+.fxalb-d{position:absolute;z-index:1;top:5%;left:5%;width:90%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,#FCE531 0 15%,#111 15.5% 17.5%,transparent 18%),repeating-radial-gradient(circle,#151515 0 2px,#222 2px 3.5px);box-shadow:0 12px 30px -12px #000,inset 0 0 0 1px rgba(255,255,255,.06);transition:transform .7s var(--ease)}
+.fxalb-d i{position:absolute;inset:48.5%;border-radius:50%;background:#111}
+.fxalb[data-album=hg] .fxalb-d{transform:translateX(-20%) rotate(-40deg)}
+.fxalb[data-album=lege] .fxalb-d{transform:translateX(20%) rotate(40deg)}
+.fxalb[data-album=hg]:hover .fxalb-d{transform:translateX(-27%) rotate(-120deg)}
+.fxalb[data-album=lege]:hover .fxalb-d{transform:translateX(27%) rotate(120deg)}
+.fxalb-t{display:flex;flex-direction:column;gap:3px;margin-top:14px}
+.fxalb-t b{font:800 16.5px/1.1 var(--hf)}
+.fxalb-t small{font-size:12px;color:var(--muted,#aaa)}
+.fxfan-h{margin:14px 0 0;text-align:center;font-size:12.5px;color:var(--muted,#aaa)}
+.fxfan.intro .fxalb{animation:fxalbin .85s var(--ease) both;animation-delay:calc(var(--k) * .13s + .1s)}
+.fxfan.intro .fxalb-d{animation:fxdisc 1.1s var(--ease) both;animation-delay:calc(var(--k) * .13s + .6s)}
+@keyframes fxalbin{from{opacity:0;transform:translateY(70px) rotate(0deg) scale(.88)}}
+@keyframes fxdisc{from{transform:translateX(0) rotate(0deg)}}
+.fxfan.ret .fxalb{animation:fxfade .5s ease both}
+@keyframes fxfade{from{opacity:0}}
+.fxah{margin:0 18px 8px;animation:fxin .5s var(--ease) both}
+.fxback{display:inline-flex;align-items:center;gap:6px;height:36px;margin:0 0 14px;padding:0 14px 0 10px;border-radius:999px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.07);color:#fff;font:700 13.5px/1 var(--hf);cursor:pointer}
+.fxback svg{width:16px;height:16px;transform:rotate(180deg)}
+.fxah-in{display:flex;align-items:center;gap:16px}
+.fxah-c{flex:none;width:clamp(112px,32vw,210px);aspect-ratio:1;object-fit:cover;border-radius:14px;box-shadow:0 22px 40px -18px #000,0 0 0 1px rgba(255,255,255,.1),0 14px 40px -22px rgba(255,140,0,.6)}
+.fxah-tx{min-width:0;display:flex;flex-direction:column;gap:7px}
+.fxah-tx h2{margin:0;font-family:var(--hf);font-size:clamp(24px,6.4vw,52px);line-height:1.02;background:linear-gradient(180deg,#fff,#ffe9a0);-webkit-background-clip:text;background-clip:text;color:transparent}
+.fxah-tx p{margin:0;font-size:13.5px;line-height:1.35;color:#d0d0d0}
+.fxah-b{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;margin-top:2px}
+.fxah .fxh-btn{margin:0;border:0;cursor:pointer;font-family:inherit;padding:10px 16px;font-size:14px}
+.fxah-v{display:inline-flex;align-items:center;gap:3px;font-size:13px;font-weight:700;color:#FCE531;text-decoration:none}
+.fxah-v svg{width:14px;height:14px}
+.fxsec.alb-in .nfrow{animation:fxrow .6s var(--ease) both;animation-delay:calc(var(--ri) * .07s + .25s)}
+@keyframes fxrow{from{opacity:0;transform:translateY(24px)}}
+.fxfly{position:fixed;z-index:300;margin:0;object-fit:cover;border-radius:14px;pointer-events:none;box-shadow:0 30px 60px -20px #000;will-change:transform}
+@media (min-width:900px){.fxalb{--w:260px;margin:0 -12px}.fxfan{padding-top:40px}.fxah{margin:0 var(--dpx,32px) 10px}.fxah-in{gap:28px}.fxah-tx p{font-size:16px}}
+#vplayer.vp-fs{background:#000}
+#vplayer.vp-fs .vp-box{position:fixed;inset:0;width:auto;max-height:none;overflow:hidden;padding:0}
+#vplayer.vp-fs .vp-top,#vplayer.vp-fs .vp-next{display:none}
+#vplayer.vp-fs .vp-frame{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(100vw,100dvh * var(--a));height:auto;aspect-ratio:var(--a);margin:0;border-radius:0;box-shadow:none;transition:transform .35s var(--ease,ease)}
+#vplayer.vp-fs.vp-rot .vp-frame{width:min(100dvh,100vw * var(--a));transform:translate(-50%,-50%) rotate(90deg)}
+@media (hover:hover) and (pointer:fine){.vp-rot{display:none!important}}
+@media (max-height:500px){.vp-frame.tall{width:min(100%,calc((100svh - 80px)*9/16))}}
+#vplayer.vp-fs .vp-fsbar{display:flex;gap:10px;position:fixed;z-index:5;top:calc(12px + var(--safe-t,0px));right:calc(12px + env(safe-area-inset-right,0px))}
+#vplayer.vp-fs .vp-fsbar .iconbtn{background:rgba(0,0,0,.55)}
 /* ===== profile rings ===== */
 .arings{position:relative;width:min(330px,84vw);aspect-ratio:1;margin:18px auto 6px}
 .arings svg{width:100%;height:100%;overflow:visible}
@@ -1573,7 +1628,7 @@ button.nftile{padding:0;border:0;text-align:start}
 .nfv .nfc-t b{font-size:16px!important;line-height:1.2;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .nfc.nfv{width:62vw;max-width:280px}
 @media (min-width:1024px){.fxtabs{margin:0 var(--dpx) 18px;max-width:420px}.nfc.nfv{width:calc((min(100vw,var(--dw)) - 2*var(--dpx) - 3*18px)/4.2)}}
-.fdv[data-tab=hg] .fxsec[data-sec=lege],.fdv[data-tab=lege] .fxsec[data-sec=hg]{display:none}
+/* (alte Reiter-Regel entfernt – Album-Fächer steuert die Sichtbarkeit über data-alb) */
 .fdv.fxs .fxsec{display:block!important}.fdv.fxs .fxh,.fdv.fxs .fxtabs{display:none}
 .fxsearch{position:relative;display:flex;align-items:center;gap:10px;margin:0 18px 12px;padding:0 12px 0 14px;height:48px;border-radius:15px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);transition:border-color .3s,box-shadow .3s}
 .fxsearch:focus-within{border-color:rgba(255,210,0,.7);box-shadow:0 0 0 4px rgba(255,210,0,.12)}
@@ -1991,10 +2046,10 @@ const NFX=`target="_blank" rel="noopener"`;
 const FDVID={"hg": [{"g": "Schneiden & Portionieren", "u": "https://vimeo.com/showcase/12013614", "v": [["Schnitttechnik Neuburger", 1237625070], ["Taschen schneiden", 1137712996], ["Käse sauber schneiden (1)", 1237623962], ["Rinderhüfte zerteilen", 1137712343], ["Putenbrust zerteilen", 1137711607], ["Schinken richtig schneiden", 1237623963], ["Oberschalenschnitzel schneiden", 1137710818], ["Käse sauber schneiden (2)", 1137709073], ["Schnitttechnik Käseharfe", 1182604341], ["Käse – Genussdreiecke schneiden", 1182604071], ["Doppelgriffmesser – Käse richtig schneiden", 1182603766]]}, {"g": "Vorbereiten", "u": "https://vimeo.com/showcase/12013614", "v": [["Austern öffnen", 1139260071], ["Wursthautschneider", 1237625539], ["Frischkäse herstellen – Vorbereitung", 1237625173], ["Schinkennetz abziehen", 1237623959], ["Lachshaut abziehen", 1137710404], ["Lachs filetieren", 1137709947], ["Lachs entschuppen", 1137709418], ["Gräten entfernen (Pinzette)", 1137708716], ["Gräten entfernen (Messer)", 1137707827]]}, {"g": "Verpacken", "u": "https://vimeo.com/showcase/12013614", "v": [["Weichkäse-Ecken verpacken", 1137714273], ["Vakuumiergerät – Ware halb vakuumieren", 1182604412], ["Vakuumiergerät – Ware richtig vakuumieren", 1182604413], ["Käse richtig verpacken", 1182604226], ["Foliergerät – Käse richtig verpacken", 1182604001], ["Foliergerät – Käse-Einpackvarianten", 1182603841], ["Foliergerät – Erklärung", 1182603836]]}, {"g": "Präsentieren & Frische", "u": "https://vimeo.com/showcase/12013614", "v": [["Anschnitt frisch halten", 1137714536], ["Platz für Käse", 1137711181]]}, {"g": "Warenkunde", "u": "https://vimeo.com/showcase/12013614", "v": [["Tafelspitz und Bürgermeisterstück unterscheiden", 1137713501], ["Weichkäse Messerkunde", 1182603513], ["Anwendung Käsewerkzeug", 1182603515]]}, {"g": "Geräte & Waage", "u": "https://vimeo.com/showcase/12013614", "v": [["Waage – Tara", 1182604626], ["Waage – Produktinfo", 1182604598], ["Waage – ABC-Suche", 1182604532], ["Käseharfe – Draht richtig wechseln", 1182604275]]}, {"g": "Sicherheit & Hygiene", "u": "https://vimeo.com/showcase/12013614", "v": [["Richtig Tragen & Heben", 1237623960], ["Aufschnittmaschine – Zusammenbauen", 1182603716], ["Aufschnittmaschine – Zerlegen", 1182603642]]}], "lege": [{"g": "Level {0}", "n": 1, "u": "https://vimeo.com/showcase/11967308", "v": [["Würstchen", 1134566359], ["Röllchen", 1134566075], ["Weichkäsetreppe", 1134555164], ["Ringware", 1134554213], ["Käse-Sticks", 1134553902], ["Käsespitzen", 1134545690], ["Käseröllchen", 1134541041], ["Käse mit Gewürzrand", 1134540933], ["Genussdreiecke", 1134540818], ["Fischbites", 1134540689], ["Fischspitzen", 1134540595], ["Fischpyramide", 1134540531], ["Fächer", 1134540449], ["Einfacher Fächer", 1134540001], ["Aspikware", 1134539554]]}, {"g": "Level {0}", "n": 2, "u": "https://vimeo.com/showcase/12013580", "v": [["Tête de Moine", 1137704997], ["Schmetterlingsflügel", 1137704706], ["Salamirose (Glas)", 1137704456], ["Rand betonen", 1137704201], ["Offener Kragen", 1137703997], ["Lachsfalten", 1137703741], ["Kragentechnik", 1137703466], ["Käsefächer", 1137703249], ["Hütchentechnik", 1137703080], ["Gefüllte Röllchen", 1137702735], ["Fischfächer", 1137702296]]}, {"g": "Level {0}", "n": 3, "u": "https://vimeo.com/showcase/12013582", "v": [["Schwarzwurstlocken", 1137707052], ["Schinkenspitzen", 1137706670], ["Salamirose (Hand)", 1137706343], ["Rollfächer", 1137706130], ["Rette mich", 1137705856], ["Konische Röllchen", 1137705468]]}]};
 const thumbSrc=id=>new URL('thumbs/'+id+'.webp', document.baseURI).href;
 const fxNorm=s=>s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/ß/g,'ss');
-function fdRow(g,sec){const name=g.n?T(g.g,g.n):T(g.g);
-  return `<section class="nfrow"><div class="nfrow-h"><h3>${esc(name)}<small class="nfcnt">${g.v.length}</small></h3><a href="${g.u}" ${NFX}>${T('Alle auf Vimeo')}${svg('chev')}</a></div>
+function fdRow(g,sec,ri){const name=g.n?T(g.g,g.n):T(g.g);
+  return `<section class="nfrow" style="--ri:${ri||0}"><div class="nfrow-h"><h3>${esc(name)}<small class="nfcnt">${g.v.length}</small></h3><a href="${g.u}" ${NFX}>${T('Alle auf Vimeo')}${svg('chev')}</a></div>
   <div class="nfsc">${g.v.map(([t,id],i)=>`<a class="nfc nfv${sec==='hg'?' po9':''}" href="https://vimeo.com/${id}" ${NFX} data-vid="${id}" data-vt="${esc(t)}" data-t="${esc(fxNorm(t))}" style="--i:${Math.min(i,8)};--r:${(i%3-1)*1.4}deg"><span class="nfv-fb nofb"><b>${String(i+1).padStart(2,'0')}</b></span><img src="${thumbSrc(id)}" alt="" decoding="async" onload="this.classList.add('ok')"><span class="nfc-g"></span><span class="nfc-p">${svg('play')}</span><span class="nfc-t"><b>${esc(t)}</b><small>${esc(name)} · Vimeo</small></span></a>`).join('')}</div></section>`}
-function initFx(v){if(!v.classList.contains('fdv'))return;
+function initFx(v){if(!v.classList.contains('fdv'))return;{const fan=v.querySelector('.fxfan.intro');if(fan)setTimeout(()=>fan.classList.remove('intro'),1800);if(v.dataset.alb){const sec=v.querySelector(`.fxsec[data-sec="${v.dataset.alb}"]`);if(sec)fdEager(sec)}}
   v.querySelectorAll('.nfv img').forEach(im=>{const ok=()=>im.classList.add('ok');if(im.complete&&im.naturalWidth)ok();else im.addEventListener('load',ok,{once:true});});
   const q=v.querySelector('#fxq');if(!q)return;const cnt=v.querySelector('#fxcnt'),none=v.querySelector('.fxnone'),clr=v.querySelector('.fxclr');
   const run=()=>{const s=fxNorm(q.value.trim());v.classList.toggle('fxs',!!s);clr.hidden=!s;let n=0;
@@ -2002,15 +2057,15 @@ function initFx(v){if(!v.classList.contains('fdv'))return;
     cnt.textContent=s?T('{0} Videos',n):'';none.hidden=!s||n>0};
   q.addEventListener('input',run);clr.addEventListener('click',()=>{q.value='';run();q.focus()});
   if(S.fdQ){q.value=S.fdQ;run()}q.addEventListener('change',()=>{S.fdQ=q.value})}
-function vFreshDigital(){const tab=S.fdTab||'hg';
-  return `<div class="view fdv" data-tab="${tab}">${bar('Fresh Digital')}
+function vFreshDigital(){const tab=S.fdTab||'hg';const alb=(history.state&&history.state.alb)||'';S.fdAlb=alb;const A=fdAlbums();
+  return `<div class="view fdv" data-tab="${tab}" data-alb="${alb}">${bar('Fresh Digital')}
    <div class="nfbrand"><img src="fresh/fd-logo.webp" alt="Fresh Digital"><span class="fd-new2">${T('Neu!')}</span></div>
    <div class="fxsearch">${svg('search')}<input id="fxq" type="search" placeholder="${T('Videos durchsuchen …')}" aria-label="${T('Videos durchsuchen …')}" autocomplete="off"><span id="fxcnt"></span><button class="fxclr" type="button" hidden aria-label="${T('Schließen')}">${svg('x')}</button></div>
-   <div class="fxtabs" role="tablist">${[['hg',T('100 Handgriffe')],['lege',T('Legetechniken')]].map(([k,l])=>`<button role="tab" aria-selected="${tab===k}" class="${tab===k?'on':''}" data-fdtab="${k}">${l}</button>`).join('')}<i class="fxti" style="--x:${tab==='hg'?0:1}"></i></div>
-   <div class="fxsec" data-sec="hg"><a class="fxh" href="${VIMEO_HG}" ${NFX}><span class="fxh-m"><img src="fresh/fd-hg.webp" alt=""><span class="fxh-g"></span></span><span class="fxh-tx"><span class="fxh-bd"><em>Vimeo</em><em>${T('{0} Videos',39)}</em></span><h2>${T('100 Handgriffe')}</h2><p>${T('Die wichtigsten Moves für Fleisch, Wurst, Käse und Fisch')}</p><span class="fxh-btn">${svg('play')}${T('Jetzt ansehen')}</span></span></a>
-   ${FDVID.hg.map(g=>fdRow(g,'hg')).join('')}</div>
-   <div class="fxsec" data-sec="lege"><a class="fxh" href="${VIMEO_LEGE[0]}" ${NFX}><span class="fxh-m"><img src="fresh/fd-lege2.webp" alt=""><span class="fxh-g"></span></span><span class="fxh-tx"><span class="fxh-bd"><em>Vimeo</em><em>${T('Level {0}',1)} · ${T('Level {0}',2)} · ${T('Level {0}',3)}</em></span><h2>${T('Legetechniken')}</h2><p>${T('Platten und Theke professionell legen – in drei Levels')}</p><span class="fxh-btn">${svg('play')}${T('Jetzt ansehen')}</span></span></a>
-   ${FDVID.lege.map(g=>fdRow(g,'lege')).join('')}</div>
+   <div class="fxfan${alb?'':' intro'}"><div class="fxfan-in">${['hg','lege'].map((k,i)=>`<button class="fxalb" data-album="${k}" style="--r:${i?8:-8}deg;--k:${i}" aria-label="${esc(A[k].t)}"><span class="fxalb-d"><i></i></span><span class="fxalb-s"><img src="${A[k].img}" alt="" draggable="false"></span><span class="fxalb-t"><b>${esc(A[k].t)}</b><small>${T('{0} Videos',A[k].n)}</small></span></button>`).join('')}</div><p class="fxfan-h">${T('Album antippen zum Öffnen')}</p></div>
+   <div class="fxsec" data-sec="hg">${fdAlbHead(A.hg)}
+   ${FDVID.hg.map((g,i)=>fdRow(g,'hg',i)).join('')}</div>
+   <div class="fxsec" data-sec="lege">${fdAlbHead(A.lege)}
+   ${FDVID.lege.map((g,i)=>fdRow(g,'lege',i)).join('')}</div>
    <p class="fxnone" hidden>${T('Keine Videos gefunden')}</p>
    <div class="nfrow-h nfmore"><h3>${T('Mehr von der Food Academy')}</h3></div>
    <div class="fdlist" style="padding-top:4px">
@@ -2020,20 +2075,61 @@ function vFreshDigital(){const tab=S.fdTab||'hg';
     <button class="lnk glass" data-act="fresh" data-p="6" style="margin:0;width:100%"><span class="pi">${svg('book')}</span><span><b>${T('In der Broschüre')}</b><span class="s">Fresh Digital · ${T('Seite {0}',6)}</span></span>${svg('chev','arr')}</button>
    </div><div style="height:calc(40px + var(--safe-b))"></div></div>`}
 /* In-App-Player für Fresh Digital: Vimeo-Embed, „Als Nächstes“ aus derselben Reihe, Zurück-Taste schließt */
+/* Fresh Digital – Album-Fächer: Cover antippen → Cover fliegt in den Album-Kopf, Reihen gleiten herein. Zurück-Taste/„Alben“ → zurück in den Fächer */
+function fdAlbums(){const cnt=k=>FDVID[k].reduce((n,g)=>n+g.v.length,0);
+  return{hg:{k:'hg',t:T('100 Handgriffe'),img:'fresh/fd-hg.webp',u:VIMEO_HG,n:cnt('hg'),p:T('Die wichtigsten Moves für Fleisch, Wurst, Käse und Fisch'),f:FDVID.hg[0].v[0]},
+    lege:{k:'lege',t:T('Legetechniken'),img:'fresh/fd-lege2.webp',u:VIMEO_LEGE[0],n:cnt('lege'),p:T('Platten und Theke professionell legen – in drei Levels'),f:FDVID.lege[0].v[0]}}}
+function fdAlbHead(a){return `<div class="fxah"><button class="fxback" data-albx>${svg('chev')}<span>${T('Alben')}</span></button><div class="fxah-in"><img class="fxah-c" src="${a.img}" alt=""><div class="fxah-tx"><span class="fxh-bd"><em>Vimeo</em><em>${T('{0} Videos',a.n)}</em></span><h2>${esc(a.t)}</h2><p>${esc(a.p)}</p><div class="fxah-b"><button class="fxh-btn" data-vid="${a.f[1]}" data-vt="${esc(a.f[0])}">${svg('play')}${T('Abspielen')}</button><a class="fxah-v" href="${a.u}" ${NFX}>${T('Alle auf Vimeo')}${svg('chev')}</a></div></div></div></div>`}
+const fdRM=()=>matchMedia('(prefers-reduced-motion: reduce)').matches;
+function fdBox(el){const r=el.getBoundingClientRect(),w=el.offsetWidth;return{cx:r.left+r.width/2,cy:r.top+r.height/2,w}}
+function fdFly(src,a,rotFrom,b,rotTo,hide){/* a/b: {cx,cy,w}; fliegende Kopie von Mitte zu Mitte */
+  if(!a.w||!b.w||fdRM())return;
+  const c=document.createElement('img');c.src=src;c.className='fxfly';c.alt='';
+  Object.assign(c.style,{width:a.w+'px',height:a.w+'px',left:(a.cx-a.w/2)+'px',top:(a.cy-a.w/2)+'px'});document.body.appendChild(c);
+  hide.style.visibility='hidden';const dx=b.cx-a.cx,dy=b.cy-a.cy;let done=false;
+  const end=()=>{if(done)return;done=true;hide.style.visibility='';c.remove()};
+  const an=c.animate([{transform:`translate(0,0) rotate(${rotFrom}deg) scale(1)`},{transform:`translate(${dx}px,${dy}px) rotate(${rotTo}deg) scale(${b.w/a.w})`}],{duration:620,easing:'cubic-bezier(.2,.85,.25,1)',fill:'forwards'});
+  an.onfinish=end;an.oncancel=end;setTimeout(end,1200)}
+const fdRot=el=>parseFloat(getComputedStyle(el).getPropertyValue('--r'))||0;
+function fdEager(sec){sec.querySelectorAll('.nfv img').forEach(im=>{if(im.complete&&im.naturalWidth)im.classList.add('ok');else{im.loading='eager';im.addEventListener('load',()=>im.classList.add('ok'),{once:true})}})}
+function openAlbum(k,fromPop){const v=document.querySelector('.fdv');if(!v||v.dataset.alb===k)return;
+  const alb=v.querySelector(`.fxalb[data-album="${k}"]`),card=alb&&alb.querySelector('.fxalb-s');
+  const from=card&&card.offsetParent?fdBox(card):null,rot=alb?fdRot(alb):0,src=card?card.querySelector('img').src:'';
+  fb('open',10);S.fdAlb=k;if(!fromPop){try{history.pushState({...(history.state||{}),alb:k},'',location.href)}catch(_){}}
+  v.dataset.alb=k;const sec=v.querySelector(`.fxsec[data-sec="${k}"]`);sec.classList.remove('alb-in');void sec.offsetWidth;sec.classList.add('alb-in');
+  window.scrollTo({top:0,behavior:'instant'});fdEager(sec);
+  const tgt=sec.querySelector('.fxah-c');if(from&&tgt)fdFly(src,from,rot,fdBox(tgt),0,tgt)}
+function closeAlbum(fromPop){const v=document.querySelector('.fdv');if(!v||!v.dataset.alb)return;const k=v.dataset.alb;
+  const hc=v.querySelector(`.fxsec[data-sec="${k}"] .fxah-c`);const from=hc&&hc.offsetParent?fdBox(hc):null;
+  S.fdAlb='';v.dataset.alb='';const fan=v.querySelector('.fxfan');fan.classList.remove('intro','ret');void fan.offsetWidth;fan.classList.add('ret');
+  window.scrollTo({top:0,behavior:'instant'});if(!fromPop&&history.state&&history.state.alb){try{history.back()}catch(_){}}
+  const alb=v.querySelector(`.fxalb[data-album="${k}"]`),card=alb&&alb.querySelector('.fxalb-s');
+  if(from&&card)fdFly(hc.src,from,0,fdBox(card),fdRot(alb),card)}
 function vpFind(id){for(const sec in FDVID)for(const g of FDVID[sec]){const i=g.v.findIndex(v=>String(v[1])===String(id));if(i>=0)return{sec,g,i}}return null}
-function closeVideo(fromPop){const o=document.getElementById('vplayer');if(!o)return;o.classList.remove('on');setTimeout(()=>o.remove(),350);if(!fromPop&&history.state&&history.state.vp)history.back()}
+function closeVideo(fromPop){const o=document.getElementById('vplayer');if(!o)return;vpFS(false);o.classList.remove('on');setTimeout(()=>o.remove(),350);if(!fromPop&&history.state&&history.state.vp)history.back()}
 function openVideo(id,hh,title){id=String(id);const hit=vpFind(id);const tall=hit&&hit.sec==='hg';
   if(!title&&hit)title=hit.g.v[hit.i][0];
   const grp=hit?(hit.g.n?T(hit.g.g,hit.g.n):T(hit.g.g)):'';
   const next=hit?[...hit.g.v.slice(hit.i+1),...hit.g.v.slice(0,hit.i)].slice(0,8):[];
   let o=document.getElementById('vplayer');const fresh=!o;
-  if(fresh){o=document.createElement('div');o.id='vplayer';document.body.appendChild(o);try{history.pushState({vp:1},'',location.href)}catch(_){}
-    o.addEventListener('click',e=>{const n=e.target.closest('[data-vid]');if(n){fb('sel',8);openVideo(n.dataset.vid,'',n.dataset.vt);return}if(e.target===o||e.target.closest('.vp-x'))closeVideo()})}
-  o.innerHTML=`<div class="vp-box${tall?' tall':''}"><div class="vp-top"><span class="vp-tt"><b>${esc(title||'')}</b>${grp?`<small>${esc(grp)}</small>`:''}</span><span class="vp-btns"><a class="vp-ext" href="https://vimeo.com/${id}" target="_blank" rel="noopener">${T('Auf Vimeo')}${svg('chev')}</a><button class="iconbtn vp-x" aria-label="${T('Schließen')}">${svg('x')}</button></span></div><div class="vp-frame${tall?' tall':''}"><div class="vp-load">${[0,1,2].map(i=>`<img src="img/ui/6e072e6aa8.png" alt="" style="--i:${i}">`).join('')}</div><iframe src="https://player.vimeo.com/video/${id}?${hh?'h='+hh+'&':''}autoplay=1&title=0&byline=0&portrait=0&color=FFD200&dnt=1" title="${esc(title||'Video')}" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen onload="this.classList.add('ld')"></iframe></div>
+  if(fresh){o=document.createElement('div');o.id='vplayer';document.body.appendChild(o);try{history.pushState({...(history.state||{}),vp:1},'',location.href)}catch(_){}
+    o.addEventListener('click',e=>{const n=e.target.closest('[data-vid]');if(n){fb('sel',8);openVideo(n.dataset.vid,'',n.dataset.vt);return}if(e.target.closest('.vp-fsb')){vpFS(true);return}if(e.target.closest('.vp-fsx')){vpFS(false);return}if(e.target.closest('.vp-rot')){vpRotate();return}if(e.target===o||e.target.closest('.vp-x'))closeVideo()})}
+  o.innerHTML=`<div class="vp-box${tall?' tall':''}"><div class="vp-top"><span class="vp-tt"><b>${esc(title||'')}</b>${grp?`<small>${esc(grp)}</small>`:''}</span><span class="vp-btns"><a class="vp-ext" href="https://vimeo.com/${id}" target="_blank" rel="noopener">${T('Auf Vimeo')}${svg('chev')}</a><button class="iconbtn vp-fsb" aria-label="${T('Vollbild')}" title="${T('Vollbild')}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button><button class="iconbtn vp-x" aria-label="${T('Schließen')}">${svg('x')}</button></span></div><div class="vp-fsbar"><button class="iconbtn vp-rot" aria-label="${T('Drehen')}" title="${T('Drehen')}"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="3" width="10" height="18" rx="2"/><path d="M20 14a8 8 0 0 1-6 6.5M20 20.5v-6h-6" transform="translate(0 -1)"/></svg></button><button class="iconbtn vp-fsx" aria-label="${T('Vollbild beenden')}" title="${T('Vollbild beenden')}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5"/></svg></button></div><div class="vp-frame${tall?' tall':''}" style="--a:${tall?.5625:1.7778}"><div class="vp-load">${[0,1,2].map(i=>`<img src="img/ui/6e072e6aa8.png" alt="" style="--i:${i}">`).join('')}</div><iframe src="https://player.vimeo.com/video/${id}?${hh?'h='+hh+'&':''}autoplay=1&title=0&byline=0&portrait=0&color=FFD200&dnt=1" title="${esc(title||'Video')}" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen onload="this.classList.add('ld')"></iframe></div>
    ${next.length?`<div class="vp-next"><small>${T('Als Nächstes')}</small><div class="nfscroll">${next.map(([t,vid])=>`<button class="nftile sm${tall?' tall':''}" data-vid="${vid}" data-vt="${esc(t)}"><img src="${thumbSrc(vid)}" alt="" loading="lazy" decoding="async"><span class="nfgrad"></span><span class="nfplay">${svg('play')}</span><span class="nftx"><b>${esc(t)}</b></span></button>`).join('')}</div></div>`:''}</div>`;
   if(fresh)requestAnimationFrame(()=>o.classList.add('on'))}
-window.addEventListener('popstate',()=>closeVideo(true));
-window.addEventListener('keydown',e=>{if(e.key==='Escape'&&document.getElementById('vplayer'))closeVideo()});
+window.addEventListener('popstate',()=>{const st=history.state||{};const o=document.getElementById('vplayer');if(o&&o.classList.contains('on')&&!st.vp)closeVideo(true);
+  const v=document.querySelector('.fdv');if(v){const want=st.alb||'';if((v.dataset.alb||'')!==want){want?openAlbum(want,true):closeAlbum(true)}}});
+/* Vollbild: echtes Vollbild wo möglich (Android/Desktop), sonst bildschirmfüllend (iPhone). „Drehen“ wechselt hochkant/quer – auch bei gesperrter Bildschirmdrehung */
+const fsEl=()=>document.fullscreenElement||document.webkitFullscreenElement;
+function vpFS(on){const o=document.getElementById('vplayer');if(!o)return;
+  if(on){o.classList.add('vp-fs');const rq=o.requestFullscreen||o.webkitRequestFullscreen;if(rq&&!fsEl()){try{const r=rq.call(o);if(r&&r.catch)r.catch(()=>{})}catch(_){}}}
+  else{if(!o.classList.contains('vp-fs'))return;o.classList.remove('vp-fs','vp-rot');try{screen.orientation.unlock()}catch(_){}
+    if(fsEl()){const ex=document.exitFullscreen||document.webkitExitFullscreen;try{const r=ex.call(document);if(r&&r.catch)r.catch(()=>{})}catch(_){}}}}
+async function vpRotate(){const o=document.getElementById('vplayer');if(!o)return;fb('sel',8);const so=screen.orientation;
+  if(fsEl()&&so&&so.lock){try{await so.lock(so.type.startsWith('portrait')?'landscape':'portrait');o.classList.remove('vp-rot');return}catch(_){}}
+  o.classList.toggle('vp-rot')}
+['fullscreenchange','webkitfullscreenchange'].forEach(ev=>document.addEventListener(ev,()=>{if(!fsEl())vpFS(false)}));
+window.addEventListener('keydown',e=>{if(e.key!=='Escape')return;const o=document.getElementById('vplayer');if(!o)return;if(o.classList.contains('vp-fs'))vpFS(false);else closeVideo()});
 function vKatalogFresh(){
   return `<div class="view kview fview">${bar(T('Fresh-Broschüre 2027'))}${ktabs('fresh')}<div class="embers">${Array.from({length:14},(_,i)=>`<i style="--x:${(i*53)%100}%;--d:${(i%5)*.9}s;--s:${.6+(i%4)*.25}"></i>`).join('')}</div>
    <div class="pad"><div class="kicker" style="color:#EC672F">${T('Bedientheke · Food Academy Fresh')}</div><h1 style="font-size:34px;margin-top:8px">${T('Wähle dein Kapitel')}</h1>
@@ -2338,6 +2434,8 @@ const STEPKEY={wer:'mode',level:'exp',fexp:'exp'};
 document.getElementById('dnav').addEventListener('click',e=>{const t=e.target.closest('button');if(!t)return;const c=t.cloneNode(true);c.style.display='none';app.appendChild(c);c.click();c.remove()});
 app.addEventListener('click',e=>{
   const fdt=e.target.closest('[data-fdtab]');if(fdt){const k=fdt.dataset.fdtab;if(S.fdTab!==k||!S.fdTab){S.fdTab=k;fb('sel',8);const v=fdt.closest('.fdv');v.dataset.tab=k;v.querySelectorAll('[data-fdtab]').forEach(b=>{b.classList.toggle('on',b===fdt);b.setAttribute('aria-selected',b===fdt)});v.querySelector('.fxti').style.setProperty('--x',k==='hg'?0:1);const hero=v.querySelector(`.fxsec[data-sec=${k}] .fxh`);hero.style.animation='none';hero.offsetWidth;hero.style.animation='';v.querySelectorAll('.nfv img').forEach(im=>{if(im.complete&&im.naturalWidth)im.classList.add('ok');else if(!im.complete){im.loading='eager';im.addEventListener('load',()=>im.classList.add('ok'),{once:true})}})}return}
+  const ab=e.target.closest('[data-album]');if(ab){openAlbum(ab.dataset.album);return}
+  if(e.target.closest('[data-albx]')){fb('sel',8);closeAlbum();return}
   const kfe=e.target.closest('[data-kf]');if(kfe){toggleKF(kfe.dataset.kf);return}
   if(e.target.closest('[data-kfx]')){toggleKF(null);return}
   const vt=e.target.closest('[data-vid]');if(vt){e.preventDefault();fb('open',10);openVideo(vt.dataset.vid,vt.dataset.vh,vt.dataset.vt);return}

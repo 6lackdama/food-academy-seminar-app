@@ -18,7 +18,8 @@ Jeder Push auf `main` geht nach ca. 1–2 Minuten automatisch live.
 - `vimeo-links.csv` – alle 71 Videos (Reihe;Nr;Titel;Link)
 
 ## Inhalte
-- Bereich „Fresh Digital“ im Netflix-Stil: 71 Video-Kacheln, jede öffnet `https://vimeo.com/<id>` (öffentlich, ohne Login)
+- Bereich „Fresh Digital“ im Netflix-Stil: Start = Album-Fächer (2 Cover: 100 Handgriffe, Legetechniken), darunter direkt „Mehr von der Food Academy“ (EDEKA next, WizzUp, Instagram, Broschüre). Cover antippen → Album mit Video-Reihen (Zurück-Taste/„Alben“ schließt). Suche zeigt Treffer aus beiden Alben.
+  - 71 Video-Kacheln, spielen im In-App-Player (Vimeo-Embed, Vollbild + Drehen), Knopf „Auf Vimeo“ öffnet `https://vimeo.com/<id>` (öffentlich, ohne Login)
   - 100 Handgriffe (39 Videos, Showcase https://vimeo.com/showcase/12013614), nach Thema sortiert: Schneiden & Portionieren, Vorbereiten, Verpacken, Präsentieren & Frische, Warenkunde, Geräte & Waage, Sicherheit & Hygiene
   - Legetechniken Level 1 (15, https://vimeo.com/showcase/11967308), Level 2 (11, https://vimeo.com/showcase/12013580), Level 3 (6, https://vimeo.com/showcase/12013582)
 - Instagram-Button @edeka_foodacademy, Untertitel: „Live dabei: Seminare, Tricks & Fresh-Momente“

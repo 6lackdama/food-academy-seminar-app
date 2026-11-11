@@ -5,7 +5,7 @@ HTML/CSS + [GSAP](https://gsap.com) für die Animation, Chromium (Playwright) re
 
 - Format: 1080 × 1920 (9:16), 30 fps, H.264 + AAC, ca. 80–90 s
 - Ton: locker, Gen Z, für Mitarbeitende („ihr“ in den Fragen, „du“ wenn's persönlich wird). Alle 7 Themen und alle 35 Seminare erscheinen als Karten.
-- Ende: „Link in Bio“ → **Der Link zur Seminar-App muss in der Instagram-Bio von @edeka_foodacademy stehen.**
+- Eigenständiges Video zur Broschüre – ohne Verweis auf App oder Links. Ende: „Alle Details? Ab in die Broschüre!“
 - Untertitel sind eingebrannt (Wort für Wort gelb hervorgehoben)
 - Inhalte im Instagram-„sicheren Bereich“: Unten bleiben ca. 370 px frei für Profilname und Bildunterschrift.
 
@@ -21,7 +21,7 @@ HTML/CSS + [GSAP](https://gsap.com) für die Animation, Chromium (Playwright) re
 | 5–11 | Themen 1/7 … 7/7 | Jeweils **Frage-Beat** („Was gibt's rund um Fisch?“) mit Laufbändern, Emoji und Food-Foto, danach fliegen die Seminar-Titel aus der Broschüre als Karten rein – **genau auf dem Wort**, auf dem Franz sie nennt |
 | 12 | Fresh Digital | „Und zwischendurch?“ → 100 Handgriffe (Zähler), Blended Learning, WizzUp |
 | 13 | Share | „Bock drauf? Schick das deiner Marktleitung!“ mit Papierflieger |
-| 14 | App | Echte Seminar-App im Handy-Mockup, „LINK IN BIO 👆“, Endcard mit Logo + @edeka_foodacademy |
+| 14 | Broschüre | Das Cover fliegt rein, Originalseiten fächern auf („AB IN DIE BROSCHÜRE! 📖“), Endcard mit Logo, „SEMINARE 2027“ und „Wir sehen uns an der Theke!“ |
 
 Übergänge wechseln zwischen Whip-Pan (mit Bewegungsunschärfe), Zoom-Punch, Kreis-Iris und Diagonal-Wipe; dazu Film-Korn, Funkel-Sticker und Kamera-Shakes auf den Beats.
 Welche Karte bei welchem Wort reinfliegt, steht in `src/main.js` in der Liste `CATS` (Feld `cards`, z. B. `['07', 'Bratenschule']`).
@@ -39,7 +39,6 @@ video/
   tools/extract.py                     ← Grafiken aus der Broschüren-PDF holen
   tools/voice.py                       ← Sprachspur + Timing bauen
   tools/render.cjs                     ← Video rendern
-  tools/app-screenshot.cjs             ← Screenshot der echten App fürs Handy-Mockup
   out/                                 ← Ergebnis (nicht im Git)
 ```
 
@@ -90,7 +89,7 @@ Franz nimmt **jeden Satz als eigene Datei** auf (23 kurze Sätze – die Fragen 
 | s20 | Und zwischendurch? |
 | s21 | 100 Handgriffe als Video, Blended Learning und WizzUp – das Quiz-Duell. |
 | s22 | Bock drauf? Schick das deiner Marktleitung! |
-| s23 | Alle Seminare gibt's in der App – Link in Bio. Wir sehen uns an der Theke! |
+| s23 | Alle Details? Ab in die Broschüre! Wir sehen uns an der Theke! |
 
 **Tipps für eine gute Handy-Aufnahme**
 - Ruhiger Raum mit Teppich, Vorhängen oder Polstern, kein gefliester Raum. Ein Auto ist ein super Mini-Studio.

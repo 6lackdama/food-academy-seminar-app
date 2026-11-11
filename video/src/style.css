@@ -120,10 +120,10 @@ body.preview #viewport { transform-origin: top left; }
 .qgroup .q2 { font-weight: 900; line-height: .95; letter-spacing: -.02em; text-shadow: 0 12px 0 rgba(0, 0, 0, .18); white-space: nowrap; }
 .qmark { font-family: Marker; color: var(--y); display: inline-block; margin-left: .04em; text-shadow: 0 10px 0 rgba(0, 0, 0, .25); }
 .bg-white .qmark { color: var(--b); }
-.phone { left: 280px; top: 410px; width: 520px; height: 1000px; border-radius: 74px; background: #0b0c0d; box-shadow: 0 50px 90px rgba(80, 20, 0, .5), inset 0 0 0 4px #333; z-index: 4; }
-.phone .screen { position: absolute; left: 18px; top: 18px; right: 18px; bottom: 18px; border-radius: 58px; overflow: hidden; background: #1d2023; }
-.phone .screen img { width: 100%; display: block; }
-.phone .notch { position: absolute; left: 50%; top: 34px; width: 130px; height: 36px; margin-left: -65px; border-radius: 20px; background: #0b0c0d; }
+.fan { left: 0; top: 0; width: 1080px; height: 1920px; z-index: 4; }
+.fan-page { position: absolute; left: 230px; top: 420px; width: 620px; height: 620px; border-radius: 12px; overflow: hidden; box-shadow: 0 30px 60px rgba(80, 20, 0, .4); transform-origin: 50% 110%; }
+.fan-page img { width: 100%; height: 100%; display: block; }
+.fan-page.cover { box-shadow: 0 50px 90px rgba(80, 20, 0, .55); }
 .endcard { left: 0; right: 0; top: 430px; text-align: center; z-index: 6; }
 .endcard img { width: 640px; }
 .endcard .handle { display: inline-block; margin-top: 36px; font: 900 56px/1 Outfit; color: var(--ink); background: #fff; padding: 18px 36px 14px; border-radius: 999px; }

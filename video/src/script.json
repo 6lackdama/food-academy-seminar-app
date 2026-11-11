@@ -56,7 +56,7 @@
 
     { "id": "s22", "scene": "share",      "pause": 0.25, "text": "Bock drauf? Schick das deiner Marktleitung!",
       "tts": "Bock drauf? Schick das deiner Marktleitung!" },
-    { "id": "s23", "scene": "app",        "pause": 0.0,  "text": "Alle Seminare gibt's in der App – Link in Bio. Wir sehen uns an der Theke!",
-      "tts": "Alle Seminare gibts in der App, Link in Bio. Wir sehen uns an der Theke!" }
+    { "id": "s23", "scene": "broschuere", "pause": 0.0,  "text": "Alle Details? Ab in die Broschüre! Wir sehen uns an der Theke!",
+      "tts": "Alle Details? Ab in die Broschüre! Wir sehen uns an der Theke!" }
   ]
 }

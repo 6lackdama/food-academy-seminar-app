@@ -90,6 +90,10 @@ def main():
         save(im.convert("RGB"), OUT / "pages" / f"{nr}.webp", 86)
         info[nr] = {"page": page, "full": True}
         print(nr, page, "Seite")
+    # Einzelseiten für den Seitenfächer im Outro (jeweils linke Seite der Doppelseite)
+    for page in (6, 11, 17, 21, 28, 31, 39):
+        im = render(page, 0, 0, half, half, transp=False, dpi=150)
+        save(im.convert("RGB"), OUT / "pages" / f"fan-{page:02d}.webp", 84)
     d200 = round(552.756 / 72 * 200)
     for page, name, w in [(1, "cover", 1), (2, "einleitung", 2), (3, "lernreise", 2), (4, "digital", 2), (43, "rueckseite", 1)]:
         im = render(page, 0, 0, d200 * w, d200, transp=False, dpi=200)

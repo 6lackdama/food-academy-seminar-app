@@ -1,7 +1,7 @@
 // Automatisch erzeugt von tools/voice.py – nicht von Hand bearbeiten.
 window.TIMING = {
  "fps": 30,
- "total": 78.922,
+ "total": 78.344,
  "segments": [
   {
    "id": "s01",
@@ -1140,90 +1140,70 @@ window.TIMING = {
   },
   {
    "id": "s23",
-   "scene": "app",
-   "text": "Alle Seminare gibt's in der App – Link in Bio. Wir sehen uns an der Theke!",
+   "scene": "broschuere",
+   "text": "Alle Details? Ab in die Broschüre! Wir sehen uns an der Theke!",
    "start": 72.07,
-   "end": 75.922,
+   "end": 75.344,
    "words": [
     {
      "w": "Alle",
      "s": 72.07,
-     "e": 72.325
+     "e": 72.32
     },
     {
-     "w": "Seminare",
-     "s": 72.325,
-     "e": 72.766
+     "w": "Details?",
+     "s": 72.32,
+     "e": 72.707
     },
     {
-     "w": "gibt's",
-     "s": 72.766,
-     "e": 73.068
-    },
-    {
-     "w": "in",
-     "s": 73.068,
-     "e": 73.23
-    },
-    {
-     "w": "der",
-     "s": 73.23,
-     "e": 73.439
-    },
-    {
-     "w": "App",
-     "s": 73.439,
-     "e": 73.648
-    },
-    {
-     "w": "–",
-     "s": 73.648,
-     "e": 73.671
-    },
-    {
-     "w": "Link",
-     "s": 73.764,
-     "e": 74.019
+     "w": "Ab",
+     "s": 72.843,
+     "e": 73.002
     },
     {
      "w": "in",
-     "s": 74.019,
-     "e": 74.181
+     "s": 73.002,
+     "e": 73.161
     },
     {
-     "w": "Bio.",
-     "s": 74.181,
-     "e": 74.39
+     "w": "die",
+     "s": 73.161,
+     "e": 73.366
+    },
+    {
+     "w": "Broschüre!",
+     "s": 73.366,
+     "e": 73.843
     },
     {
      "w": "Wir",
-     "s": 74.529,
-     "e": 74.738
+     "s": 73.98,
+     "e": 74.184
     },
     {
      "w": "sehen",
-     "s": 74.738,
-     "e": 75.04
+     "s": 74.184,
+     "e": 74.48
     },
     {
      "w": "uns",
-     "s": 75.04,
-     "e": 75.249
+     "s": 74.48,
+     "e": 74.684
     },
     {
      "w": "an",
-     "s": 75.249,
-     "e": 75.411
+     "s": 74.684,
+     "e": 74.844
     },
     {
      "w": "der",
-     "s": 75.411,
-     "e": 75.62
+     "s": 74.844,
+     "e": 75.048
     },
     {
      "w": "Theke!",
-     "s": 75.62,
-     "e": 75.922
+     "s": 75.048,
+     "e": 75.344
     }
    ],
    "voice": "Platzhalter"

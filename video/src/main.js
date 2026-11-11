@@ -455,7 +455,7 @@
       const s = scene('share', 'blue');
       const seg = segsOf('share')[0];
       const at = sStart('share') - 0.3;
-      band(s, 'BOCK DRAUF', 220, -6, 'var(--y)', 'var(--b)', at, sEnd('share'), 1).style.opacity = 0.9;
+      band(s, 'BOCK DRAUF', 110, -6, 'var(--y)', 'var(--b)', at, sEnd('share'), 1).style.opacity = 0.9;
       const bock = el('div', 'abs center-x', null, s); css(bock, { top: '440px', font: '900 230px/.88 Outfit', color: 'var(--y)' });
       const bk1 = el('div', '', 'BOCK', bock); const bk2 = el('div', '', 'DRAUF?', bock);
       const l1 = el('div', 'abs center-x', 'SCHICK DAS DEINER', s); css(l1, { top: '930px', font: '900 70px/1 Outfit', color: '#fff' });
@@ -468,7 +468,7 @@
       enter('share', at, 'iris');
       tl.fromTo([...split(bk1), ...split(bk2)], { y: 200, opacity: 0, rotation: 15 }, { y: 0, opacity: 1, rotation: 0, duration: 0.4, stagger: 0.04, ease: 'back.out(2)' }, seg.start - 0.1);
       shake(w(seg.id, 'drauf') + 0.1, 18); punch(w(seg.id, 'drauf'));
-      tl.to(bock, { scale: 0.62, y: -180, duration: 0.35, ease: 'power3.inOut' }, w(seg.id, 'Schick') - 0.2);
+      tl.to(bock, { scale: 0.62, y: -140, duration: 0.35, ease: 'power3.inOut' }, w(seg.id, 'Schick') - 0.2);
       tl.fromTo(l1, { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 0.3, ease: 'power3.out' }, w(seg.id, 'Schick') - 0.1);
       tl.fromTo(l2, { scale: 0, rotation: -8 }, { scale: 1, rotation: -3, duration: 0.4, ease: 'back.out(2.5)' }, w(seg.id, 'Marktleitung') - 0.1);
       tl.fromTo(trail, { clipPath: 'inset(0 100% 0 0)' }, { clipPath: 'inset(0 0% 0 0)', duration: 1.1, ease: 'power2.inOut' }, w(seg.id, 'Schick'));
@@ -477,11 +477,11 @@
       burst(s, 540, 1080, w(seg.id, 'Marktleitung') + 0.2);
     }
 
-    // ===================== 14) APP – Link in Bio =====================
+    // ===================== 14) BROSCHÜRE – Alle Details? =====================
     {
-      const s = scene('app', 'orange');
-      const seg = segsOf('app')[0];
-      const at = sStart('app') - 0.3;
+      const s = scene('broschuere', 'orange');
+      const seg = segsOf('broschuere')[0];
+      const at = sStart('broschuere') - 0.3;
       const hearts = [];
       for (let i = 0; i < 14; i++) {
         const h = el('div', 'abs', `<svg viewBox="0 0 100 100" width="100%" height="100%"><path d="${heartPath}" fill="none" stroke="#fff" stroke-opacity="${rr(0.15, 0.4).toFixed(2)}" stroke-width="10" stroke-linejoin="round"/></svg>`, s);
@@ -489,25 +489,35 @@
         css(h, { left: rr(-40, 1000) + 'px', top: '1950px', width: size + 'px', height: size + 'px' });
         hearts.push(h);
       }
-      const head = el('div', 'abs center-x', 'ALLE SEMINARE<br><span style="color:var(--ink)">IN DER APP</span>', s);
-      css(head, { top: '150px', font: '900 104px/1 Outfit' });
-      const phone = el('div', 'abs phone', `<div class="screen"><img src="${A}img/app-screen.webp"></div><div class="notch"></div>`, s);
-      const bio = el('div', 'abs sticker big', 'LINK IN BIO 👆', s); css(bio, { left: '150px', top: '1150px' });
-      const sb = img(A + 'img/love.webp', 'sb', s, { left: '770px', top: '960px', width: '290px' });
-      const end = el('div', 'abs endcard', `<img src="${A}img/food-academy-fresh-logo.svg"><div class="handle">@edeka_foodacademy</div><div class="see">WIR SEHEN UNS<br>AN DER THEKE! <span class="emo">🧡</span></div>`, s);
-      enter('app', at, 'whip');
+      const head = el('div', 'abs center-x', 'ALLE DETAILS?', s);
+      css(head, { top: '170px', font: '900 128px/1 Outfit' });
+      const fan = el('div', 'abs fan', null, s);
+      const FAN = ['06', '17', '21', '28', '31', '39', '11'];
+      const pages = FAN.map((n) => { const p = el('div', 'fan-page', `<img src="${A}pages/fan-${n}.webp">`, fan); return p; });
+      const cover = el('div', 'fan-page cover', `<img src="${A}pages/cover.webp">`, fan);
+      const bro = el('div', 'abs sticker', 'AB IN DIE<br>BROSCHÜRE!', s); css(bro, { left: '215px', top: '1050px', textAlign: 'center', lineHeight: '1.05', fontSize: '96px' });
+      const sb = img(A + 'img/love.webp', 'sb', s, { left: '830px', top: '300px', width: '230px', zIndex: 10 });
+      const end = el('div', 'abs endcard', `<img src="${A}img/food-academy-fresh-logo.svg"><div class="handle">SEMINARE 2027</div><div class="see">WIR SEHEN UNS<br>AN DER THEKE! <span class="emo">🧡</span></div>`, s);
+      enter('broschuere', at, 'whip');
       hearts.forEach((h) => tl.to(h, { y: -2300, rotation: rr(-60, 60), duration: rr(4, 7), ease: 'none' }, at + rr(0, 4)));
-      tl.fromTo(head, { y: -300, opacity: 0 }, { y: 0, opacity: 1, duration: 0.42, ease: 'back.out(1.8)' }, seg.start - 0.1);
-      tl.fromTo(phone, { y: 1700, rotation: 12 }, { y: 0, rotation: -3, duration: 0.6, ease: 'expo.out' }, w(seg.id, 'App') - 0.3);
-      tl.to($('.screen img', phone), { y: -60, duration: 2.0, ease: 'sine.inOut' }, w(seg.id, 'App') + 0.4);
-      tl.fromTo(bio, { scale: 0, rotation: -30 }, { scale: 1, rotation: -6, duration: 0.4, ease: 'back.out(3)' }, w(seg.id, 'Link') - 0.1);
-      shake(w(seg.id, 'Link') + 0.1, 14); punch(w(seg.id, 'Link'));
-      burst(s, 540, 1180, w(seg.id, 'Bio'));
-      tl.to($('.emoji-in', bio) || bio, { y: -10, duration: 0.15, yoyo: true, repeat: 7, ease: 'sine.inOut' }, w(seg.id, 'Bio') + 0.3);
-      tl.fromTo(sb, { x: 400, rotation: 25 }, { x: 0, rotation: -6, duration: 0.5, ease: 'back.out(1.6)' }, w(seg.id, 'Link') + 0.2);
+      tl.fromTo(split(head), { y: -160, opacity: 0, rotation: -10 }, { y: 0, opacity: 1, rotation: 0, duration: 0.4, stagger: 0.03, ease: 'back.out(2)' }, seg.start - 0.1);
+      // Cover fliegt rein, Seiten liegen darunter versteckt
+      tl.fromTo(cover, { y: 1300, rotation: 20, rotationY: -40, transformPerspective: 1600 }, { y: 0, rotation: -2, rotationY: 0, duration: 0.6, ease: 'expo.out' }, seg.start + 0.05);
+      tl.fromTo(pages, { y: 1300 }, { y: 0, duration: 0.6, ease: 'expo.out' }, seg.start + 0.05);
+      // Auf "Broschüre": Seiten fächern auf
+      const tB = w(seg.id, 'Broschüre');
+      pages.forEach((p, i) => {
+        const k = i - (pages.length - 1) / 2;
+        tl.to(p, { rotation: k * 9, x: k * 62, y: Math.abs(k) * 26 - 30, duration: 0.55, ease: 'back.out(1.6)' }, tB - 0.25 + i * 0.03);
+      });
+      tl.to(cover, { scale: 1.06, rotation: 0, duration: 0.3, ease: 'back.out(2)' }, tB - 0.2);
+      pop(bro, tB - 0.05, 0, 'back.out(3)', 0.4, -5);
+      shake(tB + 0.1, 16); punch(tB);
+      burst(s, 540, 700, tB + 0.05);
+      tl.fromTo(sb, { x: 400, rotation: 25 }, { x: 0, rotation: -6, duration: 0.5, ease: 'back.out(1.6)' }, tB + 0.15);
       // Endcard
       const tE = w(seg.id, 'Wir') - 0.15;
-      tl.to([head, phone, bio, sb], { opacity: 0, scale: 0.8, y: '-=60', duration: 0.35, ease: 'power3.in', stagger: 0.03 }, tE);
+      tl.to([head, fan, bro, sb], { opacity: 0, scale: 0.8, y: '-=60', duration: 0.35, ease: 'power3.in', stagger: 0.03 }, tE);
       tl.fromTo(end, { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.5, ease: 'back.out(1.8)' }, tE + 0.25);
       tl.fromTo($('.see', end), { y: 80, opacity: 0 }, { y: 0, opacity: 1, duration: 0.4, ease: 'back.out(2)' }, w(seg.id, 'Theke') - 0.3);
       burst(s, 540, 700, w(seg.id, 'Theke'));

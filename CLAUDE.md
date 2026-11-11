@@ -6,6 +6,7 @@ Jeder Push auf `main` geht nach ca. 1–2 Minuten automatisch live.
 
 ## Struktur
 - `index.html` – komplette App (HTML/CSS/JS in einer Datei, ursprünglich als Claude-Artefakt gebaut)
+- `img/` – App-Bilder, früher als base64 in `index.html` eingebettet: `plakate/` (IMGP), `personen/` (IMGPP), `zutaten/` (IMGI), `ui/` (Logo, Icons, Hintergrund)
 - `fonts/` – Schriften (woff)
 - `fresh/` – Artwork Fresh-Bereich (webp)
 - `katalog/` – Katalogseiten (webp)

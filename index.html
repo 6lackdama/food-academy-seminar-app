@@ -1049,7 +1049,7 @@ button.nftile{padding:0;border:0;text-align:start}
 .nfsoon{position:absolute;left:10px;top:10px;font-size:10.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;padding:4px 8px;border-radius:6px;background:rgba(0,0,0,.6);color:#ffb34d;border:1px solid rgba(255,179,77,.5)}
 .nfdur{position:absolute;right:10px;bottom:10px;font-size:11px;font-weight:700;padding:2px 6px;border-radius:5px;background:rgba(0,0,0,.65)}
 .vp-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px}.vp-top b{font-family:var(--hf);font-size:18px}
-.vp-x{position:static}
+.vp-x{position:relative;top:auto;right:auto}
 .vp-load{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:10px}
 .vp-load img{width:34px;height:28px;object-fit:contain;animation:hlbeat 1.2s infinite;animation-delay:calc(var(--i)*.18s)}
 .vp-frame iframe{opacity:0;transition:opacity .5s}.vp-frame iframe.ld{opacity:1}
@@ -1061,6 +1061,16 @@ button.nftile{padding:0;border:0;text-align:start}
 .vp-box.tall{width:min(94vw,520px)}
 .vp-frame.tall{aspect-ratio:9/16;width:min(100%,calc((100svh - 250px)*9/16));margin:0 auto}
 .nftile.sm.tall{width:110px;aspect-ratio:9/16}
+.vp-fsbar{display:none}
+#vplayer.vp-fs{background:#000}
+#vplayer.vp-fs .vp-box{position:fixed;inset:0;width:auto;max-height:none;overflow:hidden;padding:0}
+#vplayer.vp-fs .vp-top,#vplayer.vp-fs .vp-next{display:none}
+#vplayer.vp-fs .vp-frame{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(100vw,100dvh * var(--a));height:auto;aspect-ratio:var(--a);margin:0;border-radius:0;box-shadow:none;transition:transform .35s var(--ease,ease)}
+#vplayer.vp-fs.vp-rot .vp-frame{width:min(100dvh,100vw * var(--a));transform:translate(-50%,-50%) rotate(90deg)}
+@media (hover:hover) and (pointer:fine){.vp-rot{display:none!important}}
+@media (max-height:500px){.vp-frame.tall{width:min(100%,calc((100svh - 80px)*9/16))}}
+#vplayer.vp-fs .vp-fsbar{display:flex;gap:10px;position:fixed;z-index:5;top:calc(12px + var(--safe-t,0px));right:calc(12px + env(safe-area-inset-right,0px))}
+#vplayer.vp-fs .vp-fsbar .iconbtn{background:rgba(0,0,0,.55)}
 /* ===== profile rings ===== */
 .arings{position:relative;width:min(330px,84vw);aspect-ratio:1;margin:18px auto 6px}
 .arings svg{width:100%;height:100%;overflow:visible}
@@ -2021,19 +2031,29 @@ function vFreshDigital(){const tab=S.fdTab||'hg';
    </div><div style="height:calc(40px + var(--safe-b))"></div></div>`}
 /* In-App-Player für Fresh Digital: Vimeo-Embed, „Als Nächstes“ aus derselben Reihe, Zurück-Taste schließt */
 function vpFind(id){for(const sec in FDVID)for(const g of FDVID[sec]){const i=g.v.findIndex(v=>String(v[1])===String(id));if(i>=0)return{sec,g,i}}return null}
-function closeVideo(fromPop){const o=document.getElementById('vplayer');if(!o)return;o.classList.remove('on');setTimeout(()=>o.remove(),350);if(!fromPop&&history.state&&history.state.vp)history.back()}
+function closeVideo(fromPop){const o=document.getElementById('vplayer');if(!o)return;vpFS(false);o.classList.remove('on');setTimeout(()=>o.remove(),350);if(!fromPop&&history.state&&history.state.vp)history.back()}
 function openVideo(id,hh,title){id=String(id);const hit=vpFind(id);const tall=hit&&hit.sec==='hg';
   if(!title&&hit)title=hit.g.v[hit.i][0];
   const grp=hit?(hit.g.n?T(hit.g.g,hit.g.n):T(hit.g.g)):'';
   const next=hit?[...hit.g.v.slice(hit.i+1),...hit.g.v.slice(0,hit.i)].slice(0,8):[];
   let o=document.getElementById('vplayer');const fresh=!o;
   if(fresh){o=document.createElement('div');o.id='vplayer';document.body.appendChild(o);try{history.pushState({vp:1},'',location.href)}catch(_){}
-    o.addEventListener('click',e=>{const n=e.target.closest('[data-vid]');if(n){fb('sel',8);openVideo(n.dataset.vid,'',n.dataset.vt);return}if(e.target===o||e.target.closest('.vp-x'))closeVideo()})}
-  o.innerHTML=`<div class="vp-box${tall?' tall':''}"><div class="vp-top"><span class="vp-tt"><b>${esc(title||'')}</b>${grp?`<small>${esc(grp)}</small>`:''}</span><span class="vp-btns"><a class="vp-ext" href="https://vimeo.com/${id}" target="_blank" rel="noopener">${T('Auf Vimeo')}${svg('chev')}</a><button class="iconbtn vp-x" aria-label="${T('Schließen')}">${svg('x')}</button></span></div><div class="vp-frame${tall?' tall':''}"><div class="vp-load">${[0,1,2].map(i=>`<img src="img/ui/6e072e6aa8.png" alt="" style="--i:${i}">`).join('')}</div><iframe src="https://player.vimeo.com/video/${id}?${hh?'h='+hh+'&':''}autoplay=1&title=0&byline=0&portrait=0&color=FFD200&dnt=1" title="${esc(title||'Video')}" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen onload="this.classList.add('ld')"></iframe></div>
+    o.addEventListener('click',e=>{const n=e.target.closest('[data-vid]');if(n){fb('sel',8);openVideo(n.dataset.vid,'',n.dataset.vt);return}if(e.target.closest('.vp-fsb')){vpFS(true);return}if(e.target.closest('.vp-fsx')){vpFS(false);return}if(e.target.closest('.vp-rot')){vpRotate();return}if(e.target===o||e.target.closest('.vp-x'))closeVideo()})}
+  o.innerHTML=`<div class="vp-box${tall?' tall':''}"><div class="vp-top"><span class="vp-tt"><b>${esc(title||'')}</b>${grp?`<small>${esc(grp)}</small>`:''}</span><span class="vp-btns"><a class="vp-ext" href="https://vimeo.com/${id}" target="_blank" rel="noopener">${T('Auf Vimeo')}${svg('chev')}</a><button class="iconbtn vp-fsb" aria-label="${T('Vollbild')}" title="${T('Vollbild')}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button><button class="iconbtn vp-x" aria-label="${T('Schließen')}">${svg('x')}</button></span></div><div class="vp-fsbar"><button class="iconbtn vp-rot" aria-label="${T('Drehen')}" title="${T('Drehen')}"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="3" width="10" height="18" rx="2"/><path d="M20 14a8 8 0 0 1-6 6.5M20 20.5v-6h-6" transform="translate(0 -1)"/></svg></button><button class="iconbtn vp-fsx" aria-label="${T('Vollbild beenden')}" title="${T('Vollbild beenden')}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5"/></svg></button></div><div class="vp-frame${tall?' tall':''}" style="--a:${tall?.5625:1.7778}"><div class="vp-load">${[0,1,2].map(i=>`<img src="img/ui/6e072e6aa8.png" alt="" style="--i:${i}">`).join('')}</div><iframe src="https://player.vimeo.com/video/${id}?${hh?'h='+hh+'&':''}autoplay=1&title=0&byline=0&portrait=0&color=FFD200&dnt=1" title="${esc(title||'Video')}" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen onload="this.classList.add('ld')"></iframe></div>
    ${next.length?`<div class="vp-next"><small>${T('Als Nächstes')}</small><div class="nfscroll">${next.map(([t,vid])=>`<button class="nftile sm${tall?' tall':''}" data-vid="${vid}" data-vt="${esc(t)}"><img src="${thumbSrc(vid)}" alt="" loading="lazy" decoding="async"><span class="nfgrad"></span><span class="nfplay">${svg('play')}</span><span class="nftx"><b>${esc(t)}</b></span></button>`).join('')}</div></div>`:''}</div>`;
   if(fresh)requestAnimationFrame(()=>o.classList.add('on'))}
 window.addEventListener('popstate',()=>closeVideo(true));
-window.addEventListener('keydown',e=>{if(e.key==='Escape'&&document.getElementById('vplayer'))closeVideo()});
+/* Vollbild: echtes Vollbild wo möglich (Android/Desktop), sonst bildschirmfüllend (iPhone). „Drehen“ wechselt hochkant/quer – auch bei gesperrter Bildschirmdrehung */
+const fsEl=()=>document.fullscreenElement||document.webkitFullscreenElement;
+function vpFS(on){const o=document.getElementById('vplayer');if(!o)return;
+  if(on){o.classList.add('vp-fs');const rq=o.requestFullscreen||o.webkitRequestFullscreen;if(rq&&!fsEl()){try{const r=rq.call(o);if(r&&r.catch)r.catch(()=>{})}catch(_){}}}
+  else{if(!o.classList.contains('vp-fs'))return;o.classList.remove('vp-fs','vp-rot');try{screen.orientation.unlock()}catch(_){}
+    if(fsEl()){const ex=document.exitFullscreen||document.webkitExitFullscreen;try{const r=ex.call(document);if(r&&r.catch)r.catch(()=>{})}catch(_){}}}}
+async function vpRotate(){const o=document.getElementById('vplayer');if(!o)return;fb('sel',8);const so=screen.orientation;
+  if(fsEl()&&so&&so.lock){try{await so.lock(so.type.startsWith('portrait')?'landscape':'portrait');o.classList.remove('vp-rot');return}catch(_){}}
+  o.classList.toggle('vp-rot')}
+['fullscreenchange','webkitfullscreenchange'].forEach(ev=>document.addEventListener(ev,()=>{if(!fsEl())vpFS(false)}));
+window.addEventListener('keydown',e=>{if(e.key!=='Escape')return;const o=document.getElementById('vplayer');if(!o)return;if(o.classList.contains('vp-fs'))vpFS(false);else closeVideo()});
 function vKatalogFresh(){
   return `<div class="view kview fview">${bar(T('Fresh-Broschüre 2027'))}${ktabs('fresh')}<div class="embers">${Array.from({length:14},(_,i)=>`<i style="--x:${(i*53)%100}%;--d:${(i%5)*.9}s;--s:${.6+(i%4)*.25}"></i>`).join('')}</div>
    <div class="pad"><div class="kicker" style="color:#EC672F">${T('Bedientheke · Food Academy Fresh')}</div><h1 style="font-size:34px;margin-top:8px">${T('Wähle dein Kapitel')}</h1>

@@ -1402,6 +1402,35 @@ button.nftile{padding:0;border:0;text-align:start}
 .kw-seg.act .kw-ic circle{fill:color-mix(in srgb,var(--c) 30%,#151618)}
 .kwheel[data-sel] .kw-heart{animation:none;transform:translate(-50%,-50%) scale(.85);transition:transform .5s var(--spring)}
 .kw-seg{transition:opacity .45s ease}
+/* Kompetenzmodell-Rad – Premium-Interaktion (nur transform/opacity animiert) */
+@property --kwc{syntax:'<color>';inherits:true;initial-value:#FFD200}
+.kwheel{--ez:cubic-bezier(.22,1,.36,1);--sp:cubic-bezier(.34,1.45,.5,1);transition:--kwc .7s ease}
+.kwheel svg{position:relative;z-index:1}
+.kw-aura{position:absolute;inset:14%;z-index:0;border-radius:50%;pointer-events:none;background:radial-gradient(circle,var(--kwc) 0%,color-mix(in srgb,var(--kwc) 35%,transparent) 38%,transparent 70%);opacity:0;scale:.8;transition:opacity .7s ease,scale .9s var(--ez)}
+.kwheel[data-sel] .kw-aura{opacity:.38;scale:1}
+.kw-rot{rotate:var(--rot,0deg);transition:rotate 1s var(--ez)}
+.kwheel:not(.small) .kw-ic{rotate:calc(var(--rot,0deg) * -1);transition:rotate 1s var(--ez),scale .6s var(--sp)}
+.kwheel:not(.small) .kw-seg{transition:opacity .55s ease,translate .75s var(--sp),scale .3s var(--ez)}
+.kwheel:not(.small) .kw-seg[data-kf]:hover .kw-arc,.kwheel:not(.small) .kw-seg.act .kw-arc{stroke-width:22!important;filter:drop-shadow(0 0 10px color-mix(in srgb,var(--c) 45%,transparent))!important}
+.kwheel:not(.small) .kw-seg.act{translate:var(--dx) var(--dy)}
+.kwheel:not(.small) .kw-seg[data-kf]:active{scale:.965}
+.kwheel:not(.small) .kw-seg.dim{opacity:.26!important}
+.kwheel:not(.small) .kw-seg.act .kw-ic{scale:1.14}
+.kw-ic circle{transition:fill .5s ease}
+.kw-glow{fill:none;stroke-width:36;stroke-linecap:round;opacity:0;filter:blur(10px);transition:opacity .6s ease;pointer-events:none}
+.kw-seg[data-kf]:hover .kw-glow,.kw-seg[data-kf]:focus-visible .kw-glow{opacity:.3}
+.kw-seg.act .kw-glow{opacity:.7}
+.kw-wave{fill:none;stroke:var(--c);stroke-width:2.5;pointer-events:none;transform-box:fill-box;transform-origin:center;animation:kwwave .8s cubic-bezier(.22,1,.36,1) forwards}
+@keyframes kwwave{0%{opacity:.9;transform:scale(1)}100%{opacity:0;transform:scale(2.4)}}
+.kwheel[data-sel] img.kw-heart{animation:kbeat 2.4s ease-in-out 2s infinite;transform:translate(-50%,-50%);transition:none}
+.kwheel img.kw-heart{z-index:2;transition:scale .7s var(--sp)}
+.kwheel[data-sel] img.kw-heart{scale:.84}
+#kfpop{position:relative}
+.kfp-in{animation:kfpSwapIn .55s cubic-bezier(.22,1,.36,1) both}
+@keyframes kfpSwapIn{from{opacity:0;transform:translateX(calc(var(--dir,1) * 34px)) scale(.985)}}
+.kfp-out{pointer-events:none;animation:kfpSwapOut .34s cubic-bezier(.4,0,.2,1) both}
+@keyframes kfpSwapOut{to{opacity:0;transform:translateX(calc(var(--dir,1) * -34px)) scale(.985)}}
+.kintro.kfused .kftap{animation:none;opacity:.55;transition:opacity .5s}
 .kftap{display:flex;align-items:center;justify-content:center;gap:8px;margin:2px 0 6px;font-size:13px;color:var(--muted);font-weight:600;animation:tapHint 2.4s ease-in-out 2.2s infinite}
 .kftap svg{width:16px;height:16px;stroke:var(--y);fill:none;stroke-width:2}
 @keyframes tapHint{50%{opacity:.55}}
@@ -2206,25 +2235,50 @@ function arcP(r,a0,a1){const p=a=>[(r*Math.cos((a-90)*Math.PI/180)).toFixed(2),(
 function miniWheel(){return `<svg viewBox="-20 -20 40 40" class="mw">${KFO.map((f,i)=>`<path d="${arcP(14,i*90+8,i*90+82)}" stroke="${KF[f].c}"/>`).join('')}</svg>`}
 function bigWheel(active){const R=112;
   const st=360/22;let j=0;
-  return `<div class="kwheel${active?' small':''}"><svg viewBox="-160 -160 320 320"><defs>${KFO.map(f=>`<linearGradient id="kg${f}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${KF[f].c2}"/><stop offset="1" stop-color="${KF[f].c}"/></linearGradient>`).join('')}<radialGradient id="kwc"><stop offset="0" stop-color="rgba(255,210,0,.22)"/><stop offset="1" stop-color="rgba(255,210,0,0)"/></radialGradient></defs>
-   <circle r="92" fill="url(#kwc)" class="kw-core"/><circle class="kw-orbit" r="146"/><circle class="kw-inner" r="78"/>
+  return `<div class="kwheel${active?' small':''}">${active?'':'<span class="kw-aura"></span>'}<svg viewBox="-160 -160 320 320"><defs>${KFO.map(f=>`<linearGradient id="kg${f}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${KF[f].c2}"/><stop offset="1" stop-color="${KF[f].c}"/></linearGradient>`).join('')}<radialGradient id="kwc"><stop offset="0" stop-color="rgba(255,210,0,.22)"/><stop offset="1" stop-color="rgba(255,210,0,0)"/></radialGradient></defs>
+   <circle r="92" fill="url(#kwc)" class="kw-core"/><circle class="kw-orbit" r="146"/><circle class="kw-inner" r="78"/><g class="kw-rot">
    ${active?'':KOMP.map(([f],i)=>{const a=(i+.5)*st-90,x=(146*Math.cos(a*Math.PI/180)).toFixed(1),y=(146*Math.sin(a*Math.PI/180)).toFixed(1);return `<circle class="kw-dot" cx="${x}" cy="${y}" r="3.6" style="--c:${KF[f].c};--i:${i}"/>`}).join('')}
    ${KFO.map((f,i)=>{const a0=i*90+5,a1=i*90+85,L=(2*Math.PI*R*80/360).toFixed(1);const ma=(i*90+45-90)*Math.PI/180;
-     return `<g class="kw-seg${active&&active!==f?' dim':''}${active===f?' act':''}"${active?'':` data-kf="${f}" role="button" tabindex="0"`} style="--c:${KF[f].c};--i:${i}">
-      <path class="kw-arc" d="${arcP(R,a0,a1)}" stroke="url(#kg${f})" style="stroke-dasharray:${L};stroke-dashoffset:${L}"/>
+     return `<g class="kw-seg${active&&active!==f?' dim':''}${active===f?' act':''}"${active?'':` data-kf="${f}" role="button" tabindex="0" aria-label="${esc(T(KF[f].n))}"`} style="--c:${KF[f].c};--i:${i};--dx:${(9*Math.cos(ma)).toFixed(1)}px;--dy:${(9*Math.sin(ma)).toFixed(1)}px">
+      ${active?'':`<path class="kw-glow" d="${arcP(R,a0,a1)}" stroke="${KF[f].c}"/>`}<path class="kw-arc" d="${arcP(R,a0,a1)}" stroke="url(#kg${f})" style="stroke-dasharray:${L};stroke-dashoffset:${L}"/>
       <g transform="translate(${(R*Math.cos(ma)).toFixed(1)} ${(R*Math.sin(ma)).toFixed(1)})"><g class="kw-ic"><circle r="27"/><g transform="translate(-13 -13) scale(1.08)">${IC[KF[f].ic]}</g></g></g></g>`}).join('')}
-  </svg><img class="kw-heart" src="img/ui/6e072e6aa8.png" alt=""></div>`}
+  </g></svg><img class="kw-heart" src="img/ui/6e072e6aa8.png" alt=""></div>`}
 function dotline(cur){let i=0;return `<div class="kdots">${KFO.map(f=>`<span class="kdg${f===cur?' cur':''}" style="--c:${KF[f].c}">${KOMP.filter(x=>x[0]===f).map(x=>`<i class="${S.k[x[2]]?'on':''}" style="--i:${i++}"></i>`).join('')}</span>`).join('')}</div>`}
 const CHK=['check-rolle','check-bereich','check-I','check-F','check-P','check-G'];
 function chkHead(step,title){const L=['Position','Bereich',...KFO.map(f=>KF[f].n.replace('kompetenz',''))];return `<div class="bar qbar">${step>0?`<button class="iconbtn" data-act="back" aria-label="${T('Zurück')}">${svg('back')}</button>`:'<span class="iconbtn ghostbtn"></span>'}<div class="steplbl"><small>${T('Kompetenz-Check')}</small><span>${T('Schritt {0} von {1}','<b>'+(step+1)+'</b>',CHK.length)}</span></div>${sndBtn()}<button class="iconbtn" data-act="home" aria-label="${T('Startseite')}" title="${T('Startseite')}">${svg('home')}</button></div>${qprog(['Position','Bereich','Interaktion','Fach','Perspektive','Gestaltung'],['user','store',...KFO.map(f=>KF[f].ic)],step,['#FFD200','#FFD200',...KFO.map(f=>KF[f].c)])}${dotline(title)}`}
 function kfPop(f){const F=KF[f],gs=[...new Set(KOMP.filter(x=>x[0]===f).map(x=>x[1]))];
   return `<div class="kfp" style="--c:${F.c};--c2:${F.c2}"><button class="kfp-x" data-kfx="1" aria-label="${T('Schließen')}">${svg('x')}</button><div class="kfp-h"><span class="kfi">${svg(F.ic)}</span><div><b>${esc(T(F.n))}</b><small>${esc(T(F.s))}</small></div></div>
    ${gs.map(g=>`<div class="kfp-g"><em>${esc(T(g))}</em><div>${KOMP.filter(x=>x[1]===g).map((x,j)=>`<span style="--j:${j}">${esc(T(x[3]))}</span>`).join('')}</div></div>`).join('')}</div>`}
+/* Kompetenzmodell-Rad: Feld antippen → Rad dreht das Feld zur Karte, Feld tritt hervor + Glow + Welle, Karte wechselt fließend */
+const kwRM=()=>matchMedia('(prefers-reduced-motion: reduce)').matches;
+function kwTurn(w,f){if(!w)return;let cur=parseFloat(w.dataset.rot||'0'),target=0;
+  if(f){const bis=KFO.indexOf(f)*90-45;target=(matchMedia('(min-width:900px)').matches?180:90)-bis}
+  const d=((target-cur)%360+540)%360-180;cur+=d;w.dataset.rot=cur;w.style.setProperty('--rot',cur+'deg');
+  if(f)w.style.setProperty('--kwc',KF[f].c)}
+function kwWave(f){if(kwRM())return;const seg=app.querySelector(`.kw-seg[data-kf="${f}"] .kw-ic`);if(!seg)return;
+  const c=document.createElementNS('http://www.w3.org/2000/svg','circle');c.setAttribute('r','27');c.setAttribute('class','kw-wave');seg.parentNode.insertBefore(c,seg);setTimeout(()=>c.remove(),900)}
+function kfScrollTo(pop,card){setTimeout(()=>{const r=pop.getBoundingClientRect();const bottom=r.top+(card?card.scrollHeight:r.height)+24;
+  if(bottom>innerHeight-90&&!matchMedia('(min-width:900px)').matches)window.scrollBy({top:Math.min(bottom-innerHeight+110,r.top-80),behavior:'smooth'})},90)}
 function toggleKF(f){const pop=document.getElementById('kfpop'),w=app.querySelector('.kwheel');if(!pop)return;const cur=pop.dataset.f;
-  if(cur===f||!f){pop.classList.remove('open');pop.dataset.f='';w&&w.removeAttribute('data-sel');app.querySelectorAll('.kw-seg').forEach(s=>s.classList.remove('dim','act'));fb('unsel',6);setTimeout(()=>{if(!pop.dataset.f)pop.innerHTML=''},350);return}
-  pop.dataset.f=f;pop.innerHTML=kfPop(f);pop.classList.remove('open');void pop.offsetWidth;pop.classList.add('open');w&&w.setAttribute('data-sel',f);
+  const v=pop.closest('.view');v&&v.classList.add('kfused');
+  if(cur===f||!f){pop.classList.remove('open');pop.dataset.f='';w&&w.removeAttribute('data-sel');kwTurn(w,null);
+    app.querySelectorAll('.kw-seg').forEach(s=>s.classList.remove('dim','act'));fb('unsel',6);
+    const card=pop.querySelector('.kfp');if(card&&!kwRM())card.animate([{opacity:1,transform:'none'},{opacity:0,transform:'translateY(-10px) scale(.97)'}],{duration:340,easing:'cubic-bezier(.4,0,.2,1)',fill:'forwards'});
+    setTimeout(()=>{if(!pop.dataset.f)pop.innerHTML=''},560);return}
+  const tmp=document.createElement('div');tmp.innerHTML=kfPop(f);const card=tmp.firstElementChild;
+  const old=pop.querySelector('.kfp');const wasOpen=!!(cur&&old&&pop.classList.contains('open'));
+  if(wasOpen&&!kwRM()){const di=KFO.indexOf(f)-KFO.indexOf(cur);const dir=(di===1||di===-3)?1:-1;
+    const h0=pop.getBoundingClientRect().height;pop.querySelectorAll('.kfp-out').forEach(x=>x.remove());
+    old.classList.add('kfp-out');old.style.setProperty('--dir',dir);Object.assign(old.style,{position:'absolute',left:'0',right:'0',top:'0'});
+    card.classList.add('kfp-in');card.style.setProperty('--dir',dir);pop.appendChild(card);
+    const h1=pop.getBoundingClientRect().height;pop.style.overflow='clip';
+    const an=pop.animate([{height:h0+'px'},{height:h1+'px'}],{duration:520,easing:'cubic-bezier(.22,1,.36,1)'});
+    const done=()=>{pop.style.overflow='';old.remove()};an.onfinish=done;an.oncancel=done}
+  else{pop.innerHTML='';pop.appendChild(card);pop.classList.remove('open');void pop.offsetWidth;pop.classList.add('open')}
+  pop.dataset.f=f;w&&w.setAttribute('data-sel',f);kwTurn(w,f);kwWave(f);
   app.querySelectorAll('.kw-seg').forEach(s=>{s.classList.toggle('act',s.dataset.kf===f);s.classList.toggle('dim',s.dataset.kf!==f)});fb('sel',10);
-  setTimeout(()=>{const r=pop.getBoundingClientRect();if(r.bottom>innerHeight-90)window.scrollBy({top:r.bottom-innerHeight+110,behavior:'smooth'})},120)}
+  kfScrollTo(pop,card)}
+document.addEventListener('keydown',e=>{if(e.key!=='Enter'&&e.key!==' ')return;const k=e.target.closest&&e.target.closest('.kw-seg[data-kf]');if(!k)return;e.preventDefault();toggleKF(k.dataset.kf)});
 function vCheckIntro(){return `<div class="view kintro">${bar(T('Kompetenz-Check'))}<div class="pad">
   <div class="kicker">${T('Das EDEKA Kompetenzmodell')}</div><h1 class="kh1">${T('Die berufliche und persönliche Entwicklung im Fokus.')}</h1>
   ${bigWheel()}

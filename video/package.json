@@ -1,0 +1,17 @@
+{
+  "name": "fresh-seminare-2027-video",
+  "private": true,
+  "description": "Motion-Graphic-Video (Instagram Reel 9:16) zur Broschüre Seminare 2027 – Food Academy Fresh",
+  "scripts": {
+    "voice": "python3 tools/voice.py",
+    "qr": "node tools/qr.cjs",
+    "preview": "python3 -m http.server 8123",
+    "render": "node tools/render.cjs"
+  },
+  "dependencies": {
+    "@fontsource/outfit": "^5.0.0",
+    "@fontsource/permanent-marker": "^5.0.0",
+    "gsap": "^3.12.0",
+    "qrcode": "^1.5.0"
+  }
+}

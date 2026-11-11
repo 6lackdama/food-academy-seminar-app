@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Seminare 2027 – Motion Video</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="viewport">
+    <div id="stage">
+      <div id="cam"></div>
+      <div id="subs"></div>
+    </div>
+  </div>
+  <div id="controls" hidden>
+    <button id="play">▶ Abspielen</button>
+    <input id="scrub" type="range" min="0" max="1000" value="0">
+    <span id="time">0.0 s</span>
+  </div>
+  <audio id="voice" src="../out/voice.wav" preload="auto"></audio>
+
+  <script src="../node_modules/gsap/dist/gsap.min.js"></script>
+  <script src="timing.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>

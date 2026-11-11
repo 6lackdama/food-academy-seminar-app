@@ -16,6 +16,7 @@ Jeder Push auf `main` geht nach ca. 1–2 Minuten automatisch live.
 - `sb/` – Steakboy-Grafiken
 - `thumbs/<vimeoId>.webp` – eigene Vimeo-Thumbnails von Franz (Handgriffe hochkant 9:16, Legetechniken quer 16:9)
 - `vimeo-links.csv` – alle 71 Videos (Reihe;Nr;Titel;Link)
+- `video/` – Motion-Graphic-Video „Seminare 2027“ als Instagram Reel (9:16), komplett aus Code (HTML/GSAP → Playwright → ffmpeg). Sprechertext in `video/src/script.json`, Franz' Aufnahmen nach `video/audio/franz/`, Anleitung in `video/README.md`. `node_modules/` und `out/` sind nicht im Git.
 
 ## Inhalte
 - Bereich „Fresh Digital“ im Netflix-Stil: Start = Album-Fächer (2 Cover: 100 Handgriffe, Legetechniken), darunter direkt „Mehr von der Food Academy“ (EDEKA next, WizzUp, Instagram, Broschüre). Cover antippen → Album mit Video-Reihen (Zurück-Taste/„Alben“ schließt). Suche zeigt Treffer aus beiden Alben.

@@ -1,7 +1,7 @@
 # EDEKA Food Academy – Seminar-Finder 2027 (Franz Posley, Fresh-Trainer)
 
 Statische Single-File-Web-App, live über GitHub Pages:
-https://6lackdama.github.io/food-academy-seminar-app/
+https://edekafoodacademy.github.io/food-academy-seminar-app/
 Jeder Push auf `main` geht nach ca. 1–2 Minuten automatisch live.
 
 ## Struktur

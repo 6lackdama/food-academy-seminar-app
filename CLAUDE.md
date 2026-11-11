@@ -7,6 +7,8 @@ Jeder Push auf `main` geht nach ca. 1–2 Minuten automatisch live.
 ## Struktur
 - `index.html` – komplette App (HTML/CSS/JS in einer Datei, ursprünglich als Claude-Artefakt gebaut)
 - `img/` – App-Bilder, früher als base64 in `index.html` eingebettet: `plakate/` (IMGP), `personen/` (IMGPP), `zutaten/` (IMGI), `ui/` (Logo, Icons, Hintergrund)
+- `img/app/` – PWA-Icons (aus dem Original-Herz-Icon skaliert), `img/og-vorschau.jpg` – Teilen-Vorschau
+- `manifest.webmanifest` + `sw.js` – PWA (Home-Bildschirm, offline). HTML/JS: Netz zuerst; Bilder/Schriften: Cache, im Hintergrund aktualisiert. Bei grundlegenden Änderungen `VERSION` in `sw.js` erhöhen.
 - `fonts/` – Schriften (woff)
 - `fresh/` – Artwork Fresh-Bereich (webp)
 - `katalog/` – Katalogseiten (webp)

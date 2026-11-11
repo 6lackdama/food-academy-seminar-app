@@ -43,7 +43,7 @@ async function openPage(browser, port) {
 async function renderRange(browser, port, from, to, fps, file) {
   const page = await openPage(browser, port);
   const ff = spawn('ffmpeg', ['-y', '-loglevel', 'error', '-f', 'image2pipe', '-framerate', String(fps), '-c:v', 'mjpeg', '-i', '-',
-    '-c:v', 'libx264', '-preset', 'medium', '-crf', '17', '-pix_fmt', 'yuv420p', file]);
+    '-c:v', 'libx264', '-preset', 'slow', '-crf', '19', '-maxrate', '9M', '-bufsize', '18M', '-tune', 'grain', '-pix_fmt', 'yuv420p', file]);
   const done = new Promise((r, j) => ff.on('close', (c) => (c ? j(new Error('ffmpeg ' + c)) : r())));
   for (let f = from; f < to; f++) {
     await page.evaluate((t) => window.__seek(t), f / fps);

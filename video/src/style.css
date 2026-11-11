@@ -23,13 +23,13 @@ body.preview #viewport { transform-origin: top left; }
 #cam { position: absolute; inset: 0; }
 
 .scene {
-  position: absolute; inset: 0; overflow: hidden; --p: 0;
+  position: absolute; inset: 0; overflow: hidden; --p: 1; visibility: hidden;
   clip-path: polygon(0 0, calc(var(--p) * 140%) 0, calc(var(--p) * 140% - 40%) 100%, 0 100%);
 }
-.scene.first { --p: 1; }
 .bg-white { background: #fff; color: var(--o); }
 .bg-orange { background: var(--o); color: #fff; }
 .bg-slate { background: #1c2023 url(../assets/img/schiefer.jpg) center / cover; color: #fff; }
+.bg-blue { background: var(--b); color: #fff; }
 .bg-slate::after { content: ""; position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 45%, transparent 35%, rgba(0, 0, 0, .55)); pointer-events: none; }
 
 .abs { position: absolute; }
@@ -59,7 +59,7 @@ body.preview #viewport { transform-origin: top left; }
 .cover-card { position: absolute; left: 175px; top: 40px; width: 730px; height: 730px; border-radius: 10px; box-shadow: 0 50px 80px rgba(80, 20, 0, .45); overflow: hidden; }
 .cover-card img { width: 100%; height: 100%; display: block; }
 .title-xl { font: 900 168px/0.9 Outfit; letter-spacing: -.01em; }
-.y-marker { font: 400 150px/1 Marker; color: var(--y); }
+.y-marker { font: 400 150px/1 Marker; color: var(--y); rotate: -8deg; }
 
 /* ---------- Menschen ---------- */
 .kin { font-weight: 900; line-height: .92; }
@@ -78,7 +78,7 @@ body.preview #viewport { transform-origin: top left; }
 .bg-orange .cat-count { color: var(--y); }
 .cat-name { left: 60px; right: 40px; top: 270px; font-weight: 900; line-height: 1; white-space: nowrap; letter-spacing: -.015em; }
 .cat-sub { left: 66px; font: 900 60px/1 Outfit; letter-spacing: .01em; }
-.card { position: absolute; left: 90px; top: 640px; width: 900px; height: 520px; border-radius: 34px; background: #fff; box-shadow: 0 34px 70px rgba(0, 0, 0, .38); display: flex; align-items: center; justify-content: center; padding: 34px; box-sizing: border-box; }
+.card { visibility: hidden; position: absolute; left: 90px; top: 640px; width: 900px; height: 520px; border-radius: 34px; background: #fff; box-shadow: 0 34px 70px rgba(0, 0, 0, .38); display: flex; align-items: center; justify-content: center; padding: 34px; box-sizing: border-box; }
 .card.opaque { background: var(--o); }
 .card img { max-width: 100%; max-height: 100%; display: block; }
 .card .nr { position: absolute; left: -22px; top: -26px; width: 104px; height: 104px; border-radius: 50%; background: var(--y); color: var(--ink); font: 900 50px/104px Outfit; text-align: center; box-shadow: 0 8px 18px rgba(0, 0, 0, .3); }
@@ -102,13 +102,41 @@ body.preview #viewport { transform-origin: top left; }
 .scanline { position: absolute; left: 40px; right: 40px; height: 12px; border-radius: 6px; background: var(--o); box-shadow: 0 0 30px 8px rgba(243, 112, 58, .55); top: 60px; opacity: 0; }
 .scanme { font: 400 92px/1 Marker; color: var(--y); left: 70px; top: 430px; transform: rotate(-10deg); text-shadow: 0 8px 0 rgba(0, 0, 0, .2); }
 
+/* ---------- Gen-Z-Elemente ---------- */
+.flash { position: absolute; inset: 0; display: grid; place-items: center; visibility: hidden; z-index: 30; }
+.flash span { font: 900 330px/1 Outfit; letter-spacing: -.03em; }
+.emoji { position: absolute; font-family: "Noto Color Emoji", sans-serif; line-height: 1; filter: drop-shadow(0 16px 18px rgba(0, 0, 0, .35)); z-index: 9; }
+.sticker { font: 400 86px/1 Marker, "Noto Color Emoji"; color: var(--ink); background: var(--y); padding: 18px 34px 12px; border-radius: 22px; box-shadow: 0 14px 0 rgba(0, 0, 0, .22); z-index: 9; white-space: nowrap; }
+.sticker.big { font-size: 104px; }
+.levelup { font: 400 110px/1 Marker, "Noto Color Emoji"; color: var(--y); text-shadow: 0 8px 0 rgba(0, 0, 0, .35); white-space: nowrap; z-index: 9; }
+.xp { left: 120px; top: 410px; width: 840px; height: 54px; display: flex; align-items: center; gap: 18px; transform-origin: left center; }
+.xp-l { font: 900 44px/1 Outfit; color: var(--y); }
+.xp-bar { flex: 1; height: 30px; border-radius: 99px; background: rgba(255, 255, 255, .14); overflow: hidden; border: 3px solid rgba(255, 255, 255, .25); }
+.xp-fill { width: 0%; height: 100%; background: linear-gradient(90deg, var(--o), var(--y)); border-radius: 99px; }
+.band { position: absolute; left: -220px; width: 1520px; height: 160px; overflow: hidden; display: flex; align-items: center; box-shadow: 0 20px 40px rgba(0, 0, 0, .25); transform-origin: center; }
+.band-in { white-space: nowrap; font: 900 116px/1 Outfit; letter-spacing: .01em; }
+.qgroup { z-index: 7; }
+.qgroup .q1 { font: 900 78px/1 Outfit; letter-spacing: .01em; margin-bottom: 6px; }
+.qgroup .q2 { font-weight: 900; line-height: .95; letter-spacing: -.02em; text-shadow: 0 12px 0 rgba(0, 0, 0, .18); white-space: nowrap; }
+.qmark { font-family: Marker; color: var(--y); display: inline-block; margin-left: .04em; text-shadow: 0 10px 0 rgba(0, 0, 0, .25); }
+.bg-white .qmark { color: var(--b); }
+.phone { left: 280px; top: 410px; width: 520px; height: 1000px; border-radius: 74px; background: #0b0c0d; box-shadow: 0 50px 90px rgba(80, 20, 0, .5), inset 0 0 0 4px #333; z-index: 4; }
+.phone .screen { position: absolute; left: 18px; top: 18px; right: 18px; bottom: 18px; border-radius: 58px; overflow: hidden; background: #1d2023; }
+.phone .screen img { width: 100%; display: block; }
+.phone .notch { position: absolute; left: 50%; top: 34px; width: 130px; height: 36px; margin-left: -65px; border-radius: 20px; background: #0b0c0d; }
+.endcard { left: 0; right: 0; top: 430px; text-align: center; z-index: 6; }
+.endcard img { width: 640px; }
+.endcard .handle { display: inline-block; margin-top: 36px; font: 900 56px/1 Outfit; color: var(--ink); background: #fff; padding: 18px 36px 14px; border-radius: 999px; }
+.endcard .see { margin-top: 56px; font: 900 96px/1 Outfit; color: #fff; }
+.endcard .emo { font-family: "Noto Color Emoji"; display: inline-block; }
+.grain { position: absolute; inset: 0; opacity: .085; mix-blend-mode: overlay; z-index: 70; pointer-events: none; }
+
 /* ---------- Untertitel ---------- */
-#subs { position: absolute; left: 40px; right: 40px; top: 1392px; height: 160px; z-index: 60; }
-#subs > div { position: absolute; inset: 0; text-align: center; font: 900 70px/1.1 Outfit; text-transform: uppercase; color: #fff; letter-spacing: .01em; }
-#subs .back { color: #121416; -webkit-text-stroke: 16px #121416; filter: drop-shadow(0 6px 0 rgba(0, 0, 0, .35)); }
-#subs .w { display: inline-block; margin: 0 .12em; transform-origin: 50% 70%; }
+#subs { position: absolute; left: 30px; right: 30px; top: 1385px; height: 180px; z-index: 60; transform-origin: 50% 40%; }
+#subs > div { position: absolute; inset: 0; text-align: center; font: 900 84px/1.05 Outfit; text-transform: uppercase; color: #fff; letter-spacing: .005em; }
+#subs .back { color: #121416; -webkit-text-stroke: 18px #121416; filter: drop-shadow(0 7px 0 rgba(0, 0, 0, .35)); }
+#subs .w { display: inline-block; margin: 0 .1em; transform-origin: 50% 70%; }
 #subs .front .w.on { color: var(--y); }
-#subs .w.on { transform: scale(1.08); }
 
 /* ---------- Vorschau-Steuerung ---------- */
 #controls { display: flex; gap: 10px; align-items: center; }

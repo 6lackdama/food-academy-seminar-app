@@ -3,8 +3,9 @@
 Werbe-Video zur Broschüre *Seminare 2027 – Food Academy Fresh*, komplett aus Code gebaut:
 HTML/CSS + [GSAP](https://gsap.com) für die Animation, Chromium (Playwright) rendert Bild für Bild, ffmpeg macht daraus die MP4.
 
-- Format: 1080 × 1920 (9:16), 30 fps, H.264 + AAC, ca. 65–80 s
-- Ansprache: du, für Mitarbeitende. Alle 7 Themen und alle 35 Seminare erscheinen als Karten.
+- Format: 1080 × 1920 (9:16), 30 fps, H.264 + AAC, ca. 80–90 s
+- Ton: locker, Gen Z, für Mitarbeitende („ihr“ in den Fragen, „du“ wenn's persönlich wird). Alle 7 Themen und alle 35 Seminare erscheinen als Karten.
+- Ende: „Link in Bio“ → **Der Link zur Seminar-App muss in der Instagram-Bio von @edeka_foodacademy stehen.**
 - Untertitel sind eingebrannt (Wort für Wort gelb hervorgehoben)
 - Inhalte im Instagram-„sicheren Bereich“: Unten bleiben ca. 370 px frei für Profilname und Bildunterschrift.
 
@@ -12,13 +13,18 @@ HTML/CSS + [GSAP](https://gsap.com) für die Animation, Chromium (Playwright) re
 
 | # | Szene | Inhalt |
 |---|---|---|
-| 1 | Intro | Steakboy, „HEY!“, Namensschild FRANZ · FRESH-TRAINER, Logo |
-| 2 | Cover | Broschüren-Cover fliegt in 3D rein, „SEMINARE 2027 – für die Frischetheke“ |
-| 3 | Menschen | „Menschen machen den Unterschied – und zwar DU!“ |
-| 4 | Level | 4 Stufen Fresh-ling → Fresh-Master als Treppe, Quereinsteiger → Profi |
-| 5–11 | Themen 1/7 … 7/7 | Onboarding, Fleisch, Wurst, Käse, Fisch, Führung, Ausbildung: alle Seminar-Titel aus der Broschüre als fliegende Karten |
-| 12 | Fresh Digital | 100 Handgriffe (Zähler), Blended Learning, WizzUp |
-| 13 | Outro | QR-Code zur Seminar-App, „Scan mich!“, Logo |
+| 0 | Hook | 3 Flash-Cuts in 0,9 s: NEU / 2027 / FRESH |
+| 1 | Intro | Steakboy, „HEY!“ 👋, Namensschild FRANZ · FRESH-TRAINER, Logo |
+| 2 | Cover | Broschüren-Cover fliegt in 3D rein, „SEMINARE 2027 – SIND DA! 🔥“ |
+| 3 | Menschen | „Menschen machen den Unterschied – also: DU!“ 🫵 |
+| 4 | Level | XP-Leiste, 4 Stufen Fresh-ling → Fresh-Master als Treppe, „LEVEL UP!“ |
+| 5–11 | Themen 1/7 … 7/7 | Jeweils **Frage-Beat** („Was gibt's rund um Fisch?“) mit Laufbändern, Emoji und Food-Foto, danach fliegen die Seminar-Titel aus der Broschüre als Karten rein – **genau auf dem Wort**, auf dem Franz sie nennt |
+| 12 | Fresh Digital | „Und zwischendurch?“ → 100 Handgriffe (Zähler), Blended Learning, WizzUp |
+| 13 | Share | „Bock drauf? Schick das deiner Marktleitung!“ mit Papierflieger |
+| 14 | App | Echte Seminar-App im Handy-Mockup, „LINK IN BIO 👆“, Endcard mit Logo + @edeka_foodacademy |
+
+Übergänge wechseln zwischen Whip-Pan (mit Bewegungsunschärfe), Zoom-Punch, Kreis-Iris und Diagonal-Wipe; dazu Film-Korn, Funkel-Sticker und Kamera-Shakes auf den Beats.
+Welche Karte bei welchem Wort reinfliegt, steht in `src/main.js` in der Liste `CATS` (Feld `cards`, z. B. `['07', 'Bratenschule']`).
 
 ## Ordner
 
@@ -33,13 +39,14 @@ video/
   tools/extract.py                     ← Grafiken aus der Broschüren-PDF holen
   tools/voice.py                       ← Sprachspur + Timing bauen
   tools/render.cjs                     ← Video rendern
+  tools/app-screenshot.cjs             ← Screenshot der echten App fürs Handy-Mockup
   out/                                 ← Ergebnis (nicht im Git)
 ```
 
 ## Befehle (im Ordner `video/`)
 
 ```bash
-npm install                     # einmalig (GSAP, Schriften, QR-Code)
+npm install                     # einmalig (GSAP, Schriften)
 pip install piper-tts           # einmalig, nur für die Platzhalter-Stimme
 python3 tools/voice.py          # Sprachspur + Timing neu bauen (nach jeder Text- oder Audio-Änderung)
 node tools/render.cjs           # → out/seminare-2027-reel.mp4 (ca. 2–3 Min.)
@@ -55,26 +62,35 @@ Grafiken neu aus der PDF holen: `python3 tools/extract.py <Broschüre.pdf>` und 
 
 ## Sprachaufnahme durch Franz (Option C)
 
-Franz nimmt **jeden Satz als eigene Datei** auf. Animation und Untertitel passen sich danach automatisch an sein Tempo an.
+Franz nimmt **jeden Satz als eigene Datei** auf (23 kurze Sätze – die Fragen wie „Was gibt's rund um Fisch?“ sind eigene Dateien). Animation und Untertitel passen sich danach automatisch an sein Tempo an.
 
 **Dateinamen:** `s01.m4a`, `s02.m4a`, … (auch `.wav` oder `.mp3`) → in den Ordner `audio/franz/` legen, dann `python3 tools/voice.py` und `node tools/render.cjs` ausführen. Einzelne Sätze können auch erst später kommen: Fehlende Sätze nimmt das Skript von der Platzhalter-Stimme.
 
 | Datei | Text |
 |---|---|
-| s01 | Hey, ich bin Franz – Fresh-Trainer bei der Food Academy! |
-| s02 | Hier kommen unsere Seminare 2027 für die Frischetheke. |
-| s03 | Denn Menschen machen den Unterschied. Und zwar du! |
-| s04 | Vier Stufen bringen dich weiter: Fresh-ling, Fresh-Kraft, Fresh-Alist und Fresh-Master. |
-| s05 | Ob Quereinsteiger oder Profi – hier findest du dein Level. |
-| s06 | Los geht's mit Onboarding und Grundlagen – kurz, knackig und auch online. |
-| s07 | Fleisch: von der Grillschule über die Bratenschule bis zur Meat Masterclass. |
-| s08 | Wurst: Feine Wurst und Schinken aus aller Welt – und du wirst Food Stylist. |
-| s09 | Käse: Ab auf kulinarische Reise – bis zur Käse-Masterclass. |
-| s10 | Fisch: Rock die Küche – und erleb Fisch hautnah. |
-| s11 | Führung: Führungstraining, Ausbilderschein und Meisterpflicht machen dich fit fürs Team. |
-| s12 | Für Azubis: Onboarding, Hands on Meat – im Handwerk wird gelernt! |
-| s13 | Und digital: 100 Handgriffe als Video, Blended Learning und das Quiz-Duell WizzUp. |
-| s14 | Alle Seminare findest du in unserer App. Code scannen – wir sehen uns an der Theke! |
+| s01 | Hey Leute, Franz hier – euer Fresh-Trainer! |
+| s02 | Die Seminare 2027 für die Frischetheke sind da! |
+| s03 | Denn Menschen machen den Unterschied. Also: du! |
+| s04 | Vier Level: Fresh-ling, Fresh-Kraft, Fresh-Alist, Fresh-Master. |
+| s05 | Ob Quereinsteiger oder Profi – hier levelst du auf. Ich erklär's euch kurz! |
+| s06 | Was gibt's für den Start? |
+| s07 | Onboarding zum Durchstarten, Grundlagen – kurz und knackig online – und die Heimspielserie in Teilzeit. |
+| s08 | Was gibt's rund um Fleisch? |
+| s09 | Fleisch mit Profil, Grillschule, Bratenschule – mehr weiß nur Oma! – und die Meat Masterclass. |
+| s10 | Und bei Wurst? |
+| s11 | Feine Wurst und Schinken aus aller Welt – und ihr werdet Food Stylist auf Platten und Fingern. |
+| s12 | Was geht beim Käse? |
+| s13 | Kulinarische Reise, Fromage Voyage – bis zur Masterclass: High End für Profis. |
+| s14 | Was gibt's rund um Fisch? |
+| s15 | Rock' die Küche mit Fisch – und Fisch hautnah: ab nach Bremerhaven! |
+| s16 | Ihr wollt führen? |
+| s17 | Führungstraining Theke eins bis drei, Ausbilderschein – und Meisterpflicht in nur fünf Tagen. |
+| s18 | Und ihr Azubis? |
+| s19 | Es ist Thekenzeit! Hands on Meat – im Handwerk wird gelernt. |
+| s20 | Und zwischendurch? |
+| s21 | 100 Handgriffe als Video, Blended Learning und WizzUp – das Quiz-Duell. |
+| s22 | Bock drauf? Schick das deiner Marktleitung! |
+| s23 | Alle Seminare gibt's in der App – Link in Bio. Wir sehen uns an der Theke! |
 
 **Tipps für eine gute Handy-Aufnahme**
 - Ruhiger Raum mit Teppich, Vorhängen oder Polstern, kein gefliester Raum. Ein Auto ist ein super Mini-Studio.

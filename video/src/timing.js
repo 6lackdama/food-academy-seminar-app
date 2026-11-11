@@ -1,64 +1,49 @@
 // Automatisch erzeugt von tools/voice.py – nicht von Hand bearbeiten.
 window.TIMING = {
  "fps": 30,
- "total": 67.75,
+ "total": 78.922,
  "segments": [
   {
    "id": "s01",
    "scene": "intro",
-   "text": "Hey, ich bin Franz – Fresh-Trainer bei der Food Academy!",
-   "start": 0.7,
-   "end": 3.507,
+   "text": "Hey Leute, Franz hier – euer Fresh-Trainer!",
+   "start": 0.95,
+   "end": 3.38,
    "words": [
     {
-     "w": "Hey,",
-     "s": 0.7,
-     "e": 0.907
+     "w": "Hey",
+     "s": 0.95,
+     "e": 1.185
     },
     {
-     "w": "ich",
-     "s": 0.999,
-     "e": 1.206
-    },
-    {
-     "w": "bin",
-     "s": 1.206,
-     "e": 1.413
+     "w": "Leute,",
+     "s": 1.185,
+     "e": 1.525
     },
     {
      "w": "Franz",
-     "s": 1.413,
-     "e": 1.712
+     "s": 1.629,
+     "e": 1.969
+    },
+    {
+     "w": "hier",
+     "s": 1.969,
+     "e": 2.256
     },
     {
      "w": "–",
-     "s": 1.712,
-     "e": 1.735
+     "s": 2.256,
+     "e": 2.282
     },
     {
-     "w": "Fresh-Trainer",
-     "s": 1.827,
-     "e": 2.448
+     "w": "euer",
+     "s": 2.387,
+     "e": 2.674
     },
     {
-     "w": "bei",
-     "s": 2.448,
-     "e": 2.656
-    },
-    {
-     "w": "der",
-     "s": 2.656,
-     "e": 2.863
-    },
-    {
-     "w": "Food",
-     "s": 2.863,
-     "e": 3.116
-    },
-    {
-     "w": "Academy!",
-     "s": 3.116,
-     "e": 3.507
+     "w": "Fresh-Trainer!",
+     "s": 2.674,
+     "e": 3.38
     }
    ],
    "voice": "Platzhalter"
@@ -66,49 +51,49 @@ window.TIMING = {
   {
    "id": "s02",
    "scene": "cover",
-   "text": "Hier kommen unsere Seminare 2027 für die Frischetheke.",
-   "start": 3.757,
-   "end": 7.595,
+   "text": "Die Seminare 2027 für die Frischetheke sind da!",
+   "start": 3.58,
+   "end": 7.473,
    "words": [
     {
-     "w": "Hier",
-     "s": 3.757,
-     "e": 4.121
-    },
-    {
-     "w": "kommen",
-     "s": 4.121,
-     "e": 4.617
-    },
-    {
-     "w": "unsere",
-     "s": 4.617,
-     "e": 5.113
+     "w": "Die",
+     "s": 3.58,
+     "e": 3.923
     },
     {
      "w": "Seminare",
-     "s": 5.113,
-     "e": 5.742
+     "s": 3.923,
+     "e": 4.648
     },
     {
      "w": "2027",
-     "s": 5.742,
-     "e": 6.106
+     "s": 4.648,
+     "e": 5.068
     },
     {
      "w": "für",
-     "s": 6.106,
-     "e": 6.404
+     "s": 5.068,
+     "e": 5.412
     },
     {
      "w": "die",
-     "s": 6.404,
-     "e": 6.702
+     "s": 5.412,
+     "e": 5.755
     },
     {
-     "w": "Frischetheke.",
-     "s": 6.702,
-     "e": 7.595
+     "w": "Frischetheke",
+     "s": 5.755,
+     "e": 6.786
+    },
+    {
+     "w": "sind",
+     "s": 6.786,
+     "e": 7.206
+    },
+    {
+     "w": "da!",
+     "s": 7.206,
+     "e": 7.473
     }
    ],
    "voice": "Platzhalter"
@@ -116,49 +101,44 @@ window.TIMING = {
   {
    "id": "s03",
    "scene": "menschen",
-   "text": "Denn Menschen machen den Unterschied. Und zwar du!",
-   "start": 7.895,
-   "end": 10.312,
+   "text": "Denn Menschen machen den Unterschied. Also: du!",
+   "start": 7.723,
+   "end": 10.405,
    "words": [
     {
      "w": "Denn",
-     "s": 7.895,
-     "e": 8.133
+     "s": 7.723,
+     "e": 7.999
     },
     {
      "w": "Menschen",
-     "s": 8.133,
-     "e": 8.542
+     "s": 7.999,
+     "e": 8.475
     },
     {
      "w": "machen",
-     "s": 8.542,
-     "e": 8.866
+     "s": 8.475,
+     "e": 8.851
     },
     {
      "w": "den",
-     "s": 8.866,
-     "e": 9.06
+     "s": 8.851,
+     "e": 9.077
     },
     {
      "w": "Unterschied.",
-     "s": 9.06,
-     "e": 9.6
+     "s": 9.077,
+     "e": 9.703
     },
     {
-     "w": "Und",
-     "s": 9.729,
-     "e": 9.923
-    },
-    {
-     "w": "zwar",
-     "s": 9.923,
-     "e": 10.161
+     "w": "Also:",
+     "s": 9.854,
+     "e": 10.129
     },
     {
      "w": "du!",
-     "s": 10.161,
-     "e": 10.312
+     "s": 10.229,
+     "e": 10.405
     }
    ],
    "voice": "Platzhalter"
@@ -166,59 +146,39 @@ window.TIMING = {
   {
    "id": "s04",
    "scene": "level",
-   "text": "Vier Stufen bringen dich weiter: Fresh-ling, Fresh-Kraft, Fresh-Alist und Fresh-Master.",
-   "start": 11.212,
-   "end": 15.656,
+   "text": "Vier Level: Fresh-ling, Fresh-Kraft, Fresh-Alist, Fresh-Master.",
+   "start": 11.105,
+   "end": 14.936,
    "words": [
     {
      "w": "Vier",
-     "s": 11.212,
-     "e": 11.48
+     "s": 11.105,
+     "e": 11.424
     },
     {
-     "w": "Stufen",
-     "s": 11.48,
-     "e": 11.847
-    },
-    {
-     "w": "bringen",
-     "s": 11.847,
-     "e": 12.262
-    },
-    {
-     "w": "dich",
-     "s": 12.262,
-     "e": 12.53
-    },
-    {
-     "w": "weiter:",
-     "s": 12.53,
-     "e": 12.897
+     "w": "Level:",
+     "s": 11.424,
+     "e": 11.801
     },
     {
      "w": "Fresh-ling,",
-     "s": 12.994,
-     "e": 13.507
+     "s": 11.917,
+     "e": 12.527
     },
     {
      "w": "Fresh-Kraft,",
-     "s": 13.605,
-     "e": 14.166
+     "s": 12.643,
+     "e": 13.31
     },
     {
-     "w": "Fresh-Alist",
-     "s": 14.264,
-     "e": 14.826
-    },
-    {
-     "w": "und",
-     "s": 14.826,
-     "e": 15.045
+     "w": "Fresh-Alist,",
+     "s": 13.427,
+     "e": 14.094
     },
     {
      "w": "Fresh-Master.",
-     "s": 15.045,
-     "e": 15.656
+     "s": 14.21,
+     "e": 14.936
     }
    ],
    "voice": "Platzhalter"
@@ -226,59 +186,74 @@ window.TIMING = {
   {
    "id": "s05",
    "scene": "level",
-   "text": "Ob Quereinsteiger oder Profi – hier findest du dein Level.",
-   "start": 16.212,
-   "end": 19.056,
+   "text": "Ob Quereinsteiger oder Profi – hier levelst du auf. Ich erklär's euch kurz!",
+   "start": 15.505,
+   "end": 19.711,
    "words": [
     {
      "w": "Ob",
-     "s": 16.212,
-     "e": 16.37
+     "s": 15.505,
+     "e": 15.683
     },
     {
      "w": "Quereinsteiger",
-     "s": 16.37,
-     "e": 17.069
+     "s": 15.683,
+     "e": 16.473
     },
     {
      "w": "oder",
-     "s": 17.069,
-     "e": 17.318
+     "s": 16.473,
+     "e": 16.754
     },
     {
      "w": "Profi",
-     "s": 17.318,
-     "e": 17.611
+     "s": 16.754,
+     "e": 17.085
     },
     {
      "w": "–",
-     "s": 17.611,
-     "e": 17.634
+     "s": 17.085,
+     "e": 17.111
     },
     {
      "w": "hier",
-     "s": 17.724,
-     "e": 17.972
+     "s": 17.213,
+     "e": 17.493
     },
     {
-     "w": "findest",
-     "s": 17.972,
-     "e": 18.356
+     "w": "levelst",
+     "s": 17.493,
+     "e": 17.926
     },
     {
      "w": "du",
-     "s": 18.356,
-     "e": 18.514
+     "s": 17.926,
+     "e": 18.105
     },
     {
-     "w": "dein",
-     "s": 18.514,
-     "e": 18.762
+     "w": "auf.",
+     "s": 18.105,
+     "e": 18.334
     },
     {
-     "w": "Level.",
-     "s": 18.762,
-     "e": 19.056
+     "w": "Ich",
+     "s": 18.487,
+     "e": 18.716
+    },
+    {
+     "w": "erklär's",
+     "s": 18.716,
+     "e": 19.15
+    },
+    {
+     "w": "euch",
+     "s": 19.15,
+     "e": 19.43
+    },
+    {
+     "w": "kurz!",
+     "s": 19.43,
+     "e": 19.711
     }
    ],
    "voice": "Platzhalter"
@@ -286,609 +261,969 @@ window.TIMING = {
   {
    "id": "s06",
    "scene": "onboarding",
-   "text": "Los geht's mit Onboarding und Grundlagen – kurz, knackig und auch online.",
-   "start": 19.406,
-   "end": 23.701,
+   "text": "Was gibt's für den Start?",
+   "start": 20.011,
+   "end": 21.166,
    "words": [
     {
-     "w": "Los",
-     "s": 19.406,
-     "e": 19.65
+     "w": "Was",
+     "s": 20.011,
+     "e": 20.207
     },
     {
-     "w": "geht's",
-     "s": 19.65,
-     "e": 20.004
+     "w": "gibt's",
+     "s": 20.207,
+     "e": 20.49
     },
     {
-     "w": "mit",
-     "s": 20.004,
-     "e": 20.248
+     "w": "für",
+     "s": 20.49,
+     "e": 20.686
     },
     {
-     "w": "Onboarding",
-     "s": 20.248,
-     "e": 20.874
+     "w": "den",
+     "s": 20.686,
+     "e": 20.883
     },
     {
-     "w": "und",
-     "s": 20.874,
-     "e": 21.118
-    },
-    {
-     "w": "Grundlagen",
-     "s": 21.118,
-     "e": 21.744
-    },
-    {
-     "w": "–",
-     "s": 21.744,
-     "e": 21.771
-    },
-    {
-     "w": "kurz,",
-     "s": 21.88,
-     "e": 22.179
-    },
-    {
-     "w": "knackig",
-     "s": 22.287,
-     "e": 22.75
-    },
-    {
-     "w": "und",
-     "s": 22.75,
-     "e": 22.994
-    },
-    {
-     "w": "auch",
-     "s": 22.994,
-     "e": 23.293
-    },
-    {
-     "w": "online.",
-     "s": 23.293,
-     "e": 23.701
+     "w": "Start?",
+     "s": 20.883,
+     "e": 21.166
     }
    ],
    "voice": "Platzhalter"
   },
   {
    "id": "s07",
-   "scene": "fleisch",
-   "text": "Fleisch: von der Grillschule über die Bratenschule bis zur Meat Masterclass.",
-   "start": 24.006,
-   "end": 27.683,
+   "scene": "onboarding",
+   "text": "Onboarding zum Durchstarten, Grundlagen – kurz und knackig online – und die Heimspielserie in Teilzeit.",
+   "start": 21.316,
+   "end": 27.103,
    "words": [
     {
-     "w": "Fleisch:",
-     "s": 24.006,
-     "e": 24.385
+     "w": "Onboarding",
+     "s": 21.316,
+     "e": 21.913
     },
     {
-     "w": "von",
-     "s": 24.474,
-     "e": 24.674
+     "w": "zum",
+     "s": 21.913,
+     "e": 22.147
     },
     {
-     "w": "der",
-     "s": 24.674,
-     "e": 24.875
+     "w": "Durchstarten,",
+     "s": 22.147,
+     "e": 22.847
     },
     {
-     "w": "Grillschule",
-     "s": 24.875,
-     "e": 25.432
+     "w": "Grundlagen",
+     "s": 22.951,
+     "e": 23.548
     },
     {
-     "w": "über",
-     "s": 25.432,
-     "e": 25.677
+     "w": "–",
+     "s": 23.548,
+     "e": 23.574
+    },
+    {
+     "w": "kurz",
+     "s": 23.677,
+     "e": 23.963
+    },
+    {
+     "w": "und",
+     "s": 23.963,
+     "e": 24.196
+    },
+    {
+     "w": "knackig",
+     "s": 24.196,
+     "e": 24.637
+    },
+    {
+     "w": "online",
+     "s": 24.637,
+     "e": 25.027
+    },
+    {
+     "w": "–",
+     "s": 25.027,
+     "e": 25.053
+    },
+    {
+     "w": "und",
+     "s": 25.156,
+     "e": 25.39
     },
     {
      "w": "die",
-     "s": 25.677,
-     "e": 25.878
+     "s": 25.39,
+     "e": 25.623
     },
     {
-     "w": "Bratenschule",
-     "s": 25.878,
-     "e": 26.479
+     "w": "Heimspielserie",
+     "s": 25.623,
+     "e": 26.428
     },
     {
-     "w": "bis",
-     "s": 26.479,
-     "e": 26.68
+     "w": "in",
+     "s": 26.428,
+     "e": 26.609
     },
     {
-     "w": "zur",
-     "s": 26.68,
-     "e": 26.881
-    },
-    {
-     "w": "Meat",
-     "s": 26.881,
-     "e": 27.126
-    },
-    {
-     "w": "Masterclass.",
-     "s": 27.126,
-     "e": 27.683
+     "w": "Teilzeit.",
+     "s": 26.609,
+     "e": 27.103
     }
    ],
    "voice": "Platzhalter"
   },
   {
    "id": "s08",
-   "scene": "wurst",
-   "text": "Wurst: Feine Wurst und Schinken aus aller Welt – und du wirst Food Stylist.",
-   "start": 29.606,
-   "end": 33.279,
+   "scene": "fleisch",
+   "text": "Was gibt's rund um Fleisch?",
+   "start": 27.353,
+   "end": 28.685,
    "words": [
     {
-     "w": "Wurst:",
-     "s": 29.606,
-     "e": 29.893
+     "w": "Was",
+     "s": 27.353,
+     "e": 27.563
     },
     {
-     "w": "Feine",
-     "s": 29.982,
-     "e": 30.27
+     "w": "gibt's",
+     "s": 27.563,
+     "e": 27.867
     },
     {
-     "w": "Wurst",
-     "s": 30.27,
-     "e": 30.557
+     "w": "rund",
+     "s": 27.867,
+     "e": 28.124
     },
     {
-     "w": "und",
-     "s": 30.557,
-     "e": 30.756
+     "w": "um",
+     "s": 28.124,
+     "e": 28.288
     },
     {
-     "w": "Schinken",
-     "s": 30.756,
-     "e": 31.177
-    },
-    {
-     "w": "aus",
-     "s": 31.177,
-     "e": 31.376
-    },
-    {
-     "w": "aller",
-     "s": 31.376,
-     "e": 31.664
-    },
-    {
-     "w": "Welt",
-     "s": 31.664,
-     "e": 31.907
-    },
-    {
-     "w": "–",
-     "s": 31.907,
-     "e": 31.929
-    },
-    {
-     "w": "und",
-     "s": 32.018,
-     "e": 32.217
-    },
-    {
-     "w": "du",
-     "s": 32.217,
-     "e": 32.372
-    },
-    {
-     "w": "wirst",
-     "s": 32.372,
-     "e": 32.66
-    },
-    {
-     "w": "Food",
-     "s": 32.66,
-     "e": 32.903
-    },
-    {
-     "w": "Stylist.",
-     "s": 32.903,
-     "e": 33.279
+     "w": "Fleisch?",
+     "s": 28.288,
+     "e": 28.685
     }
    ],
    "voice": "Platzhalter"
   },
   {
    "id": "s09",
-   "scene": "kaese",
-   "text": "Käse: Ab auf kulinarische Reise – bis zur Käse-Masterclass.",
-   "start": 33.806,
-   "end": 37.438,
+   "scene": "fleisch",
+   "text": "Fleisch mit Profil, Grillschule, Bratenschule – mehr weiß nur Oma! – und die Meat Masterclass.",
+   "start": 28.835,
+   "end": 34.204,
    "words": [
     {
-     "w": "Käse:",
-     "s": 33.806,
-     "e": 34.12
+     "w": "Fleisch",
+     "s": 28.835,
+     "e": 29.268
     },
     {
-     "w": "Ab",
-     "s": 34.235,
-     "e": 34.435
+     "w": "mit",
+     "s": 29.268,
+     "e": 29.497
     },
     {
-     "w": "auf",
-     "s": 34.435,
-     "e": 34.692
+     "w": "Profil,",
+     "s": 29.497,
+     "e": 29.878
     },
     {
-     "w": "kulinarische",
-     "s": 34.692,
-     "e": 35.465
+     "w": "Grillschule,",
+     "s": 29.98,
+     "e": 30.616
     },
     {
-     "w": "Reise",
-     "s": 35.465,
-     "e": 35.837
+     "w": "Bratenschule",
+     "s": 30.718,
+     "e": 31.405
     },
     {
      "w": "–",
-     "s": 35.837,
-     "e": 35.865
+     "s": 31.405,
+     "e": 31.43
     },
     {
-     "w": "bis",
-     "s": 35.98,
-     "e": 36.237
+     "w": "mehr",
+     "s": 31.532,
+     "e": 31.812
     },
     {
-     "w": "zur",
-     "s": 36.237,
-     "e": 36.494
+     "w": "weiß",
+     "s": 31.812,
+     "e": 32.092
     },
     {
-     "w": "Käse-Masterclass.",
-     "s": 36.494,
-     "e": 37.438
+     "w": "nur",
+     "s": 32.092,
+     "e": 32.321
+    },
+    {
+     "w": "Oma!",
+     "s": 32.321,
+     "e": 32.55
+    },
+    {
+     "w": "–",
+     "s": 32.702,
+     "e": 32.728
+    },
+    {
+     "w": "und",
+     "s": 32.83,
+     "e": 33.059
+    },
+    {
+     "w": "die",
+     "s": 33.059,
+     "e": 33.288
+    },
+    {
+     "w": "Meat",
+     "s": 33.288,
+     "e": 33.567
+    },
+    {
+     "w": "Masterclass.",
+     "s": 33.567,
+     "e": 34.204
     }
    ],
    "voice": "Platzhalter"
   },
   {
    "id": "s10",
-   "scene": "fisch",
-   "text": "Fisch: Rock die Küche – und erleb Fisch hautnah.",
-   "start": 39.006,
-   "end": 41.374,
+   "scene": "wurst",
+   "text": "Und bei Wurst?",
+   "start": 34.454,
+   "end": 35.385,
    "words": [
     {
-     "w": "Fisch:",
-     "s": 39.006,
-     "e": 39.293
+     "w": "Und",
+     "s": 34.454,
+     "e": 34.724
     },
     {
-     "w": "Rock",
-     "s": 39.382,
-     "e": 39.625
+     "w": "bei",
+     "s": 34.724,
+     "e": 34.994
     },
     {
-     "w": "die",
-     "s": 39.625,
-     "e": 39.825
-    },
-    {
-     "w": "Küche",
-     "s": 39.825,
-     "e": 40.112
-    },
-    {
-     "w": "–",
-     "s": 40.112,
-     "e": 40.135
-    },
-    {
-     "w": "und",
-     "s": 40.223,
-     "e": 40.422
-    },
-    {
-     "w": "erleb",
-     "s": 40.422,
-     "e": 40.71
-    },
-    {
-     "w": "Fisch",
-     "s": 40.71,
-     "e": 40.998
-    },
-    {
-     "w": "hautnah.",
-     "s": 40.998,
-     "e": 41.374
+     "w": "Wurst?",
+     "s": 34.994,
+     "e": 35.385
     }
    ],
    "voice": "Platzhalter"
   },
   {
    "id": "s11",
-   "scene": "fuehrung",
-   "text": "Führung: Führungstraining, Ausbilderschein und Meisterpflicht machen dich fit fürs Team.",
-   "start": 43.006,
-   "end": 47.55,
+   "scene": "wurst",
+   "text": "Feine Wurst und Schinken aus aller Welt – und ihr werdet Food Stylist auf Platten und Fingern.",
+   "start": 35.535,
+   "end": 40.156,
    "words": [
     {
-     "w": "Führung:",
-     "s": 43.006,
-     "e": 43.412
+     "w": "Feine",
+     "s": 35.535,
+     "e": 35.828
     },
     {
-     "w": "Führungstraining,",
-     "s": 43.508,
-     "e": 44.345
-    },
-    {
-     "w": "Ausbilderschein",
-     "s": 44.441,
-     "e": 45.23
+     "w": "Wurst",
+     "s": 35.828,
+     "e": 36.121
     },
     {
      "w": "und",
-     "s": 45.23,
-     "e": 45.445
+     "s": 36.121,
+     "e": 36.324
     },
     {
-     "w": "Meisterpflicht",
-     "s": 45.445,
-     "e": 46.187
+     "w": "Schinken",
+     "s": 36.324,
+     "e": 36.752
     },
     {
-     "w": "machen",
-     "s": 46.187,
-     "e": 46.545
+     "w": "aus",
+     "s": 36.752,
+     "e": 36.955
     },
     {
-     "w": "dich",
-     "s": 46.545,
-     "e": 46.808
+     "w": "aller",
+     "s": 36.955,
+     "e": 37.248
     },
     {
-     "w": "fit",
-     "s": 46.808,
-     "e": 47.024
+     "w": "Welt",
+     "s": 37.248,
+     "e": 37.496
     },
     {
-     "w": "fürs",
-     "s": 47.024,
-     "e": 47.287
+     "w": "–",
+     "s": 37.496,
+     "e": 37.518
     },
     {
-     "w": "Team.",
-     "s": 47.287,
-     "e": 47.55
+     "w": "und",
+     "s": 37.609,
+     "e": 37.811
+    },
+    {
+     "w": "ihr",
+     "s": 37.811,
+     "e": 38.014
+    },
+    {
+     "w": "werdet",
+     "s": 38.014,
+     "e": 38.352
+    },
+    {
+     "w": "Food",
+     "s": 38.352,
+     "e": 38.6
+    },
+    {
+     "w": "Stylist",
+     "s": 38.6,
+     "e": 38.983
+    },
+    {
+     "w": "auf",
+     "s": 38.983,
+     "e": 39.186
+    },
+    {
+     "w": "Platten",
+     "s": 39.186,
+     "e": 39.569
+    },
+    {
+     "w": "und",
+     "s": 39.569,
+     "e": 39.772
+    },
+    {
+     "w": "Fingern.",
+     "s": 39.772,
+     "e": 40.156
     }
    ],
    "voice": "Platzhalter"
   },
   {
    "id": "s12",
-   "scene": "azubis",
-   "text": "Für Azubis: Onboarding, Hands on Meat – im Handwerk wird gelernt!",
-   "start": 50.406,
-   "end": 54.085,
+   "scene": "kaese",
+   "text": "Was geht beim Käse?",
+   "start": 40.406,
+   "end": 41.516,
    "words": [
     {
-     "w": "Für",
-     "s": 50.406,
-     "e": 50.634
+     "w": "Was",
+     "s": 40.406,
+     "e": 40.644
     },
     {
-     "w": "Azubis:",
-     "s": 50.634,
-     "e": 51.015
+     "w": "geht",
+     "s": 40.644,
+     "e": 40.935
     },
     {
-     "w": "Onboarding,",
-     "s": 51.116,
-     "e": 51.7
+     "w": "beim",
+     "s": 40.935,
+     "e": 41.225
     },
     {
-     "w": "Hands",
-     "s": 51.801,
-     "e": 52.131
-    },
-    {
-     "w": "on",
-     "s": 52.131,
-     "e": 52.309
-    },
-    {
-     "w": "Meat",
-     "s": 52.309,
-     "e": 52.588
-    },
-    {
-     "w": "–",
-     "s": 52.588,
-     "e": 52.613
-    },
-    {
-     "w": "im",
-     "s": 52.715,
-     "e": 52.893
-    },
-    {
-     "w": "Handwerk",
-     "s": 52.893,
-     "e": 53.375
-    },
-    {
-     "w": "wird",
-     "s": 53.375,
-     "e": 53.654
-    },
-    {
-     "w": "gelernt!",
-     "s": 53.654,
-     "e": 54.085
+     "w": "Käse?",
+     "s": 41.225,
+     "e": 41.516
     }
    ],
    "voice": "Platzhalter"
   },
   {
    "id": "s13",
-   "scene": "digital",
-   "text": "Und digital: 100 Handgriffe als Video, Blended Learning und das Quiz-Duell WizzUp.",
-   "start": 55.206,
-   "end": 59.801,
+   "scene": "kaese",
+   "text": "Kulinarische Reise, Fromage Voyage – bis zur Masterclass: High End für Profis.",
+   "start": 41.666,
+   "end": 46.297,
    "words": [
     {
-     "w": "Und",
-     "s": 55.206,
-     "e": 55.438
+     "w": "Kulinarische",
+     "s": 41.666,
+     "e": 42.393
     },
     {
-     "w": "digital:",
-     "s": 55.438,
-     "e": 55.877
+     "w": "Reise,",
+     "s": 42.393,
+     "e": 42.743
     },
     {
-     "w": "100",
-     "s": 55.98,
-     "e": 56.213
+     "w": "Fromage",
+     "s": 42.851,
+     "e": 43.309
     },
     {
-     "w": "Handgriffe",
-     "s": 56.213,
-     "e": 56.806
+     "w": "Voyage",
+     "s": 43.309,
+     "e": 43.713
     },
     {
-     "w": "als",
-     "s": 56.806,
-     "e": 57.039
+     "w": "–",
+     "s": 43.713,
+     "e": 43.739
     },
     {
-     "w": "Video,",
-     "s": 57.039,
-     "e": 57.374
+     "w": "bis",
+     "s": 43.847,
+     "e": 44.089
     },
     {
-     "w": "Blended",
-     "s": 57.478,
-     "e": 57.917
+     "w": "zur",
+     "s": 44.089,
+     "e": 44.332
     },
     {
-     "w": "Learning",
-     "s": 57.917,
-     "e": 58.407
+     "w": "Masterclass:",
+     "s": 44.332,
+     "e": 45.005
     },
     {
-     "w": "und",
-     "s": 58.407,
-     "e": 58.639
+     "w": "High",
+     "s": 45.112,
+     "e": 45.409
     },
     {
-     "w": "das",
-     "s": 58.639,
-     "e": 58.872
+     "w": "End",
+     "s": 45.409,
+     "e": 45.651
     },
     {
-     "w": "Quiz-Duell",
-     "s": 58.872,
-     "e": 59.414
+     "w": "für",
+     "s": 45.651,
+     "e": 45.893
     },
     {
-     "w": "WizzUp.",
-     "s": 59.414,
-     "e": 59.801
+     "w": "Profis.",
+     "s": 45.893,
+     "e": 46.297
     }
    ],
    "voice": "Platzhalter"
   },
   {
    "id": "s14",
-   "scene": "outro",
-   "text": "Alle Seminare findest du in unserer App. Code scannen – wir sehen uns an der Theke!",
-   "start": 60.606,
-   "end": 64.55,
+   "scene": "fisch",
+   "text": "Was gibt's rund um Fisch?",
+   "start": 46.547,
+   "end": 47.849,
    "words": [
     {
-     "w": "Alle",
-     "s": 60.606,
-     "e": 60.839
+     "w": "Was",
+     "s": 46.547,
+     "e": 46.768
     },
     {
-     "w": "Seminare",
-     "s": 60.839,
-     "e": 61.242
+     "w": "gibt's",
+     "s": 46.768,
+     "e": 47.087
     },
     {
-     "w": "findest",
-     "s": 61.242,
-     "e": 61.602
+     "w": "rund",
+     "s": 47.087,
+     "e": 47.358
     },
     {
-     "w": "du",
-     "s": 61.602,
-     "e": 61.751
+     "w": "um",
+     "s": 47.358,
+     "e": 47.529
     },
     {
-     "w": "in",
-     "s": 61.751,
-     "e": 61.899
+     "w": "Fisch?",
+     "s": 47.529,
+     "e": 47.849
+    }
+   ],
+   "voice": "Platzhalter"
+  },
+  {
+   "id": "s15",
+   "scene": "fisch",
+   "text": "Rock' die Küche mit Fisch – und Fisch hautnah: ab nach Bremerhaven!",
+   "start": 47.999,
+   "end": 51.833,
+   "words": [
+    {
+     "w": "Rock'",
+     "s": 47.999,
+     "e": 48.288
     },
     {
-     "w": "unserer",
-     "s": 61.899,
-     "e": 62.26
+     "w": "die",
+     "s": 48.288,
+     "e": 48.524
     },
     {
-     "w": "App.",
-     "s": 62.26,
-     "e": 62.45
+     "w": "Küche",
+     "s": 48.524,
+     "e": 48.865
     },
     {
-     "w": "Code",
-     "s": 62.578,
-     "e": 62.811
+     "w": "mit",
+     "s": 48.865,
+     "e": 49.102
     },
     {
-     "w": "scannen",
-     "s": 62.811,
-     "e": 63.171
+     "w": "Fisch",
+     "s": 49.102,
+     "e": 49.443
     },
     {
      "w": "–",
-     "s": 63.171,
-     "e": 63.193
+     "s": 49.443,
+     "e": 49.469
     },
     {
-     "w": "wir",
-     "s": 63.277,
-     "e": 63.468
+     "w": "und",
+     "s": 49.574,
+     "e": 49.811
     },
     {
-     "w": "sehen",
-     "s": 63.468,
-     "e": 63.744
+     "w": "Fisch",
+     "s": 49.811,
+     "e": 50.152
     },
     {
-     "w": "uns",
-     "s": 63.744,
-     "e": 63.935
+     "w": "hautnah:",
+     "s": 50.152,
+     "e": 50.598
     },
     {
-     "w": "an",
-     "s": 63.935,
-     "e": 64.083
+     "w": "ab",
+     "s": 50.703,
+     "e": 50.887
+    },
+    {
+     "w": "nach",
+     "s": 50.887,
+     "e": 51.176
+    },
+    {
+     "w": "Bremerhaven!",
+     "s": 51.176,
+     "e": 51.833
+    }
+   ],
+   "voice": "Platzhalter"
+  },
+  {
+   "id": "s16",
+   "scene": "fuehrung",
+   "text": "Ihr wollt führen?",
+   "start": 52.083,
+   "end": 53.012,
+   "words": [
+    {
+     "w": "Ihr",
+     "s": 52.083,
+     "e": 52.309
+    },
+    {
+     "w": "wollt",
+     "s": 52.309,
+     "e": 52.635
+    },
+    {
+     "w": "führen?",
+     "s": 52.635,
+     "e": 53.012
+    }
+   ],
+   "voice": "Platzhalter"
+  },
+  {
+   "id": "s17",
+   "scene": "fuehrung",
+   "text": "Führungstraining Theke eins bis drei, Ausbilderschein – und Meisterpflicht in nur fünf Tagen.",
+   "start": 53.162,
+   "end": 57.983,
+   "words": [
+    {
+     "w": "Führungstraining",
+     "s": 53.162,
+     "e": 54.002
+    },
+    {
+     "w": "Theke",
+     "s": 54.002,
+     "e": 54.313
+    },
+    {
+     "w": "eins",
+     "s": 54.313,
+     "e": 54.577
+    },
+    {
+     "w": "bis",
+     "s": 54.577,
+     "e": 54.793
+    },
+    {
+     "w": "drei,",
+     "s": 54.793,
+     "e": 55.057
+    },
+    {
+     "w": "Ausbilderschein",
+     "s": 55.153,
+     "e": 55.944
+    },
+    {
+     "w": "–",
+     "s": 55.944,
+     "e": 55.968
+    },
+    {
+     "w": "und",
+     "s": 56.064,
+     "e": 56.28
+    },
+    {
+     "w": "Meisterpflicht",
+     "s": 56.28,
+     "e": 57.024
+    },
+    {
+     "w": "in",
+     "s": 57.024,
+     "e": 57.191
+    },
+    {
+     "w": "nur",
+     "s": 57.191,
+     "e": 57.407
+    },
+    {
+     "w": "fünf",
+     "s": 57.407,
+     "e": 57.671
+    },
+    {
+     "w": "Tagen.",
+     "s": 57.671,
+     "e": 57.983
+    }
+   ],
+   "voice": "Platzhalter"
+  },
+  {
+   "id": "s18",
+   "scene": "azubis",
+   "text": "Und ihr Azubis?",
+   "start": 58.762,
+   "end": 59.836,
+   "words": [
+    {
+     "w": "Und",
+     "s": 58.762,
+     "e": 59.055
+    },
+    {
+     "w": "ihr",
+     "s": 59.055,
+     "e": 59.348
+    },
+    {
+     "w": "Azubis?",
+     "s": 59.348,
+     "e": 59.836
+    }
+   ],
+   "voice": "Platzhalter"
+  },
+  {
+   "id": "s19",
+   "scene": "azubis",
+   "text": "Es ist Thekenzeit! Hands on Meat – im Handwerk wird gelernt.",
+   "start": 59.986,
+   "end": 63.219,
+   "words": [
+    {
+     "w": "Es",
+     "s": 59.986,
+     "e": 60.154
+    },
+    {
+     "w": "ist",
+     "s": 60.154,
+     "e": 60.369
+    },
+    {
+     "w": "Thekenzeit!",
+     "s": 60.369,
+     "e": 60.92
+    },
+    {
+     "w": "Hands",
+     "s": 61.064,
+     "e": 61.375
+    },
+    {
+     "w": "on",
+     "s": 61.375,
+     "e": 61.543
+    },
+    {
+     "w": "Meat",
+     "s": 61.543,
+     "e": 61.806
+    },
+    {
+     "w": "–",
+     "s": 61.806,
+     "e": 61.83
+    },
+    {
+     "w": "im",
+     "s": 61.926,
+     "e": 62.094
+    },
+    {
+     "w": "Handwerk",
+     "s": 62.094,
+     "e": 62.549
+    },
+    {
+     "w": "wird",
+     "s": 62.549,
+     "e": 62.812
+    },
+    {
+     "w": "gelernt.",
+     "s": 62.812,
+     "e": 63.219
+    }
+   ],
+   "voice": "Platzhalter"
+  },
+  {
+   "id": "s20",
+   "scene": "digital",
+   "text": "Und zwischendurch?",
+   "start": 63.786,
+   "end": 64.673,
+   "words": [
+    {
+     "w": "Und",
+     "s": 63.786,
+     "e": 63.996
+    },
+    {
+     "w": "zwischendurch?",
+     "s": 63.996,
+     "e": 64.673
+    }
+   ],
+   "voice": "Platzhalter"
+  },
+  {
+   "id": "s21",
+   "scene": "digital",
+   "text": "100 Handgriffe als Video, Blended Learning und WizzUp – das Quiz-Duell.",
+   "start": 64.823,
+   "end": 69.317,
+   "words": [
+    {
+     "w": "100",
+     "s": 64.823,
+     "e": 65.087
+    },
+    {
+     "w": "Handgriffe",
+     "s": 65.087,
+     "e": 65.763
+    },
+    {
+     "w": "als",
+     "s": 65.763,
+     "e": 66.027
+    },
+    {
+     "w": "Video,",
+     "s": 66.027,
+     "e": 66.409
+    },
+    {
+     "w": "Blended",
+     "s": 66.526,
+     "e": 67.026
+    },
+    {
+     "w": "Learning",
+     "s": 67.026,
+     "e": 67.584
+    },
+    {
+     "w": "und",
+     "s": 67.584,
+     "e": 67.848
+    },
+    {
+     "w": "WizzUp",
+     "s": 67.848,
+     "e": 68.289
+    },
+    {
+     "w": "–",
+     "s": 68.289,
+     "e": 68.318
+    },
+    {
+     "w": "das",
+     "s": 68.436,
+     "e": 68.7
+    },
+    {
+     "w": "Quiz-Duell.",
+     "s": 68.7,
+     "e": 69.317
+    }
+   ],
+   "voice": "Platzhalter"
+  },
+  {
+   "id": "s22",
+   "scene": "share",
+   "text": "Bock drauf? Schick das deiner Marktleitung!",
+   "start": 69.617,
+   "end": 71.82,
+   "words": [
+    {
+     "w": "Bock",
+     "s": 69.617,
+     "e": 69.869
+    },
+    {
+     "w": "drauf?",
+     "s": 69.869,
+     "e": 70.168
+    },
+    {
+     "w": "Schick",
+     "s": 70.305,
+     "e": 70.65
+    },
+    {
+     "w": "das",
+     "s": 70.65,
+     "e": 70.856
+    },
+    {
+     "w": "deiner",
+     "s": 70.856,
+     "e": 71.2
+    },
+    {
+     "w": "Marktleitung!",
+     "s": 71.2,
+     "e": 71.82
+    }
+   ],
+   "voice": "Platzhalter"
+  },
+  {
+   "id": "s23",
+   "scene": "app",
+   "text": "Alle Seminare gibt's in der App – Link in Bio. Wir sehen uns an der Theke!",
+   "start": 72.07,
+   "end": 75.922,
+   "words": [
+    {
+     "w": "Alle",
+     "s": 72.07,
+     "e": 72.325
+    },
+    {
+     "w": "Seminare",
+     "s": 72.325,
+     "e": 72.766
+    },
+    {
+     "w": "gibt's",
+     "s": 72.766,
+     "e": 73.068
+    },
+    {
+     "w": "in",
+     "s": 73.068,
+     "e": 73.23
     },
     {
      "w": "der",
-     "s": 64.083,
-     "e": 64.274
+     "s": 73.23,
+     "e": 73.439
+    },
+    {
+     "w": "App",
+     "s": 73.439,
+     "e": 73.648
+    },
+    {
+     "w": "–",
+     "s": 73.648,
+     "e": 73.671
+    },
+    {
+     "w": "Link",
+     "s": 73.764,
+     "e": 74.019
+    },
+    {
+     "w": "in",
+     "s": 74.019,
+     "e": 74.181
+    },
+    {
+     "w": "Bio.",
+     "s": 74.181,
+     "e": 74.39
+    },
+    {
+     "w": "Wir",
+     "s": 74.529,
+     "e": 74.738
+    },
+    {
+     "w": "sehen",
+     "s": 74.738,
+     "e": 75.04
+    },
+    {
+     "w": "uns",
+     "s": 75.04,
+     "e": 75.249
+    },
+    {
+     "w": "an",
+     "s": 75.249,
+     "e": 75.411
+    },
+    {
+     "w": "der",
+     "s": 75.411,
+     "e": 75.62
     },
     {
      "w": "Theke!",
-     "s": 64.274,
-     "e": 64.55
+     "s": 75.62,
+     "e": 75.922
     }
    ],
    "voice": "Platzhalter"

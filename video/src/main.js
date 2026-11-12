@@ -1,33 +1,26 @@
-/* Seminare 2027 – Motion-Graphic-Video (Instagram Reel, 1080×1920)
- * Alles läuft über EINE pausierte GSAP-Timeline. Die Zeitpunkte kommen aus src/timing.js
- * (Sprachspur): Animation, Karten und Untertitel sitzen automatisch auf Franz' Wörtern.
- * window.__seek(t) setzt das Bild auf Sekunde t (wird beim Rendern Bild für Bild aufgerufen).
+/* Seminare 2027 – Motion-Graphic-Video (Instagram Reel, 1080×1920), Orange-Fresh-Style
+ *
+ * Eine pausierte GSAP-Timeline. Alle Zeitpunkte kommen aus src/timing.js (gemessen an der Sprachspur):
+ * jede Szene, jede Karte und jeder Untertitel hängt an einem Satzteil ('line') aus src/script.json.
+ * window.__seek(t) setzt das Bild auf Sekunde t (Rendern Bild für Bild).
  */
 (() => {
   const T = window.TIMING;
   const A = '../assets/';
   const $ = (s, root = document) => root.querySelector(s);
-  const cam = $('#cam');
   const stage = $('#stage');
+  const cam = $('#cam');
   const tl = gsap.timeline({ paused: true });
 
-  // ---------- Hilfen ----------
+  // ---------------------------------------------------------------- Hilfen
   const makeRng = (seed) => () => { seed = (seed * 16807) % 2147483647; return (seed - 1) / 2147483646; };
   const rnd = makeRng(2027);
   const rr = (a, b) => a + (b - a) * rnd();
-
   const segs = Object.fromEntries(T.segments.map((s) => [s.id, s]));
-  const order = [...new Set(T.segments.map((s) => s.scene))];
+  const line = (id, i) => segs[id].lines[i];
+  const ls = (id, i) => line(id, i).s;
   const segsOf = (sc) => T.segments.filter((s) => s.scene === sc);
-  const sStart = (sc) => segsOf(sc)[0].start;
-  const sEnd = (sc) => { const i = order.indexOf(sc); return i < order.length - 1 ? sStart(order[i + 1]) : T.total; };
-  const norm = (x) => x.toLowerCase().replace(/[^a-zäöüß0-9]/g, '');
-  /** Startzeit (oder Ende) des Wortes in Satz id, das mit `needle` beginnt. */
-  function w(id, needle, which = 's') {
-    const hit = segs[id].words.find((x) => norm(x.w).startsWith(norm(needle)));
-    if (!hit) { console.warn('Wort nicht gefunden:', id, needle); return segs[id].start; }
-    return hit[which];
-  }
+
   function el(tag, cls, html, parent) {
     const e = document.createElement(tag);
     if (cls) e.className = cls;
@@ -35,502 +28,445 @@
     if (parent) parent.appendChild(e);
     return e;
   }
-  function img(src, cls, parent, style = {}) {
-    const i = el('img', cls, null, parent);
-    i.src = src; Object.assign(i.style, style);
-    return i;
-  }
-  const css = (e, st) => Object.assign(e.style, st);
-  function split(e) {
-    e.innerHTML = [...e.textContent].map((c) => `<span class="ch">${c}</span>`).join('');
-    return [...e.querySelectorAll('.ch')];
+  const css = (e, st) => (Object.assign(e.style, st), e);
+  function img(src, cls, parent, style = {}) { const i = el('img', cls, null, parent); i.src = src; return css(i, style); }
+  /** Text in Buchstaben (oder Wörter) zerlegen, Zeilenumbrüche (<br>) bleiben erhalten */
+  function split(e, by = 'ch') {
+    const parts = e.innerHTML.split(/<br\s*\/?>/i);
+    e.innerHTML = parts.map((p) => {
+      const txt = p.replace(/<[^>]+>/g, '');
+      const units = by === 'ch' ? [...txt] : txt.split(/(\s+)/);
+      return units.map((u) => (/^\s+$/.test(u) ? `<span class="${by} sp">&nbsp;</span>` : `<span class="${by}">${u}</span>`)).join('');
+    }).join('<br>');
+    return [...e.querySelectorAll('.' + by + ':not(.sp)')];
   }
   const heartPath = 'M50 86 L15 51 C3 39 9 15 30 15 C40 15 46 21 50 28 C54 21 60 15 70 15 C91 15 97 39 85 51 Z';
-  const starPath = 'M50 0 C54 36 64 46 100 50 C64 54 54 64 50 100 C46 64 36 54 0 50 C36 46 46 36 50 0Z';
-  const heartSVG = (filled) => filled
+  const heartSVG = (on) => on
     ? `<svg viewBox="0 0 100 100"><path d="${heartPath}" fill="none" stroke="url(#hg)" stroke-width="13" stroke-linejoin="round"/></svg>`
     : `<svg viewBox="0 0 100 100"><path d="${heartPath}" fill="#bfc4c9" stroke="#bfc4c9" stroke-width="13" stroke-linejoin="round"/></svg>`;
-  function bigNum(parent, txt, color, opacity, x, y, size = 1000) {
-    const s = el('div', 'bignum', `<svg width="${size}" height="${size * 1.1}" viewBox="0 0 ${size} ${size * 1.1}"><text x="0" y="${size * 0.9}" style="font-size:${size}px" stroke="${color}" stroke-opacity="${opacity}">${txt}</text></svg>`, parent);
-    css(s, { left: x + 'px', top: y + 'px' });
+
+  /** Steakboy-Sticker */
+  const sticker = (name, parent, x, y, w, flip = false) => {
+    const s = img(`${A}sb/${name}.webp`, 'sb', parent, { left: x + 'px', top: y + 'px', width: w + 'px' });
+    if (flip) s.style.scale = '-1 1';
     return s;
+  };
+  /** federnder Auftritt */
+  function popIn(t, at, opts = {}) {
+    tl.fromTo(t, { scale: 0, rotation: opts.rot0 ?? -14, y: opts.y0 ?? 60, opacity: 1 },
+      { scale: 1, rotation: opts.rot ?? 0, y: 0, duration: opts.dur ?? 0.65, ease: opts.ease ?? 'back.out(1.7)' }, at);
   }
-  function emoji(parent, ch, x, y, size, rot = 0) {
-    const e = el('div', 'emoji', ch, parent);
-    css(e, { left: x + 'px', top: y + 'px', fontSize: size + 'px', rotate: rot + 'deg' });
-    return e;
+  function popOut(t, at, dur = 0.32) { tl.to(t, { scale: 0, rotation: 12, duration: dur, ease: 'back.in(1.7)' }, at); }
+  /** sanftes Schweben (für Sticker & Food) */
+  function idle(t, from, to, amp = 12, rot = 2.5, period = 0.95) {
+    const n = Math.floor((to - from) / period);
+    if (n < 1) return;
+    tl.fromTo(t, { y: 0, rotation: 0 }, { y: -amp, rotation: rot, duration: period, ease: 'sine.inOut', repeat: n - 1, yoyo: true, immediateRender: false }, from);
   }
-  function pop(target, at, from = 0, ease = 'back.out(2.6)', dur = 0.42, rot = 0) {
-    tl.fromTo(target, { scale: from, rotation: rot - 25 }, { scale: 1, rotation: rot, duration: dur, ease }, at);
+  /** Wörter von unten aus einer Maske */
+  function riseWords(e, at, stagger = 0.06) {
+    const ws = split(e, 'wd');
+    tl.fromTo(ws, { yPercent: 110, opacity: 0, rotation: 6 }, { yPercent: 0, opacity: 1, rotation: 0, duration: 0.55, stagger, ease: 'expo.out' }, at);
+    return ws;
   }
-  function sparkle(parent, x, y, size, at, color = '#FCE531') {
-    const s = el('div', 'abs', `<svg viewBox="0 0 100 100" width="${size}" height="${size}"><path d="${starPath}" fill="${color}"/></svg>`, parent);
-    css(s, { left: x + 'px', top: y + 'px', zIndex: 8 });
-    tl.fromTo(s, { scale: 0, rotation: -90 }, { scale: 1, rotation: 0, duration: 0.22, ease: 'back.out(3)' }, at);
-    tl.to(s, { scale: 0, rotation: 90, duration: 0.25, ease: 'power2.in' }, at + 0.4);
+  function popLetters(e, at, stagger = 0.035) {
+    const cs = split(e, 'ch');
+    tl.fromTo(cs, { yPercent: 70, scale: 0.4, opacity: 0 }, { yPercent: 0, scale: 1, opacity: 1, duration: 0.6, stagger, ease: 'back.out(2.2)' }, at);
+    return cs;
   }
-  function burst(parent, cx, cy, at, color) {
-    for (let i = 0; i < 3; i++) sparkle(parent, cx + rr(-260, 260), cy + rr(-160, 160), rr(50, 95), at + i * 0.05, color);
-  }
-  function shake(at, amp = 16, dur = 0.3) {
-    const n = 6;
+  /** Konfetti in Markenfarben */
+  function confetti(parent, x, y, at, n = 36, spread = 520) {
+    const cols = ['#FCE531', '#ffffff', '#1d1d1b', '#F8915F', '#FCE531'];
     for (let i = 0; i < n; i++) {
-      const k = 1 - i / n;
-      tl.to(cam, { x: rr(-amp, amp) * k, y: rr(-amp, amp) * k, duration: dur / n, ease: 'none' }, at + (i * dur) / n);
+      const c = el('div', 'confetti', null, parent);
+      css(c, { left: x + 'px', top: y + 'px', background: cols[i % cols.length], width: rr(14, 26) + 'px', height: rr(22, 38) + 'px' });
+      const dx = rr(-spread, spread); const up = rr(-720, -260);
+      tl.fromTo(c, { x: 0, y: 0, rotation: 0, opacity: 1, scale: rr(0.7, 1.2) }, { x: dx * 0.7, y: up, rotation: rr(-360, 360), duration: 0.55, ease: 'power2.out' }, at);
+      tl.to(c, { x: dx, y: up + rr(700, 1100), rotation: `+=${rr(-540, 540)}`, duration: rr(1.1, 1.6), ease: 'power1.in' }, at + 0.55);
+      tl.set(c, { opacity: 0 }, at + 2.3);
     }
-    tl.to(cam, { x: 0, y: 0, duration: dur / n, ease: 'none' }, at + dur);
   }
-  /** kurzer Zoom-Punch der ganzen Kamera */
-  function punch(at, k = 1.045) { tl.fromTo(cam, { scale: k }, { scale: 1, duration: 0.3, ease: 'power3.out' }, at); }
-  /** Buchstaben-Scramble (deterministisch) */
-  function scramble(e, at, dur = 0.45) {
-    const fin = e.textContent;
-    const pool = 'ABCDEFGHIJKLMNOPRSTUVWXYZ0123456789#&!?';
-    const o = { p: 0 };
-    tl.fromTo(o, { p: 0 }, { p: 1, duration: dur, ease: 'none', onUpdate: () => {
-      const n = fin.length; const shown = Math.floor(o.p * (n + 1)); const tick = Math.floor(o.p * 30);
-      e.textContent = [...fin].map((c, i) => (i < shown || c === ' ' ? c : pool[(i * 7 + tick * 13) % pool.length])).join('');
-    } }, at);
-  }
-  /** Laufband wie auf den Azubi-Seiten der Broschüre */
-  function band(parent, text, top, rot, bg, fg, from, to, dir) {
-    const b = el('div', 'band', null, parent);
-    css(b, { top: top + 'px', background: bg, color: fg, rotate: rot + 'deg' });
-    const inner = el('div', 'band-in', `${text} • `.repeat(14), b);
-    tl.fromTo(inner, { x: dir > 0 ? -1400 : 0 }, { x: dir > 0 ? 0 : -1400, duration: to - from, ease: 'none' }, from);
-    return b;
-  }
-  /** leichtes Schweben */
-  function bob(target, from, to, amp = 12, period = 0.9, rot = 2) {
-    const n = Math.max(1, Math.floor((to - from) / period));
-    for (let i = 0; i < n; i++) tl.to(target, { y: (i % 2 ? 1 : -1) * amp, rotation: i % 2 ? rot : -rot, duration: period, ease: 'sine.inOut' }, from + i * period);
+  function tag(parent, text, x, y, rot, at, out) {
+    const g = el('div', 'tag', text, parent);
+    css(g, x === 'right' ? { right: '40px', top: y + 'px', transformOrigin: '80% 50%' } : { left: x + 'px', top: y + 'px' });
+    popIn(g, at, { rot, rot0: rot - 20, y0: 30, dur: 0.5, ease: 'back.out(2.4)' });
+    if (out) popOut(g, out, 0.25);
+    return g;
   }
 
-  // ---------- Szenen & Übergänge ----------
-  const scenes = {};
-  function scene(name, bg) {
-    const s = el('section', `scene bg-${bg}`, null, cam);
-    scenes[name] = s;
-    return s;
-  }
-  function enter(name, at, type = 'wipe', stripe = '') {
-    const s = scenes[name];
-    const prevName = order[order.indexOf(name) - 1];
-    const prev = prevName && scenes[prevName];
-    tl.set(s, { visibility: 'visible' }, at);
-    if (type === 'wipe') {
-      tl.fromTo(s, { '--p': 0 }, { '--p': 1, duration: 0.5, ease: 'power3.inOut' }, at);
-      const st = el('div', `stripe ${stripe}`, null, cam);
-      tl.fromTo(st, { x: -300 }, { x: 1900, duration: 0.5, ease: 'power3.inOut' }, at);
-    } else if (type === 'whip') {
-      tl.fromTo(s, { xPercent: 100, skewX: -14, filter: 'blur(26px)' }, { xPercent: 0, skewX: 0, filter: 'blur(0px)', duration: 0.42, ease: 'expo.out' }, at);
-      if (prev) tl.to(prev, { xPercent: -70, skewX: -14, filter: 'blur(26px)', duration: 0.3, ease: 'power2.in' }, at - 0.04);
-    } else if (type === 'zoom') {
-      tl.fromTo(s, { scale: 2.4, rotation: 9, opacity: 0 }, { scale: 1, rotation: 0, opacity: 1, duration: 0.5, ease: 'expo.out' }, at);
-      if (prev) tl.to(prev, { scale: 0.75, opacity: 0, duration: 0.35, ease: 'power2.in' }, at);
-    } else if (type === 'iris') {
-      tl.fromTo(s, { clipPath: 'circle(0% at 50% 42%)' }, { clipPath: 'circle(80% at 50% 42%)', duration: 0.55, ease: 'power3.inOut' }, at);
+  // ---------------------------------------------------------------- Szenenwechsel
+  let current = null;
+  function layer(cls = 'layer') { return el('div', cls, null, cam); }
+  /** neue Ebene schiebt sich von rechts rein, alte nach links raus */
+  function push(next, at) {
+    tl.set(next, { display: 'block' }, at);
+    tl.fromTo(next, { xPercent: 100 }, { xPercent: 0, duration: 0.7, ease: 'power3.inOut' }, at);
+    if (current) {
+      tl.to(current, { xPercent: -100, duration: 0.7, ease: 'power3.inOut' }, at);
+      tl.set(current, { display: 'none' }, at + 0.72);
     }
-    if (prev) tl.set(prev, { visibility: 'hidden' }, at + 0.62);
+    current = next;
+  }
+  /** weißes (oder dunkles) Sheet fährt von unten hoch */
+  function sheetUp(sheet, at) {
+    tl.set(sheet, { display: 'block' }, at);
+    tl.fromTo(sheet, { yPercent: 100 }, { yPercent: 0, duration: 0.7, ease: 'expo.out' }, at);
+    if (current) tl.set(current, { display: 'none' }, at + 0.7);
+    current = sheet;
+  }
+  /** Sheet fährt nach oben raus und gibt die nächste Ebene frei */
+  function sheetAway(sheet, next, at) {
+    tl.set(next, { display: 'block', xPercent: 0 }, at);
+    tl.to(sheet, { yPercent: -100, duration: 0.6, ease: 'power3.inOut' }, at);
+    tl.set(sheet, { display: 'none' }, at + 0.62);
+    current = next;
   }
 
-  // =====================================================================
+  // ================================================================= BUILD
   function build() {
-    // gemeinsame SVG-Verläufe
     stage.insertAdjacentHTML('afterbegin', `<svg width="0" height="0" style="position:absolute"><defs><linearGradient id="hg" x1="0" x2="1"><stop offset="0" stop-color="#F6A21E"/><stop offset="1" stop-color="#FCE531"/></linearGradient></defs></svg>`);
 
-    // ===================== 1) INTRO =====================
+    // ---------- durchgehender Hintergrund: weiche Lichtflecken, Herz, "27"
+    const bg = $('#bg');
+    [[-200, 120, 760, 'rgba(255,255,255,.16)'], [520, 1100, 900, 'rgba(255,214,120,.18)'], [300, -300, 640, 'rgba(226,88,42,.35)']].forEach(([x, y, s, c], i) => {
+      const b = el('div', 'blob', null, bg);
+      css(b, { left: x + 'px', top: y + 'px', width: s + 'px', height: s + 'px', background: `radial-gradient(circle, ${c} 0%, transparent 68%)` });
+      tl.fromTo(b, { x: 0, y: 0 }, { x: [180, -220, 140][i], y: [260, -200, 320][i], duration: T.total, ease: 'sine.inOut' }, 0);
+    });
+    const bh = el('div', 'bg-heart', `<svg width="1500" height="1500" viewBox="0 0 100 100"><path d="${heartPath}" fill="none" stroke="#fff" stroke-opacity=".10" stroke-width="5" stroke-linejoin="round"/></svg>`, bg);
+    css(bh, { left: '-210px', top: '260px' });
+    tl.fromTo(bh, { rotation: -8, scale: 0.95 }, { rotation: 10, scale: 1.08, duration: T.total, ease: 'none' }, 0);
+    const bn = el('div', 'bg-num', `<svg width="900" height="760" viewBox="0 0 900 760"><text x="0" y="700" style="font:900 820px Outfit" fill="none" stroke="#fff" stroke-opacity=".12" stroke-width="6">27</text></svg>`, bg);
+    css(bn, { left: '330px', top: '1240px' });
+    tl.fromTo(bn, { x: 0 }, { x: -160, duration: T.total, ease: 'none' }, 0);
+
+    // ---------- Story-Leiste (7 Themen)
+    const story = $('#story');
+    const storyFills = [...Array(7)].map(() => el('div', 'fill', null, el('div', 'seg', null, story)));
+    tl.fromTo(story, { opacity: 0 }, { opacity: 1, duration: 0.4 }, 1.0);
+
+    // ================================================== 1) INTRO
     {
-      const s = scene('intro', 'slate');
-      css(s, { visibility: 'visible' });
-      // Hook: 3 schnelle Flash-Cuts
-      const flashes = [['NEU', 'var(--o)', '#fff'], ['2027', 'var(--y)', 'var(--b)'], ['FRESH', 'var(--b)', 'var(--y)']].map(([t, bg, fg]) => {
-        const f = el('div', 'flash', `<span>${t}</span>`, s);
-        css(f, { background: bg, color: fg });
-        return f;
-      });
-      flashes.forEach((f, i) => {
+      const s = layer(); css(s, { display: 'block' }); current = s;
+      [['NEU', '#fff', 'var(--o)'], ['2027', 'var(--ink)', 'var(--y)'], ['FRESH', 'var(--y)', 'var(--ink)']].forEach(([t, bgc, fg], i) => {
+        const f = el('div', 'flash', `<span>${t}</span>`, stage);
+        css(f, { background: bgc, color: fg });
         tl.set(f, { visibility: 'visible' }, i * 0.3);
-        tl.fromTo($('span', f), { scale: 1.5, rotation: i % 2 ? 6 : -6 }, { scale: 1, rotation: 0, duration: 0.3, ease: 'expo.out' }, i * 0.3);
+        tl.fromTo($('span', f), { scale: 1.35 }, { scale: 1, duration: 0.3, ease: 'expo.out' }, i * 0.3);
         tl.set(f, { visibility: 'hidden' }, (i + 1) * 0.3);
       });
-      const t1 = 0.9;
+      const t0 = 0.9;
       const logo = img(A + 'img/food-academy-fresh-logo.svg', 'abs logo', s);
-      const ring = el('div', 'abs ring', `<svg viewBox="0 0 900 900"><circle cx="450" cy="450" r="430" fill="none" stroke="#fff" stroke-opacity=".35" stroke-width="6" stroke-dasharray="18 26"/></svg>`, s);
-      const blob = el('div', 'abs blob', null, s);
-      const sb = img(A + 'img/peace.webp', 'sb', s, { left: '300px', top: '520px', width: '480px' });
-      const hey = el('div', 'abs hey', 'HEY!', s);
+      const ring = el('div', 'abs', `<svg width="760" height="760" viewBox="0 0 760 760"><circle cx="380" cy="380" r="360" fill="rgba(255,255,255,.14)"/><circle cx="380" cy="380" r="372" fill="none" stroke="#fff" stroke-opacity=".5" stroke-width="5" stroke-dasharray="16 22"/></svg>`, s);
+      css(ring, { left: '160px', top: '420px' });
+      const sb = sticker('winken', s, 270, 430, 540);
+      const hey = el('div', 'abs marker', 'HEY LEUTE!', s);
+      css(hey, { left: '60px', top: '330px', fontSize: '150px', color: 'var(--y)', textShadow: '0 10px 0 rgba(120,35,0,.25)', zIndex: 6 });
       const np = el('div', 'abs nameplate', '<div class="n">FRANZ</div><br><div class="r">FRESH-TRAINER</div>', s);
-      const em = emoji(s, '👋', 790, 380, 170, 12);
-      tl.fromTo(blob, { scale: 0 }, { scale: 1, duration: 0.6, ease: 'back.out(1.7)' }, t1);
-      tl.fromTo(ring, { scale: 0.4, opacity: 0, rotation: -90 }, { scale: 1, opacity: 1, rotation: 0, duration: 0.8, ease: 'power3.out' }, t1);
-      tl.to(ring, { rotation: 70, duration: sEnd('intro') - t1, ease: 'none' }, t1 + 0.8);
-      tl.fromTo(logo, { y: -60, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, ease: 'power3.out' }, t1 + 0.1);
-      tl.fromTo(sb, { y: 520, scale: 0.6, rotation: -12 }, { y: 0, scale: 1, rotation: 0, duration: 0.6, ease: 'back.out(1.5)' }, t1 + 0.05);
-      bob(sb, t1 + 0.7, sEnd('intro'));
-      tl.fromTo(hey, { scale: 3, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.3, ease: 'back.out(2.2)' }, segs.s01.start);
-      shake(segs.s01.start + 0.12, 14);
-      pop(em, w('s01', 'Leute'), 0, 'back.out(2.6)', 0.4, 12);
-      tl.to(em, { rotation: -14, duration: 0.18, yoyo: true, repeat: 5, ease: 'sine.inOut' }, w('s01', 'Leute') + 0.4);
-      tl.fromTo(np, { x: -900 }, { x: 0, duration: 0.5, ease: 'power4.out' }, w('s01', 'Franz') - 0.1);
-      tl.fromTo($('.r', np), { scaleX: 0, transformOrigin: 'left center' }, { scaleX: 1, duration: 0.35, ease: 'power3.out' }, w('s01', 'Fresh') - 0.05);
-      burst(s, 540, 1220, w('s01', 'Fresh'));
+      css(np, { zIndex: 6 });
+      tl.fromTo(logo, { y: -80, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, ease: 'power3.out' }, t0);
+      tl.fromTo(ring, { scale: 0, rotation: -60 }, { scale: 1, rotation: 0, duration: 0.8, ease: 'expo.out' }, t0);
+      tl.to(ring, { rotation: 45, duration: 4, ease: 'none' }, t0 + 0.8);
+      popIn(sb, t0 + 0.05, { y0: 300, dur: 0.75 });
+      tl.to(sb, { rotation: -6, duration: 0.22, yoyo: true, repeat: 5, ease: 'sine.inOut', transformOrigin: '50% 90%' }, ls('s01', 0));
+      idle(sb, ls('s01', 0) + 1.4, segs.s02.start - 0.3);
+      popIn(hey, ls('s01', 0) - 0.05, { rot: -7, rot0: -30, y0: 40, dur: 0.5, ease: 'back.out(2.2)' });
+      tl.fromTo($('.n', np), { xPercent: -110 }, { xPercent: 0, duration: 0.55, ease: 'expo.out' }, ls('s01', 1) - 0.1);
+      tl.fromTo($('.r', np), { xPercent: -140 }, { xPercent: 0, duration: 0.55, ease: 'expo.out' }, ls('s01', 2) - 0.1);
     }
 
-    // ===================== 2) COVER =====================
+    // ================================================== 2) COVER – Seminare 2027 sind da
     {
-      const s = scene('cover', 'orange');
-      const heart = el('div', 'abs', `<svg width="1400" height="1400" viewBox="0 0 100 100"><path d="${heartPath}" fill="none" stroke="#fff" stroke-opacity=".16" stroke-width="7" stroke-linejoin="round"/></svg>`, s);
-      css(heart, { left: '-160px', top: '120px' });
-      const numText = $('text', bigNum(s, '27', '#fff', 0.4, 330, 980, 900));
-      const persp = el('div', 'abs persp', null, s);
-      const card = el('div', 'cover-card', null, persp);
-      img(A + 'pages/cover.webp', '', card);
-      const t1 = el('div', 'abs center-x title-xl', 'SEMINARE', s); t1.style.top = '1112px';
-      const yr = el('div', 'abs y-marker', '2027', s); css(yr, { left: '640px', top: '1010px' });
-      const da = el('div', 'abs sticker', 'SIND DA! 🔥', s); css(da, { left: '120px', top: '255px' });
-      const at = sStart('cover') - 0.25;
-      enter('cover', at, 'zoom');
-      tl.fromTo(heart, { scale: 0.6, rotation: -20 }, { scale: 1, rotation: 6, duration: sEnd('cover') - at, ease: 'power1.out' }, at);
-      tl.fromTo(numText, { strokeDasharray: 5200, strokeDashoffset: 5200 }, { strokeDashoffset: 0, duration: 2.2, ease: 'power2.inOut' }, at + 0.3);
-      tl.fromTo(card, { rotationY: -80, rotationX: 18, x: -700, z: -500 }, { rotationY: 10, rotationX: 4, x: 0, z: 0, duration: 0.9, ease: 'power3.out' }, at + 0.15);
-      tl.to(card, { rotationY: -8, rotationX: -3, duration: 2.4, ease: 'sine.inOut' }, at + 1.05);
-      tl.fromTo(split(t1), { y: 160, opacity: 0, rotation: 12 }, { y: 0, opacity: 1, rotation: 0, duration: 0.45, stagger: 0.035, ease: 'back.out(2)' }, w('s02', 'Seminare') - 0.1);
-      pop(yr, w('s02', '2027'), 0, 'back.out(2.4)', 0.4, -8);
-      shake(w('s02', '2027') + 0.1, 12);
-      pop(da, w('s02', 'sind') - 0.05, 0, 'back.out(3)', 0.4, -6);
-      punch(w('s02', 'sind'));
-      burst(s, 330, 300, w('s02', 'da'));
-      tl.to(card, { scale: 3.2, opacity: 0, duration: 0.45, ease: 'power3.in' }, sEnd('cover') - 0.4);
+      const s = layer();
+      const card = el('div', 'cover-card', `<img src="${A}pages/cover.webp">`, s);
+      const yr = el('div', 'abs marker', '2027', s);
+      css(yr, { left: '110px', top: '195px', fontSize: '170px', color: 'var(--y)', textShadow: '0 10px 0 rgba(120,35,0,.25)', zIndex: 6 });
+      const fdf = el('div', 'abs cx', '<span class="pill" style="background:#fff;color:var(--o);font-size:58px;padding:20px 40px 15px">FÜR DIE FRISCHETHEKE</span>', s);
+      css(fdf, { top: '985px', zIndex: 6 });
+      const sb = sticker('party', s, 720, 1075, 300);
+      push(s, segs.s02.start - 0.4);
+      tl.fromTo(card, { y: 900, rotation: 18, rotationY: -50, transformPerspective: 1800 }, { y: 0, rotation: -3, rotationY: 0, duration: 0.85, ease: 'expo.out' }, ls('s02', 0) - 0.15);
+      tl.to(card, { rotation: 2, y: -14, duration: 1.4, ease: 'sine.inOut', yoyo: true, repeat: 1 }, ls('s02', 0) + 0.8);
+      popIn(yr, ls('s02', 0) + 0.45, { rot: -8, rot0: -30, dur: 0.55, ease: 'back.out(2.4)' });
+      tl.fromTo(fdf, { yPercent: 160, opacity: 0 }, { yPercent: 0, opacity: 1, duration: 0.55, ease: 'expo.out' }, ls('s02', 1) - 0.1);
+      const tDa = ls('s02', 2);
+      popIn(sb, tDa - 0.1, { y0: 200, dur: 0.6 });
+      confetti(s, 540, 700, tDa, 44);
+      tl.fromTo(card, { scale: 1 }, { scale: 1.06, duration: 0.18, yoyo: true, repeat: 1, ease: 'power2.out', immediateRender: false }, tDa);
     }
 
-    // ===================== 3) MENSCHEN – ALSO: DU! =====================
+    // ================================================== 3) MENSCHEN – also: du!
     {
-      const s = scene('menschen', 'white');
-      bigNum(s, '!', '#5b6066', 0.12, 560, 640, 1100);
-      const box = el('div', 'abs center-x', null, s); box.style.top = '470px';
-      const l1 = el('div', 'kin', 'MENSCHEN', box); l1.style.fontSize = '182px';
-      const l2 = el('div', 'kin', 'MACHEN DEN', box); css(l2, { fontSize: '92px', color: '#5b6066', margin: '14px 0' });
-      const l3 = el('div', 'kin', 'UNTERSCHIED', box); l3.style.fontSize = '138px';
-      const heart = el('div', 'abs', `<svg width="980" height="980" viewBox="0 0 100 100"><path d="${heartPath}" fill="none" stroke="#FCE531" stroke-width="9" stroke-linejoin="round"/></svg>`, s);
-      css(heart, { left: '50px', top: '330px' });
-      const du = el('div', 'abs center-x kin', 'DU!', s); css(du, { top: '560px', fontSize: '400px', color: 'var(--o)' });
-      const point = emoji(s, '🫵', 70, 960, 230, -10);
-      const sb = img(A + 'img/strong.webp', 'sb', s, { left: '640px', top: '980px', width: '400px' });
-      const at = sStart('menschen') - 0.3;
-      enter('menschen', at, 'wipe', 'o');
-      tl.fromTo(l1, { scale: 2.6, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.3, ease: 'power4.out' }, w('s03', 'Menschen') - 0.05);
-      shake(w('s03', 'Menschen') + 0.18, 18);
-      tl.fromTo(split(l2), { y: 60, opacity: 0 }, { y: 0, opacity: 1, duration: 0.28, stagger: 0.022, ease: 'back.out(2)' }, w('s03', 'machen') - 0.05);
-      tl.fromTo(l3, { x: 1100, skewX: -20 }, { x: 0, skewX: 0, duration: 0.42, ease: 'power4.out' }, w('s03', 'Unterschied') - 0.1);
-      const tDu = w('s03', 'du');
-      tl.to(box, { y: -260, scale: 0.55, opacity: 0.16, duration: 0.42, ease: 'power3.inOut' }, w('s03', 'Also') - 0.15);
-      tl.fromTo(heart, { scale: 0, rotation: -30 }, { scale: 1, rotation: 0, duration: 0.55, ease: 'back.out(1.6)' }, tDu - 0.2);
-      tl.fromTo(du, { scale: 0, rotation: -15 }, { scale: 1, rotation: 0, duration: 0.42, ease: 'back.out(2.5)' }, tDu - 0.08);
-      shake(tDu + 0.12, 24); punch(tDu + 0.1, 1.06);
-      tl.fromTo(sb, { x: 500, rotation: 30 }, { x: 0, rotation: -4, duration: 0.5, ease: 'back.out(1.5)' }, tDu);
-      pop(point, tDu + 0.12, 0, 'back.out(3)', 0.4, -10);
-      burst(s, 540, 700, tDu + 0.1, '#F3703A');
+      const s = layer();
+      const box = el('div', 'abs cx', null, s); css(box, { top: '430px' });
+      const l1 = el('div', 'title-xl shadow-txt', 'MENSCHEN', box); css(l1, { fontSize: '178px' });
+      const l2 = el('div', '', 'MACHEN DEN', box); css(l2, { font: '900 88px/1.1 Outfit', color: 'var(--ink)', marginTop: '10px' });
+      const l3 = el('div', 'title-xl shadow-txt', 'UNTERSCHIED', box); css(l3, { fontSize: '138px' });
+      const heart = el('div', 'abs', `<svg width="900" height="900" viewBox="0 0 100 100"><path d="${heartPath}" fill="none" stroke="#FCE531" stroke-width="8" stroke-linejoin="round" pathLength="1" stroke-dasharray="1 1"/></svg>`, s);
+      css(heart, { left: '90px', top: '300px' });
+      const du = el('div', 'abs cx title-xl shadow-txt', 'DU!', s); css(du, { top: '510px', fontSize: '400px' });
+      const sb = sticker('zeigt', s, 30, 900, 400);
+      push(s, segs.s03.start - 0.4);
+      popLetters(l1, ls('s03', 0) - 0.05, 0.03);
+      riseWords(l2, ls('s03', 1) - 0.05);
+      popLetters(l3, ls('s03', 1) + 0.25, 0.025);
+      const tDu = ls('s03', 2);
+      tl.to(box, { y: -230, scale: 0.55, opacity: 0.25, duration: 0.5, ease: 'power3.inOut' }, tDu - 0.2);
+      tl.fromTo($('path', heart), { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 0.7, ease: 'power2.inOut' }, tDu);
+      tl.fromTo(du, { scale: 0, rotation: -10 }, { scale: 1, rotation: 0, duration: 0.6, ease: 'back.out(2.2)' }, tDu + 0.1);
+      popIn(sb, tDu + 0.25, { y0: 200 });
+      tl.to(sb, { x: 30, duration: 0.25, yoyo: true, repeat: 3, ease: 'sine.inOut' }, tDu + 0.9);
     }
 
-    // ===================== 4) LEVEL =====================
+    // ================================================== 4) LEVEL
     {
-      const s = scene('level', 'slate');
-      const title = el('div', 'abs center-x', 'DEIN LEVEL', s); css(title, { top: '170px', font: '900 150px/1 Outfit' });
-      const sub = el('div', 'abs center-x', 'VOM EINSTEIGER ZUM EXPERTEN', s); css(sub, { top: '330px', font: '900 50px/1 Outfit', color: 'var(--o)' });
+      const s = layer();
+      const title = el('div', 'abs cx title-xl shadow-txt', 'DEIN LEVEL', s); css(title, { top: '175px', fontSize: '150px' });
       const xp = el('div', 'abs xp', '<div class="xp-l">XP</div><div class="xp-bar"><div class="xp-fill"></div></div>', s);
       const fill = $('.xp-fill', xp);
       const names = ['FRESH-LING', 'FRESH-KRAFT', 'FRESH-ALIST', 'FRESH-MASTER'];
-      const words = ['Fresh-ling', 'Fresh-Kraft', 'Fresh-Alist', 'Fresh-Master'];
       const rows = names.map((n, i) => {
         const r = el('div', 'lvl', `<div class="hearts">${[0, 1, 2, 3].map((k) => heartSVG(k <= i)).join('')}</div><div class="lbl">${n}</div>`, s);
-        css(r, { left: 0, top: 1140 - i * 185 + 'px', width: 470 + i * 150 + 'px' });
-        return r;
+        return css(r, { left: 0, top: 1130 - i * 182 + 'px', width: 470 + i * 150 + 'px' });
       });
-      const think = img(A + 'img/think.webp', 'sb', s, { left: '700px', top: '1010px', width: '250px' });
-      const king = img(A + 'img/king.webp', 'sb', s, { left: '640px', top: '1030px', width: '330px' });
-      const tagQ = el('div', 'abs tag', 'QUEREINSTEIGER', s); css(tagQ, { left: '70px', top: '1328px', rotate: '-3deg' });
-      const tagP = el('div', 'abs tag', 'PROFI', s); css(tagP, { left: '820px', top: '505px', rotate: '4deg' });
-      const up = el('div', 'abs levelup', 'LEVEL UP! 🚀', s); css(up, { left: '410px', top: '760px' });
-      const at = sStart('level') - 0.3;
-      enter('level', at, 'whip');
-      tl.fromTo(split(title), { y: -140, opacity: 0 }, { y: 0, opacity: 1, duration: 0.42, stagger: 0.03, ease: 'back.out(2)' }, at + 0.3);
-      tl.fromTo(sub, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.35 }, at + 0.65);
-      tl.fromTo(xp, { scaleX: 0 }, { scaleX: 1, duration: 0.4, ease: 'power3.out' }, at + 0.7);
-      pop(think, at + 0.6, 0, 'back.out(2)', 0.45);
+      const qTag = el('div', 'tag', 'QUEREINSTEIGER', s); css(qTag, { left: '70px', top: '1310px' });
+      const pTag = el('div', 'tag', 'PROFI', s); css(pTag, { left: '790px', top: '500px' });
+      const up = el('div', 'abs marker', 'LEVEL UP!', s);
+      css(up, { left: '90px', top: '405px', fontSize: '120px', color: 'var(--y)', textShadow: '0 10px 0 rgba(120,35,0,.3)', zIndex: 7 });
+      const sbThink = sticker('denkt', s, 740, 980, 300);
+      const sbDance = sticker('tanzen', s, 710, 960, 330);
+      const sbGo = sticker('zeigt-hoch', s, 300, 560, 480);
+      const kurz = el('div', 'abs cx title-xl shadow-txt', 'KURZ<br>ERKLÄRT', s); css(kurz, { top: '230px', fontSize: '150px' });
+      push(s, segs.s04.start - 0.4);
+      popLetters(title, ls('s04', 0) - 0.1, 0.03);
+      tl.fromTo(xp, { scaleX: 0 }, { scaleX: 1, duration: 0.5, ease: 'expo.out' }, ls('s04', 0) + 0.2);
+      popIn(sbThink, ls('s04', 0) + 0.2);
       rows.forEach((r, i) => {
-        const t = w('s04', words[i]) - 0.12;
-        tl.fromTo(r, { x: -1000 }, { x: 0, duration: 0.42, ease: 'power4.out' }, t);
-        tl.fromTo(r.querySelectorAll('svg'), { scale: 0 }, { scale: 1, duration: 0.28, stagger: 0.05, ease: 'back.out(3)' }, t + 0.16);
-        tl.to(fill, { width: (i + 1) * 25 + '%', duration: 0.35, ease: 'power2.out' }, t + 0.1);
-        sparkle(s, 980, 395, 70, t + 0.3);
+        const t = ls('s04', i + 1) - 0.12;
+        tl.fromTo(r, { xPercent: -105 }, { xPercent: 0, duration: 0.6, ease: 'expo.out' }, t);
+        tl.fromTo(r.querySelectorAll('svg'), { scale: 0 }, { scale: 1, duration: 0.4, stagger: 0.06, ease: 'back.out(2.6)' }, t + 0.2);
+        tl.to(fill, { width: (i + 1) * 25 + '%', duration: 0.45, ease: 'power2.out' }, t + 0.15);
       });
-      tl.fromTo(tagQ, { scale: 0 }, { scale: 1, duration: 0.32, ease: 'back.out(2.5)' }, w('s05', 'Quereinsteiger') - 0.05);
-      tl.fromTo(tagP, { scale: 0 }, { scale: 1, duration: 0.32, ease: 'back.out(2.5)' }, w('s05', 'Profi') - 0.05);
-      tl.to(think, { scale: 0, duration: 0.2, ease: 'power2.in' }, w('s05', 'Profi') - 0.1);
-      pop(king, w('s05', 'Profi') + 0.06, 0, 'back.out(2)', 0.45);
-      const tUp = w('s05', 'levelst');
-      tl.fromTo(up, { scale: 0, rotation: -30 }, { scale: 1, rotation: -7, duration: 0.4, ease: 'back.out(3)' }, tUp - 0.08);
-      shake(tUp + 0.1, 14); punch(tUp + 0.05);
-      burst(s, 640, 800, tUp);
-      tl.to(rows[3], { scale: 1.06, transformOrigin: 'left center', duration: 0.2, yoyo: true, repeat: 3, ease: 'sine.inOut' }, tUp);
+      popIn(qTag, ls('s05', 0), { rot: -4, rot0: -20, y0: 20, dur: 0.5, ease: 'back.out(2.4)' });
+      popIn(pTag, ls('s05', 1), { rot: 5, rot0: 20, y0: 20, dur: 0.5, ease: 'back.out(2.4)' });
+      const tUp = ls('s05', 2);
+      popOut(sbThink, tUp - 0.15, 0.25);
+      popIn(sbDance, tUp + 0.05);
+      idle(sbDance, tUp + 0.7, ls('s05', 3) - 0.2, 14, 4, 0.45);
+      popIn(up, tUp, { rot: -8, rot0: -30, y0: 30, dur: 0.5, ease: 'back.out(2.6)' });
+      tl.to(rows[3], { scale: 1.05, transformOrigin: 'left center', duration: 0.25, yoyo: true, repeat: 3, ease: 'sine.inOut' }, tUp);
+      confetti(s, 540, 760, tUp + 0.05, 30);
+      // "Ich erklär's euch kurz." – alles raus, Steakboy mit Finger hoch
+      const tK = ls('s05', 3) - 0.1;
+      tl.to(rows, { xPercent: -110, duration: 0.45, stagger: 0.04, ease: 'power3.in' }, tK - 0.1);
+      tl.to([title, xp, qTag, pTag, up], { opacity: 0, y: -60, duration: 0.35, ease: 'power2.in' }, tK - 0.1);
+      popOut(sbDance, tK - 0.1, 0.25);
+      riseWords(kurz, tK + 0.15, 0.08);
+      popIn(sbGo, tK + 0.2, { y0: 300 });
     }
 
-    // ===================== 5–11) THEMEN =====================
-    // cue = Wort im Antwortsatz, auf dem die Karte reinfliegt (ohne cue: wird dazwischen verteilt)
+    // ================================================== 5–11) THEMEN
     const CATS = [
-      { scene: 'onboarding', q: ['WAS GIBT\'S FÜR DEN', 'START'], name: 'ONBOARDING', sub: '& GRUNDLAGEN', bg: 'white', num: '1', tr: 'iris',
-        emoji: '🚀', hero: ['img/cool.webp', 360], band: 'LOS GEHT\'S',
-        cards: [['01', 'Onboarding'], ['02'], ['03', 'Grundlagen'], ['04', 'Heimspielserie']],
-        food: [['img/petersilie', -40, 1060, 300], ['food/p05_308', 790, 470, 280]] },
-      { scene: 'fleisch', q: ['WAS GIBT\'S RUND UM', 'FLEISCH'], name: 'FLEISCH', bg: 'slate', num: '2', tr: 'whip',
-        emoji: '🥩', hero: ['food/p05_364', 600], band: 'FLEISCH',
-        cards: [['05', 'Fleisch'], ['06', 'Grillschule'], ['07', 'Bratenschule'], ['08'], ['09'], ['10', 'Meat']],
-        food: [['food/p05_364', -70, 1040, 420], ['food/p17_1098', 800, 430, 250], ['food/p40_2084', 760, 1090, 330]] },
-      { scene: 'wurst', q: ['UND BEI', 'WURST'], name: 'WURST', bg: 'orange', num: '3', tr: 'wipe',
-        emoji: '🥓', hero: ['food/p20_1257', 560], band: 'WURST',
-        cards: [['11', 'Feine'], ['13'], ['12', 'Food']],
-        food: [['food/p20_1257', -60, 1080, 400], ['food/p03_145', 830, 420, 230], ['food/p18_1139', 740, 1100, 360]] },
-      { scene: 'kaese', q: ['WAS GEHT BEIM', 'KÄSE'], name: 'KÄSE', bg: 'white', num: '4', tr: 'zoom',
-        emoji: '🧀', hero: ['food/p24_1408', 560], band: 'KÄSE',
-        cards: [['14', 'Kulinarische'], ['15', 'Fromage'], ['16'], ['17'], ['18', 'Masterclass']],
-        food: [['food/p21_1277', -50, 1070, 360], ['food/p24_1408', 790, 430, 260], ['food/p35_1829', 760, 1110, 330]] },
-      { scene: 'fisch', q: ['WAS GIBT\'S RUND UM', 'FISCH'], name: 'FISCH', bg: 'blue', num: '5', tr: 'whip',
-        emoji: '🐟', hero: ['food/p26_1450', 640], band: 'FISCH',
-        cards: [['19', 'Rock'], ['20'], ['21', 'hautnah']],
-        food: [['food/p26_1450', -80, 1090, 460], ['food/p38_1906', 820, 420, 220]] },
-      { scene: 'fuehrung', q: ['IHR WOLLT', 'FÜHREN'], name: 'FÜHRUNG', sub: '& MANAGEMENT', bg: 'orange', num: '6', tr: 'wipe',
-        emoji: '💪', hero: ['img/strong.webp', 400], band: 'FÜHRUNG',
-        cards: [['22', 'Führungstraining'], ['23', 'eins'], ['24', 'drei'], ['26', 'Ausbilderschein'], ['27'], ['25', 'Meisterpflicht'], ['28'], ['29'], ['30'], ['31']],
-        food: [['food/p29_1556', 800, 1060, 250]] },
-      { scene: 'azubis', q: ['UND IHR', 'AZUBIS'], name: 'AUSBILDUNG', sub: '& WEITERBILDUNG', bg: 'slate', num: '7', tr: 'zoom', pages: true,
-        emoji: '🔥', hero: ['img/peace.webp', 380], band: 'THEKENZEIT',
-        cards: [['32', 'Thekenzeit'], ['33', 'Hands'], ['34', 'Handwerk'], ['35']],
-        food: [] },
+      { scene: 'onboarding', q: ['WAS GIBT\'S FÜR DEN', 'START'], name: 'ONBOARDING', sub: '& GRUNDLAGEN', qsb: 'fragend', sb: 'zeigt', sbFlip: false,
+        food: ['img/petersilie', 'food/p05_308'], tags: {} },
+      { scene: 'fleisch', q: ['WAS GIBT\'S RUND UM', 'FLEISCH'], name: 'FLEISCH', qsb: 'grill', sb: 'grill',
+        food: ['food/p05_364', 'food/p17_1098'], tags: { 3: 'MEHR WEISS NUR OMA!', 4: 'FÜR ECHTE PROFIS' } },
+      { scene: 'wurst', q: ['UND BEI', 'WURST'], name: 'WURST', qsb: 'koch', sb: 'koch',
+        food: ['food/p20_1257', 'food/p03_145'], tags: { 1: 'AUS ALLER WELT 🌍' } },
+      { scene: 'kaese', q: ['WAS GEHT BEIM', 'KÄSE'], name: 'KÄSE', qsb: 'klatschen', sb: 'klatschen',
+        food: ['food/p24_1408', 'food/p21_1277'], tags: { 3: 'HIGH END 💎' } },
+      { scene: 'fisch', q: ['WAS GIBT\'S RUND UM', 'FISCH'], name: 'FISCH', qsb: 'achtung', sb: 'achtung',
+        food: ['food/p26_1450', 'food/p38_1906'], tags: { 2: 'AB NACH BREMERHAVEN!' } },
+      { scene: 'fuehrung', q: ['IHR WOLLT', 'FÜHREN'], name: 'FÜHRUNG', sub: '& MANAGEMENT', qsb: 'daumen', sb: 'daumen',
+        food: ['food/p29_1556'], tags: { 4: 'IN NUR 5 TAGEN! ⚡' } },
+      { scene: 'azubis', q: ['UND IHR', 'AZUBIS'], name: 'AUSBILDUNG', sub: '& WEITERBILDUNG', qsb: 'verlegen', sb: 'verlegen', pages: true,
+        food: [], tags: { 4: 'GEHT\'S LOS! 🚀' } },
     ];
     const OPAQUE = ['24', '29', '30', '31'];
-    const theme = {
-      white: { label: ['var(--o)', '#fff'], name: 'var(--o)', sub: 'var(--g)', q1: 'var(--ink)', q2: 'var(--o)', num: ['#5b6066', 0.13], bandA: ['var(--y)', 'var(--b)'], bandB: ['var(--b)', 'var(--y)'] },
-      slate: { label: ['var(--o)', '#fff'], name: '#fff', sub: 'var(--o)', q1: 'var(--y)', q2: '#fff', num: ['#fff', 0.22], bandA: ['var(--y)', 'var(--b)'], bandB: ['var(--o)', '#fff'] },
-      orange: { label: ['#fff', 'var(--o)'], name: '#fff', sub: 'var(--ink)', q1: 'var(--ink)', q2: '#fff', num: ['#fff', 0.25], bandA: ['var(--y)', 'var(--b)'], bandB: ['var(--b)', 'var(--y)'] },
-      blue: { label: ['var(--y)', 'var(--b)'], name: '#fff', sub: 'var(--y)', q1: 'var(--y)', q2: '#fff', num: ['#fff', 0.2], bandA: ['var(--y)', 'var(--b)'], bandB: ['#fff', 'var(--b)'] },
-    };
 
     CATS.forEach((c, ci) => {
-      const s = scene(c.scene, c.bg);
-      const th = theme[c.bg];
       const [qs, as] = segsOf(c.scene);
-      const at = sStart(c.scene) - 0.3;
-      const end = sEnd(c.scene);
-      const tA = as.start; // Antwort beginnt
-      bigNum(s, c.num, th.num[0], th.num[1], 470, 760, 1150);
+      const nextFirst = T.segments[T.segments.indexOf(as) + 1];
+      const end = Math.max(as.end + 0.25, nextFirst.start - 0.45); // Ende der Antwort-Szene (nächster Übergang)
 
-      // --- Frage-Beat ---
-      const bA = band(s, c.band, 850, -7, th.bandA[0], th.bandA[1], at, end, 1);
-      const bB = band(s, c.band, 1215, 5, th.bandB[0], th.bandB[1], at, end, -1);
-      const heroIsSb = c.hero[0].startsWith('img/');
-      const hero = img(A + c.hero[0] + (c.hero[0].endsWith('.webp') ? '' : '.webp'), heroIsSb ? 'sb' : 'food', s, { left: 540 - c.hero[1] / 2 + 'px', top: '880px', width: c.hero[1] + 'px' });
-      const qg = el('div', 'abs center-x qgroup', null, s); qg.style.top = '470px';
-      const q1 = el('div', 'q1', c.q[0], qg); q1.style.color = th.q1;
-      const qw = el('div', 'q2', null, qg);
-      const qword = el('span', '', c.q[1], qw); qword.style.color = th.q2;
-      el('span', 'qmark', '?', qw);
-      qw.style.fontSize = Math.min(250, Math.floor(900 / ((c.q[1].length + 0.6) * 0.7))) + 'px';
-      const em = emoji(s, c.emoji, 830, 255, 170, 14);
+      // ---- Antwort-Ebene (Orange) – liegt bereit, das Sheet gibt sie frei
+      const a = layer();
+      const label = el('div', 'abs cat-label', `<span class="pill" style="background:#fff;color:var(--o)">THEMA ${ci + 1}/7</span>`, a);
+      const nm = el('div', 'abs cat-name shadow-txt', c.name, a);
+      const fs = Math.min(205, Math.floor(950 / (c.name.length * 0.68)));
+      css(nm, { fontSize: fs + 'px' });
+      let sub = null;
+      if (c.sub) { sub = el('div', 'abs cat-sub', c.sub, a); css(sub, { top: 228 + fs * 0.98 + 'px' }); }
+      const foods = c.food.map((f, i) => img(`${A}${f}.webp`, 'food', a, i === 0
+        ? { left: '-70px', top: '1010px', width: '360px' } : { left: '800px', top: '400px', width: '280px' }));
+      const sb = sticker(c.sb, a, 760, 1000, 290, c.sbFlip);
 
-      tl.fromTo([bA, bB], { scaleX: 0 }, { scaleX: 1, duration: 0.45, ease: 'power3.out', stagger: 0.08 }, at + 0.2);
-      tl.fromTo(split(q1), { y: -80, opacity: 0 }, { y: 0, opacity: 1, duration: 0.3, stagger: 0.015, ease: 'back.out(2)' }, qs.start - 0.1);
-      tl.fromTo(qw, { scale: 2.2, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.3, ease: 'expo.out' }, qs.start + 0.1);
-      scramble(qword, qs.start + 0.1, 0.4);
-      shake(qs.start + 0.35, 16); punch(qs.start + 0.3);
-      tl.fromTo($('.qmark', qw), { rotation: -60, scale: 0 }, { rotation: 10, scale: 1, duration: 0.4, ease: 'back.out(3)' }, qs.start + 0.35);
-      pop(em, qs.start + 0.3, 0, 'back.out(3)', 0.4, 14);
-      tl.fromTo(hero, { y: 700, rotation: -25, scale: 0.6 }, { y: 0, rotation: 0, scale: 1, duration: 0.55, ease: 'back.out(1.4)' }, at + 0.25);
-      tl.to(hero, { rotation: 5, y: -20, duration: Math.max(0.3, tA - at - 0.8), ease: 'sine.inOut' }, at + 0.8);
-      // Frage raus, Bänder gedimmt
-      const tOut = tA - 0.15;
-      tl.to(qg, { y: -420, scale: 0.5, opacity: 0, duration: 0.35, ease: 'power3.in' }, tOut);
-      tl.to(hero, { y: 1300, rotation: 30, opacity: 0, duration: 0.4, ease: 'power3.in' }, tOut);
-      tl.to(em, { scale: 0, duration: 0.25, ease: 'power2.in' }, tOut);
-      tl.to([bA, bB], { opacity: 0.28, duration: 0.4 }, tOut);
+      // ---- Frage-Sheet (Weiß)
+      const q = layer('sheet');
+      const qlab = el('div', 'abs cx q-label', `<span class="pill" style="background:var(--o);color:#fff">THEMA ${ci + 1}/7</span>`, q);
+      const q1 = el('div', 'abs cx q1', c.q[0], q);
+      const q2 = el('div', 'abs cx q2', `<span class="kw">${c.q[1]}</span><span class="qm">?</span>`, q);
+      css(q2, { fontSize: Math.min(250, Math.floor(920 / ((c.q[1].length + 0.6) * 0.68))) + 'px' });
+      const qfood = c.food.slice(0, 2).map((f, i) => img(`${A}${f}.webp`, 'food', q, i === 0
+        ? { left: '-40px', top: '880px', width: '360px' } : { left: '760px', top: '820px', width: '300px' }));
+      const qsb = sticker(c.qsb, q, 310, 740, 460);
 
-      // --- Antwort: Kopfzeile + Karten ---
-      const light = c.bg === 'white';
-      const label = el('div', 'abs cat-label', `THEMA ${ci + 1}/${CATS.length}`, s); css(label, { background: th.label[0], color: th.label[1] });
-      const count = el('div', 'abs cat-count', `${c.cards.length} Seminare`, s); if (c.bg === 'blue') count.style.color = 'var(--y)';
-      const nm = el('div', 'abs cat-name', c.name, s);
-      const fs = Math.min(230, Math.floor(960 / (c.name.length * 0.7)));
-      css(nm, { fontSize: fs + 'px', color: th.name });
-      let subEl;
-      if (c.sub) { subEl = el('div', 'abs cat-sub', c.sub, s); css(subEl, { top: 270 + fs * 0.98 + 'px', color: th.sub }); }
-      tl.fromTo(label, { x: -500 }, { x: 0, duration: 0.35, ease: 'power3.out' }, tA);
-      tl.fromTo(split(nm), { y: 200, opacity: 0, rotation: 14 }, { y: 0, opacity: 1, rotation: 0, duration: 0.42, stagger: 0.03, ease: 'back.out(1.9)' }, tA - 0.05);
-      if (subEl) tl.fromTo(subEl, { clipPath: 'inset(0 100% 0 0)' }, { clipPath: 'inset(0 0% 0 0)', duration: 0.4, ease: 'power3.out' }, tA + 0.3);
-      pop(count, tA + 0.35, 0, 'back.out(2.4)', 0.4, -5);
+      // ---- Ablauf
+      const prevSeg = T.segments[T.segments.indexOf(qs) - 1];
+      const tQ = Math.max(prevSeg.end + 0.25, qs.start - 0.45);
+      sheetUp(q, tQ);
+      popIn($('.pill', qlab), tQ + 0.25, { rot0: -10, y0: 20, dur: 0.45, ease: 'back.out(2.4)' });
+      riseWords(q1, qs.lines[0].s - 0.15, 0.05);
+      const kw = $('.kw', q2);
+      popLetters(kw, qs.lines[0].s + 0.05, 0.04);
+      tl.fromTo($('.qm', q2), { scale: 0, rotation: -60 }, { scale: 1, rotation: 12, duration: 0.5, ease: 'back.out(3)' }, qs.lines[0].s + 0.3);
+      popIn(qsb, tQ + 0.35, { y0: 320, dur: 0.7 });
+      idle(qsb, tQ + 1.1, as.start - 0.4, 12, 3);
+      qfood.forEach((f, i) => {
+        tl.fromTo(f, { scale: 0, rotation: i ? 25 : -25 }, { scale: 1, rotation: 0, duration: 0.6, ease: 'back.out(1.6)' }, tQ + 0.45 + i * 0.1);
+        tl.to(f, { rotation: i ? -6 : 6, y: -16, duration: Math.max(0.5, as.start - tQ - 1.2), ease: 'sine.inOut' }, tQ + 1.05);
+      });
 
-      // Zeitpunkte der Karten: auf dem genannten Wort, Rest dazwischen verteilt
-      const times = c.cards.map(([, cue]) => (cue ? Math.max(tA + 0.05, w(as.id, cue) - 0.15) : null));
-      if (times[0] == null) times[0] = tA + 0.1;
-      for (let i = 1; i < times.length; i++) {
-        if (times[i] != null) continue;
-        let j = i; while (j < times.length && times[j] == null) j++;
-        const a = times[i - 1];
-        const b = j < times.length ? times[j] : Math.max(a + 0.5 * (j - i + 1), end - 0.45);
-        for (let k = i; k < j; k++) times[k] = a + ((b - a) * (k - i + 1)) / (j - i + 1);
-      }
-      for (let i = 1; i < times.length; i++) times[i] = Math.max(times[i], times[i - 1] + 0.28);
+      const tA = as.start - 0.35;
+      sheetAway(q, a, tA);
+      tl.fromTo(storyFills[ci], { scaleX: 0 }, { scaleX: 1, duration: end - tQ, ease: 'none' }, tQ);
+      popIn($('.pill', label), tA + 0.2, { rot0: -10, y0: 20, dur: 0.45, ease: 'back.out(2.4)' });
+      popLetters(nm, tA + 0.2, 0.03);
+      if (sub) tl.fromTo(sub, { clipPath: 'inset(0 100% 0 0)' }, { clipPath: 'inset(0 0% 0 0)', duration: 0.5, ease: 'power3.out' }, tA + 0.45);
+      foods.forEach((f, i) => {
+        tl.fromTo(f, { scale: 0, rotation: i ? 30 : -30 }, { scale: 1, rotation: 0, duration: 0.7, ease: 'back.out(1.5)' }, tA + 0.35 + i * 0.12);
+        tl.to(f, { rotation: i ? 7 : -7, y: i ? 20 : -20, duration: Math.max(0.5, end - tA - 1.2), ease: 'sine.inOut' }, tA + 1.05);
+      });
+      popIn(sb, tA + 0.55, { y0: 260 });
+      idle(sb, tA + 1.25, end - 0.1, 10, 2.5);
 
-      const cards = c.cards.map(([nr]) => {
-        const k = el('div', `card ${c.pages ? 'page' : ''} ${OPAQUE.includes(nr) ? 'opaque' : ''}`, null, s);
-        img(A + (c.pages ? `pages/${nr}.webp` : `titles/${nr}.webp`), '', k);
-        el('div', 'nr', nr, k);
+      // Karten: genau eine Karte pro genanntem Seminar – wischt rein, wenn Franz sie nennt
+      const cardLines = as.lines.map((l, i) => ({ l, i })).filter((x) => x.l.card);
+      const cards = cardLines.map(({ l }) => {
+        const k = el('div', `card ${c.pages ? 'page' : ''} ${OPAQUE.includes(l.card) ? 'opaque' : ''}`, null, a);
+        img(A + (c.pages ? `pages/${l.card}.webp` : `titles/${l.card}.webp`), '', k);
+        el('div', 'nr', l.card, k);
         return k;
       });
-      const pose = cards.map(() => ({ x: rr(-16, 16), r: rr(-4, 4) }));
-      cards.forEach((k, i) => {
-        const t = times[i];
-        const v = i % 3;
-        tl.set(k, { visibility: 'visible' }, t);
-        if (v === 0) tl.fromTo(k, { x: 1150, y: 60, rotation: 22, skewX: -10 }, { x: pose[i].x, y: 0, rotation: pose[i].r, skewX: 0, duration: 0.45, ease: 'expo.out' }, t);
-        else if (v === 1) tl.fromTo(k, { y: 900, rotationX: -70, rotation: -10, transformPerspective: 1400 }, { y: 0, rotationX: 0, rotation: pose[i].r, x: pose[i].x, duration: 0.5, ease: 'expo.out' }, t);
-        else tl.fromTo(k, { scale: 0.2, rotation: -40, x: pose[i].x }, { scale: 1, rotation: pose[i].r, duration: 0.45, ease: 'back.out(1.8)' }, t);
-        sparkle(s, 860 + rr(-30, 30), 600 + rr(-20, 20), 80, t + 0.18);
-        if (i % 2 === 0) punch(t + 0.12, 1.02);
-        for (let j = i + 1; j < cards.length; j++) {
-          const d = j - i;
-          tl.to(k, { y: -36 * d, scale: 1 - 0.05 * d, opacity: d > 3 ? 0 : 1 - 0.12 * d, duration: 0.35, ease: 'power3.out' }, times[j] + 0.05);
-        }
+      cards.forEach((k, j) => {
+        const tIn = cardLines[j].l.s - 0.12;
+        const rot = j % 2 ? 2.2 : -2.2;
+        tl.set(k, { visibility: 'visible' }, tIn - 0.01);
+        if (j === 0) tl.fromTo(k, { yPercent: 70, scale: 0.75, rotation: -8, opacity: 0 }, { yPercent: 0, scale: 1, rotation: rot, opacity: 1, duration: 0.7, ease: 'expo.out' }, tIn);
+        else tl.fromTo(k, { xPercent: 115, rotation: 12, scale: 0.92 }, { xPercent: 0, rotation: rot, scale: 1, duration: 0.65, ease: 'expo.out' }, tIn);
+        const next = cards[j + 1];
+        if (next) tl.to(k, { xPercent: -125, rotation: -14, scale: 0.9, duration: 0.5, ease: 'power3.in' }, cardLines[j + 1].l.s - 0.32);
+        else tl.to(k, { scale: 1.03, duration: 0.25, yoyo: true, repeat: 1, ease: 'sine.inOut' }, tIn + 0.7);
       });
-      c.food.forEach(([f, x, y, wd], i) => {
-        const fi = img(A + f + '.webp', 'food', s, { left: x + 'px', top: y + 'px', width: wd + 'px' });
-        tl.fromTo(fi, { scale: 0, rotation: -35 + i * 25 }, { scale: 1, rotation: 0, duration: 0.55, ease: 'back.out(1.7)' }, tA + 0.25 + i * 0.18);
-        tl.to(fi, { rotation: i % 2 ? 6 : -6, y: i % 2 ? -18 : 18, duration: Math.max(0.5, end - tA - 1), ease: 'sine.inOut' }, tA + 0.8);
+      // Callouts auf Satzteilen ohne eigene Karte
+      Object.entries(c.tags).forEach(([idx, text]) => {
+        const l = as.lines[+idx];
+        const nextCard = cardLines.find((x) => x.i > +idx);
+        tag(a, text, 'right', 462, 4, l.s - 0.05, nextCard ? nextCard.l.s - 0.3 : null);
       });
-      enter(c.scene, at, c.tr, ci % 2 ? 'w' : '');
     });
 
-    // ===================== 12) FRESH DIGITAL =====================
+    // ================================================== 12) FRESH DIGITAL (dunkles Sheet)
     {
-      const s = scene('digital', 'slate');
       const [qs, as] = segsOf('digital');
-      const at = sStart('digital') - 0.3;
-      const qg = el('div', 'abs center-x qgroup', null, s); qg.style.top = '620px';
-      const q1 = el('div', 'q2', 'UND', qg); css(q1, { fontSize: '150px', color: 'var(--y)' });
-      const q2 = el('div', 'q2', 'ZWISCHEN-<br>DURCH<span class="qmark">?</span>', qg); css(q2, { fontSize: '170px', color: '#fff' });
-      const em = emoji(s, '📱', 760, 430, 200, 12);
-      const logo = img(A + 'img/fresh-digital.webp', 'abs', s, { left: '150px', top: '170px', width: '780px' });
-      const neu = el('div', 'abs sticker', 'NEU!', s); css(neu, { left: '60px', top: '150px' });
+      const d = layer('sheet dark');
+      const q1 = el('div', 'abs cx q1', 'UND', d); css(q1, { top: '330px' });
+      const q2 = el('div', 'abs cx q2', '<span class="kw">ZWISCHEN-<br>DURCH</span><span class="qm">?</span>', d);
+      css(q2, { fontSize: '160px', top: '420px' });
+      const zz = sticker('schlafen', d, 310, 790, 440);
+      const logo = img(A + 'img/fresh-digital.webp', 'abs', d, { left: '150px', top: '150px', width: '780px', zIndex: 3 });
       const tiles = [
         `<img class="art" src="${A}img/100-handgriffe.webp"><div><div class="big"><span class="cnt">0</span></div><div class="t1">HANDGRIFFE</div><div class="t2">als Video – kurz &amp; direkt aus der Praxis</div></div>`,
         `<img class="art" src="${A}img/edeka-nx.webp" style="height:150px;border-radius:24px"><div><div class="t1">BLENDED<br>LEARNING</div><div class="t2">Wissen, das zu dir passt</div></div>`,
         `<div class="wizz">Wizz<br>Up!</div><div><div class="t1">QUIZ-DUELL</div><div class="t2">Lernen. Spielen.<br>Wissen pushen!</div></div>`,
-      ].map((h, i) => { const t = el('div', 'tile', h, s); t.style.top = 560 + i * 265 + 'px'; return t; });
+      ].map((h, i) => css(el('div', 'tile', h, d), { top: 560 + i * 262 + 'px' }));
       const cnt = $('.cnt', tiles[0]);
-      const sb = img(A + 'img/cool.webp', 'sb', s, { left: '790px', top: '1180px', width: '220px' });
-      enter('digital', at, 'whip');
-      tl.fromTo(q1, { x: -900 }, { x: 0, duration: 0.35, ease: 'expo.out' }, qs.start - 0.1);
-      tl.fromTo(q2, { scale: 2.2, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.32, ease: 'expo.out' }, qs.start + 0.15);
-      shake(qs.start + 0.4, 14);
-      pop(em, qs.start + 0.3, 0, 'back.out(3)', 0.4, 12);
-      tl.to(em, { rotation: -10, duration: 0.12, yoyo: true, repeat: 5, ease: 'sine.inOut' }, qs.start + 0.7);
-      const tA = as.start;
-      tl.to(qg, { y: -500, scale: 0.5, opacity: 0, duration: 0.32, ease: 'power3.in' }, tA - 0.2);
-      tl.to(em, { scale: 0, duration: 0.2 }, tA - 0.2);
-      tl.fromTo(logo, { scale: 3, opacity: 0, rotation: -8 }, { scale: 1, opacity: 1, duration: 0.4, ease: 'power4.out' }, tA - 0.05);
-      shake(tA + 0.2, 20);
-      pop(neu, tA + 0.3, 0, 'back.out(3)', 0.4, -10);
-      const tw = [w(as.id, '100'), w(as.id, 'Blended'), w(as.id, 'WizzUp')];
-      tiles.forEach((t, i) => {
-        tl.fromTo(t, { x: i % 2 ? 1100 : -1100, rotation: i % 2 ? 6 : -6, skewX: i % 2 ? 12 : -12 }, { x: 0, rotation: 0, skewX: 0, duration: 0.45, ease: 'expo.out' }, Math.max(tA + 0.1, tw[i] - 0.18));
-        sparkle(s, 900, 540 + i * 265, 70, tw[i] + 0.15);
+
+      const tQ = Math.max(T.segments[T.segments.indexOf(qs) - 1].end + 0.25, qs.start - 0.45);
+      sheetUp(d, tQ);
+      riseWords(q1, qs.lines[0].s - 0.15);
+      popLetters($('.kw', q2), qs.lines[0].s + 0.05, 0.03);
+      tl.fromTo($('.qm', q2), { scale: 0, rotation: -60 }, { scale: 1, rotation: 12, duration: 0.5, ease: 'back.out(3)' }, qs.lines[0].s + 0.4);
+      popIn(zz, tQ + 0.35, { y0: 320, dur: 0.7 });
+      tl.fromTo(zz, { y: 0 }, { y: 10, duration: 0.8, yoyo: true, repeat: 2, ease: 'sine.inOut', immediateRender: false }, tQ + 1.05);
+      const tA = as.start - 0.3;
+      tl.to([q1, q2], { y: -120, opacity: 0, duration: 0.4, ease: 'power3.in' }, tA - 0.1);
+      popOut(zz, tA - 0.1, 0.35);
+      tl.fromTo(logo, { scale: 2.2, opacity: 0, rotation: -6 }, { scale: 1, opacity: 1, rotation: 0, duration: 0.6, ease: 'expo.out' }, tA + 0.1);
+      as.lines.forEach((l, i) => {
+        tl.fromTo(tiles[i], { xPercent: i % 2 ? 110 : -110, rotation: i % 2 ? 6 : -6 }, { xPercent: 0, rotation: 0, duration: 0.65, ease: 'expo.out' }, Math.max(tA + 0.2, l.s - 0.15));
       });
       const o = { v: 0 };
-      tl.to(o, { v: 100, duration: 0.9, ease: 'power2.out', onUpdate: () => { cnt.textContent = Math.round(o.v); } }, tw[0]);
-      tl.fromTo($('.wizz', tiles[2]), { scale: 0.3, rotation: -30 }, { scale: 1, rotation: -4, duration: 0.45, ease: 'back.out(3)' }, tw[2] + 0.05);
-      tl.fromTo(sb, { y: 900 }, { y: 0, duration: 0.45, ease: 'back.out(1.6)' }, w(as.id, 'Quiz') - 0.1);
+      tl.to(o, { v: 100, duration: 0.9, ease: 'power2.out', onUpdate: () => { cnt.textContent = Math.round(o.v); } }, as.lines[0].s);
+      tl.fromTo($('.wizz', tiles[2]), { scale: 0.4, rotation: -25 }, { scale: 1, rotation: -4, duration: 0.55, ease: 'back.out(2.6)' }, as.lines[2].s + 0.1);
     }
 
-    // ===================== 13) SHARE – Bock drauf? =====================
+    // ================================================== 13) SHARE – Bock drauf?
     {
-      const s = scene('share', 'blue');
-      const seg = segsOf('share')[0];
-      const at = sStart('share') - 0.3;
-      band(s, 'BOCK DRAUF', 110, -6, 'var(--y)', 'var(--b)', at, sEnd('share'), 1).style.opacity = 0.9;
-      const bock = el('div', 'abs center-x', null, s); css(bock, { top: '440px', font: '900 230px/.88 Outfit', color: 'var(--y)' });
-      const bk1 = el('div', '', 'BOCK', bock); const bk2 = el('div', '', 'DRAUF?', bock);
-      const l1 = el('div', 'abs center-x', 'SCHICK DAS DEINER', s); css(l1, { top: '930px', font: '900 70px/1 Outfit', color: '#fff' });
-      const l2 = el('div', 'abs center-x', 'MARKTLEITUNG!', s); css(l2, { top: '1015px', font: '900 128px/1 Outfit', color: 'var(--y)' });
-      const trail = el('div', 'abs', `<svg width="1080" height="1920"><path d="M-40 1330 C 260 1250, 330 1060, 560 1120 S 900 980, 1130 760" fill="none" stroke="#fff" stroke-width="9" stroke-dasharray="4 26" stroke-linecap="round" stroke-opacity=".75"/></svg>`, s);
+      const s = layer();
+      const bock = el('div', 'abs cx title-xl shadow-txt', 'BOCK<br>DRAUF?', s); css(bock, { top: '300px', fontSize: '220px' });
+      const l1 = el('div', 'abs cx', 'SCHICK DAS DEINER', s); css(l1, { top: '880px', font: '900 70px/1 Outfit', color: 'var(--ink)' });
+      const l2 = el('div', 'abs cx', '<span class="pill" style="background:#fff;color:var(--o);font-size:104px;padding:22px 40px 16px;border-radius:30px">MARKTLEITUNG!</span>', s);
+      css(l2, { top: '970px' });
+      const trail = el('div', 'abs', `<svg width="1080" height="1920"><path d="M-40 1300 C 260 1230, 330 1180, 560 1210 S 900 1100, 1130 860" fill="none" stroke="#fff" stroke-width="9" stroke-dasharray="4 26" stroke-linecap="round" stroke-opacity=".8"/></svg>`, s);
       css(trail, { left: 0, top: 0 });
-      const plane = el('div', 'abs', `<svg viewBox="0 0 100 100" width="190" height="190"><path d="M8 46 L92 10 L66 90 L50 58 Z" fill="#fff" stroke="#fff" stroke-width="5" stroke-linejoin="round"/><path d="M50 58 L92 10" stroke="var(--b)" stroke-width="6"/></svg>`, s);
-      css(plane, { left: '-200px', top: '1240px' });
-      const sb = img(A + 'img/please.webp', 'sb', s, { left: '50px', top: '1120px', width: '230px' });
-      enter('share', at, 'iris');
-      tl.fromTo([...split(bk1), ...split(bk2)], { y: 200, opacity: 0, rotation: 15 }, { y: 0, opacity: 1, rotation: 0, duration: 0.4, stagger: 0.04, ease: 'back.out(2)' }, seg.start - 0.1);
-      shake(w(seg.id, 'drauf') + 0.1, 18); punch(w(seg.id, 'drauf'));
-      tl.to(bock, { scale: 0.62, y: -140, duration: 0.35, ease: 'power3.inOut' }, w(seg.id, 'Schick') - 0.2);
-      tl.fromTo(l1, { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 0.3, ease: 'power3.out' }, w(seg.id, 'Schick') - 0.1);
-      tl.fromTo(l2, { scale: 0, rotation: -8 }, { scale: 1, rotation: -3, duration: 0.4, ease: 'back.out(2.5)' }, w(seg.id, 'Marktleitung') - 0.1);
-      tl.fromTo(trail, { clipPath: 'inset(0 100% 0 0)' }, { clipPath: 'inset(0 0% 0 0)', duration: 1.1, ease: 'power2.inOut' }, w(seg.id, 'Schick'));
-      tl.fromTo(plane, { x: 0, y: 0, rotation: 10 }, { x: 1350, y: -560, rotation: -20, duration: 1.1, ease: 'power2.inOut' }, w(seg.id, 'Schick'));
-      tl.fromTo(sb, { y: 950 }, { y: 0, duration: 0.45, ease: 'back.out(1.6)' }, w(seg.id, 'Marktleitung'));
-      burst(s, 540, 1080, w(seg.id, 'Marktleitung') + 0.2);
+      const plane = el('div', 'abs', `<svg viewBox="0 0 100 100" width="170" height="170"><path d="M8 46 L92 10 L66 90 L50 58 Z" fill="#fff" stroke="#fff" stroke-width="5" stroke-linejoin="round"/><path d="M50 58 L92 10" stroke="#F3703A" stroke-width="6"/></svg>`, s);
+      css(plane, { left: '-190px', top: '1210px', zIndex: 6 });
+      const sb = sticker('tanzen', s, 680, 540, 340);
+      push(s, segs.s22.start - 0.4);
+      popLetters(bock, ls('s22', 0) - 0.1, 0.035);
+      popIn(sb, ls('s22', 0) + 0.15, { y0: 250 });
+      idle(sb, ls('s22', 0) + 0.85, ls('s22', 1) + 1.6, 16, 5, 0.42);
+      const tS = ls('s22', 1);
+      tl.to(bock, { scale: 0.7, y: -120, duration: 0.45, ease: 'power3.inOut' }, tS - 0.25);
+      riseWords(l1, tS - 0.1);
+      tl.fromTo($('.pill', l2), { scale: 0, rotation: -8 }, { scale: 1, rotation: -3, duration: 0.55, ease: 'back.out(2.2)' }, tS + 0.35);
+      tl.fromTo(trail, { clipPath: 'inset(0 100% 0 0)' }, { clipPath: 'inset(0 0% 0 0)', duration: 1.2, ease: 'power2.inOut' }, tS + 0.1);
+      tl.fromTo(plane, { x: 0, y: 0, rotation: 8 }, { x: 1360, y: -420, rotation: -18, duration: 1.2, ease: 'power2.inOut' }, tS + 0.1);
     }
 
-    // ===================== 14) BROSCHÜRE – Alle Details? =====================
+    // ================================================== 14) BROSCHÜRE – Alle Details? + Endcard
     {
-      const s = scene('broschuere', 'orange');
-      const seg = segsOf('broschuere')[0];
-      const at = sStart('broschuere') - 0.3;
-      const hearts = [];
-      for (let i = 0; i < 14; i++) {
-        const h = el('div', 'abs', `<svg viewBox="0 0 100 100" width="100%" height="100%"><path d="${heartPath}" fill="none" stroke="#fff" stroke-opacity="${rr(0.15, 0.4).toFixed(2)}" stroke-width="10" stroke-linejoin="round"/></svg>`, s);
-        const size = rr(60, 170);
-        css(h, { left: rr(-40, 1000) + 'px', top: '1950px', width: size + 'px', height: size + 'px' });
-        hearts.push(h);
-      }
-      const head = el('div', 'abs center-x', 'ALLE DETAILS?', s);
-      css(head, { top: '170px', font: '900 128px/1 Outfit' });
-      const fan = el('div', 'abs fan', null, s);
+      const s = layer();
+      const seg = segs.s23;
+      const head = el('div', 'abs cx title-xl shadow-txt', 'ALLE DETAILS?', s); css(head, { top: '200px', fontSize: '128px' });
+      const fan = el('div', 'abs', null, s); css(fan, { inset: 0 });
       const FAN = ['06', '17', '21', '28', '31', '39', '11'];
-      const pages = FAN.map((n) => { const p = el('div', 'fan-page', `<img src="${A}pages/fan-${n}.webp">`, fan); return p; });
+      const pages = FAN.map((n) => el('div', 'fan-page', `<img src="${A}pages/fan-${n}.webp">`, fan));
       const cover = el('div', 'fan-page cover', `<img src="${A}pages/cover.webp">`, fan);
-      const bro = el('div', 'abs sticker', 'AB IN DIE<br>BROSCHÜRE!', s); css(bro, { left: '215px', top: '1050px', textAlign: 'center', lineHeight: '1.05', fontSize: '96px' });
-      const sb = img(A + 'img/love.webp', 'sb', s, { left: '830px', top: '300px', width: '230px', zIndex: 10 });
-      const end = el('div', 'abs endcard', `<img src="${A}img/food-academy-fresh-logo.svg"><div class="handle">SEMINARE 2027</div><div class="see">WIR SEHEN UNS<br>AN DER THEKE! <span class="emo">🧡</span></div>`, s);
-      enter('broschuere', at, 'whip');
-      hearts.forEach((h) => tl.to(h, { y: -2300, rotation: rr(-60, 60), duration: rr(4, 7), ease: 'none' }, at + rr(0, 4)));
-      tl.fromTo(split(head), { y: -160, opacity: 0, rotation: -10 }, { y: 0, opacity: 1, rotation: 0, duration: 0.4, stagger: 0.03, ease: 'back.out(2)' }, seg.start - 0.1);
-      // Cover fliegt rein, Seiten liegen darunter versteckt
-      tl.fromTo(cover, { y: 1300, rotation: 20, rotationY: -40, transformPerspective: 1600 }, { y: 0, rotation: -2, rotationY: 0, duration: 0.6, ease: 'expo.out' }, seg.start + 0.05);
-      tl.fromTo(pages, { y: 1300 }, { y: 0, duration: 0.6, ease: 'expo.out' }, seg.start + 0.05);
-      // Auf "Broschüre": Seiten fächern auf
-      const tB = w(seg.id, 'Broschüre');
+      const sbD = sticker('fragend', s, 730, 980, 300);
+      const sbP = sticker('praesentiert', s, -10, 960, 360);
+      const bro = el('div', 'tag', 'AB IN DIE BROSCHÜRE!', s); css(bro, { left: '330px', top: '1110px', fontSize: '66px' });
+      const end = el('div', 'abs endcard', `<img src="${A}img/food-academy-fresh-logo.svg"><div style="margin-top:34px"><span class="pill" style="background:#fff;color:var(--o);font-size:54px">SEMINARE 2027</span></div><div class="see">WIR SEHEN UNS<br>AN DER THEKE!</div>`, s);
+      const sbW = sticker('winken', s, 330, 1030, 420);
+      push(s, seg.start - 0.4);
+      popLetters(head, ls('s23', 0) - 0.1, 0.03);
+      popIn(sbD, ls('s23', 0) + 0.1, { y0: 250 });
+      const tB = ls('s23', 1);
+      tl.fromTo([...pages, cover], { y: 1300, rotation: 15 }, { y: 0, rotation: 0, duration: 0.7, ease: 'expo.out', stagger: 0.02 }, ls('s23', 0) + 0.2);
       pages.forEach((p, i) => {
         const k = i - (pages.length - 1) / 2;
-        tl.to(p, { rotation: k * 9, x: k * 62, y: Math.abs(k) * 26 - 30, duration: 0.55, ease: 'back.out(1.6)' }, tB - 0.25 + i * 0.03);
+        tl.to(p, { rotation: k * 9, x: k * 60, y: Math.abs(k) * 24 - 30, duration: 0.7, ease: 'back.out(1.5)' }, tB - 0.2 + i * 0.03);
       });
-      tl.to(cover, { scale: 1.06, rotation: 0, duration: 0.3, ease: 'back.out(2)' }, tB - 0.2);
-      pop(bro, tB - 0.05, 0, 'back.out(3)', 0.4, -5);
-      shake(tB + 0.1, 16); punch(tB);
-      burst(s, 540, 700, tB + 0.05);
-      tl.fromTo(sb, { x: 400, rotation: 25 }, { x: 0, rotation: -6, duration: 0.5, ease: 'back.out(1.6)' }, tB + 0.15);
-      // Endcard
-      const tE = w(seg.id, 'Wir') - 0.15;
-      tl.to([head, fan, bro, sb], { opacity: 0, scale: 0.8, y: '-=60', duration: 0.35, ease: 'power3.in', stagger: 0.03 }, tE);
-      tl.fromTo(end, { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.5, ease: 'back.out(1.8)' }, tE + 0.25);
-      tl.fromTo($('.see', end), { y: 80, opacity: 0 }, { y: 0, opacity: 1, duration: 0.4, ease: 'back.out(2)' }, w(seg.id, 'Theke') - 0.3);
-      burst(s, 540, 700, w(seg.id, 'Theke'));
-      tl.to($('.emo', end), { scale: 1.3, duration: 0.3, yoyo: true, repeat: 5, ease: 'sine.inOut' }, seg.end);
+      tl.to(cover, { scale: 1.05, rotation: -2, duration: 0.4, ease: 'back.out(2)' }, tB - 0.15);
+      popOut(sbD, tB - 0.2, 0.25);
+      popIn(sbP, tB, { y0: 250 });
+      popIn(bro, tB + 0.1, { rot: -4, rot0: -20, y0: 30, dur: 0.5, ease: 'back.out(2.4)' });
+      const tE = ls('s23', 2) - 0.2;
+      tl.to([head, fan, bro, sbP], { opacity: 0, y: -80, scale: 0.85, duration: 0.4, ease: 'power3.in', stagger: 0.03 }, tE);
+      tl.fromTo(end, { opacity: 0, scale: 0.7, y: 60 }, { opacity: 1, scale: 1, y: 0, duration: 0.7, ease: 'back.out(1.6)' }, tE + 0.3);
+      riseWords($('.see', end), ls('s23', 2) + 0.2, 0.08);
+      popIn(sbW, tE + 0.5, { y0: 300 });
+      tl.to(sbW, { rotation: -6, duration: 0.25, yoyo: true, repeat: 7, ease: 'sine.inOut' }, tE + 1.2);
+      confetti(s, 540, 760, ls('s23', 2) + 0.6, 50, 560);
+      tl.to('#story', { opacity: 0, duration: 0.4 }, tE);
     }
 
     tl.set({}, {}, T.total);
   }
 
-  // =====================================================================
-  // Film-Korn (deterministisch, ändert sich pro Bild)
-  // =====================================================================
-  const grain = el('div', 'grain', null, stage);
+  // ---------------------------------------------------------------- Film-Korn
+  const grain = $('#grain');
   {
     const c = document.createElement('canvas'); c.width = c.height = 256;
     const g = c.getContext('2d'); const d = g.createImageData(256, 256); const r = makeRng(7);
@@ -539,52 +475,36 @@
     grain.style.backgroundImage = `url(${c.toDataURL()})`;
   }
 
-  // =====================================================================
-  // Untertitel: 1–3 Wörter, aktives Wort gelb + Pop
-  // =====================================================================
+  // ---------------------------------------------------------------- Untertitel = exakt der aktuelle Satzteil
   const subsEl = $('#subs');
-  const subsBack = el('div', 'back', null, subsEl);
-  const subsFront = el('div', 'front', null, subsEl);
-  const chunks = [];
-  T.segments.forEach((s) => {
-    let cur = [];
-    const flush = () => { if (cur.length) chunks.push(cur); cur = []; };
-    s.words.forEach((wd) => {
-      const len = cur.reduce((a, x) => a + x.w.length + 1, 0) + wd.w.length;
-      if (cur.length && (len > 16 || cur.length >= 3)) flush();
-      cur.push(wd);
-      if (/[.!?:,–]$/.test(wd.w)) flush();
-    });
-    flush();
-  });
-  chunks.forEach((c, i) => {
-    c.start = c[0].s;
-    const next = chunks[i + 1];
-    c.end = Math.min(c[c.length - 1].e + 0.45, next ? next[0].s : Infinity);
+  const back = el('div', 'back', null, subsEl);
+  const front = el('div', 'front', null, subsEl);
+  const allLines = T.segments.flatMap((s) => s.lines);
+  allLines.forEach((l, i) => {
+    const nx = allLines[i + 1];
+    l.show = l.s - 0.06;
+    l.hide = Math.min(l.e + 0.22, nx ? nx.s - 0.06 : Infinity);
   });
   let shown = null;
   function renderSubs(t) {
-    const c = chunks.find((x) => t >= x.start - 0.02 && t < x.end);
-    if (c !== shown) {
-      shown = c;
-      const html = c ? c.map((x) => `<span class="w">${x.w.replace(/–/g, '')}</span>`).join(' ') : '';
-      subsBack.innerHTML = html; subsFront.innerHTML = html;
+    const l = allLines.find((x) => t >= x.show && t < x.hide);
+    if (l !== shown) {
+      shown = l;
+      const html = l ? l.words.map((x) => `<span class="w">${x.w.replace(/–/g, '')}</span>`).join(' ') : '';
+      back.innerHTML = html; front.innerHTML = html;
     }
-    if (!c) return;
-    c.forEach((x, i) => {
-      const on = t >= x.s && (i === c.length - 1 || t < c[i + 1].s);
-      const k = Math.min(1, Math.max(0, (t - x.s) / 0.16));
-      const sc = on ? 1 + 0.16 * Math.sin(Math.PI * k) : 1;
-      const rot = on ? -3 * Math.sin(Math.PI * k) : 0;
-      [subsBack.children[i], subsFront.children[i]].forEach((sp) => { sp.classList.toggle('on', on); sp.style.transform = `scale(${sc}) rotate(${rot}deg)`; });
+    if (!l) return;
+    l.words.forEach((x, i) => {
+      const on = t >= x.s - 0.03 && (i === l.words.length - 1 ? t < l.e + 0.22 : t < l.words[i + 1].s - 0.03);
+      back.children[i].classList.toggle('on', on); front.children[i].classList.toggle('on', on);
     });
-    const k = Math.min(1, (t - c.start) / 0.14);
-    subsEl.style.transform = `scale(${0.75 + 0.25 * (1 - Math.pow(1 - k, 3))})`;
+    const k = Math.min(1, Math.max(0, (t - l.show) / 0.18));
+    const e = 1 - Math.pow(1 - k, 3);
+    subsEl.style.transform = `translateY(${(1 - e) * 26}px) scale(${0.92 + 0.08 * e})`;
+    subsEl.style.opacity = String(Math.min(1, k * 1.6));
   }
 
-  // =====================================================================
-  // Steuerung
-  // =====================================================================
+  // ---------------------------------------------------------------- Steuerung
   function seek(t) {
     tl.time(Math.min(t, T.total), false);
     renderSubs(t);
@@ -596,7 +516,7 @@
   window.__fps = T.fps;
   window.__ready = (async () => {
     await document.fonts.ready;
-    await Promise.all(['900 40px Outfit', '800 40px Outfit', '600 40px Outfit', '40px Marker', '40px "Noto Color Emoji"'].map((f) => document.fonts.load(f, '🔥A')));
+    await Promise.all(['900 40px Outfit', '800 40px Outfit', '600 40px Outfit', '40px Marker', '40px "Noto Color Emoji"'].map((f) => document.fonts.load(f, '🌍A')));
     build();
     await Promise.all([...document.images].map((i) => (i.complete ? i.decode().catch(() => {}) : new Promise((r) => { i.onload = i.onerror = r; }))));
     seek(0);

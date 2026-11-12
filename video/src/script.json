@@ -1,62 +1,106 @@
 {
-  "_hinweis": "Sprechertext. 'text' = was Franz sagt und was als Untertitel erscheint (Seminartitel wörtlich wie in der Broschüre). 'tts' = Aussprache-Hilfe nur für die Platzhalter-Stimme. 'pause' = Sekunden Stille nach dem Satz. 'min' = Mindestdauer (Satz + Pause), damit alle Seminar-Karten Zeit bekommen.",
-  "start": 0.95,
-  "outro": 3.0,
+  "_hinweis": "Sprechertext. Jeder Eintrag in 'segments' = EINE Aufnahme von Franz (Datei <id>.m4a). 'lines' = Satzteile – jeder Satzteil ist ein Bild-Beat + eine Untertitel-Zeile. Franz macht zwischen den Satzteilen eine kleine Atempause; daran erkennt tools/voice.py die Satzteile. 'card' = diese Seminar-Karte erscheint genau auf diesem Satzteil. 'tts' = Aussprache-Hilfe nur für die Platzhalter-Stimme.",
+  "start": 1.0,
+  "outro": 2.6,
   "segments": [
-    { "id": "s01", "scene": "intro",      "pause": 0.2,  "text": "Hey Leute, Franz hier – euer Fresh-Trainer!",
-      "tts": "Hey Leute, Franz hier, euer Fräsch-Trainer!" },
-    { "id": "s02", "scene": "cover",      "pause": 0.25, "text": "Die Seminare 2027 für die Frischetheke sind da!",
-      "tts": "Die Seminare zweitausendsiebenundzwanzig für die Frischetheke sind da!" },
-    { "id": "s03", "scene": "menschen",   "pause": 0.7,  "text": "Denn Menschen machen den Unterschied. Also: du!",
-      "tts": "Denn Menschen machen den Unterschied. Also: du!" },
-    { "id": "s04", "scene": "level",      "pause": 0.2,  "min": 4.4, "text": "Vier Level: Fresh-ling, Fresh-Kraft, Fresh-Alist, Fresh-Master.",
-      "tts": "Vier Level: Fräschling, Fräschkraft, Fräschalist, Fräschmaster." },
-    { "id": "s05", "scene": "level",      "pause": 0.3,  "text": "Ob Quereinsteiger oder Profi – hier levelst du auf. Ich erklär's euch kurz!",
-      "tts": "Ob Quereinsteiger oder Profi, hier levelst du auf. Ich erklärs euch kurz!" },
+    { "id": "s01", "scene": "intro", "pause": 0.45, "lines": [
+      { "t": "Hey Leute,", "tts": "Hey Leute," },
+      { "t": "Franz hier –", "tts": "Franz hier." },
+      { "t": "euer Fresh-Trainer!", "tts": "euer Fräsch-Trainer!" } ] },
+    { "id": "s02", "scene": "cover", "pause": 0.3, "lines": [
+      { "t": "Die Seminare 2027", "tts": "Die Seminare zweitausendsiebenundzwanzig" },
+      { "t": "für die Frischetheke", "tts": "für die Frischetheke" },
+      { "t": "sind da!", "tts": "sind da!" } ] },
+    { "id": "s03", "scene": "menschen", "pause": 0.45, "lines": [
+      { "t": "Denn Menschen", "tts": "Denn Menschen" },
+      { "t": "machen den Unterschied.", "tts": "machen den Unterschied." },
+      { "t": "Also: du!", "tts": "Also: du!" } ] },
+    { "id": "s04", "scene": "level", "pause": 0.45, "lines": [
+      { "t": "Vier Level:", "tts": "Vier Level:" },
+      { "t": "Fresh-ling,", "tts": "Fräschling," },
+      { "t": "Fresh-Kraft,", "tts": "Fräschkraft," },
+      { "t": "Fresh-Alist,", "tts": "Fräschalist," },
+      { "t": "Fresh-Master.", "tts": "Fräschmaster." } ] },
+    { "id": "s05", "scene": "level", "pause": 0.3, "lines": [
+      { "t": "Egal ob Quereinsteiger", "tts": "Egal ob Quereinsteiger" },
+      { "t": "oder Profi –", "tts": "oder Profi." },
+      { "t": "hier levelst du auf!", "tts": "hier levelst du auf!" },
+      { "t": "Ich erklär's euch kurz.", "tts": "Ich erklärs euch kurz." } ] },
 
-    { "id": "s06", "scene": "onboarding", "q": true, "pause": 0.15, "text": "Was gibt's für den Start?",
-      "tts": "Was gibts für den Start?" },
-    { "id": "s07", "scene": "onboarding", "pause": 0.25, "min": 4.4, "text": "Onboarding zum Durchstarten, Grundlagen – kurz und knackig online – und die Heimspielserie in Teilzeit.",
-      "tts": "Onbording zum Durchstarten, Grundlagen, kurz und knackig online, und die Heimspielserie in Teilzeit." },
+    { "id": "s06", "scene": "onboarding", "q": true, "pause": 0.2, "lines": [
+      { "t": "Was gibt's für den Start?", "tts": "Was gibts für den Start?" } ] },
+    { "id": "s07", "scene": "onboarding", "pause": 0.45, "lines": [
+      { "t": "Onboarding –", "tts": "Onbording.", "card": "01" },
+      { "t": "bereit zum Durchstarten.", "tts": "bereit zum Durchstarten." },
+      { "t": "Grundlagen –", "tts": "Grundlagen.", "card": "03" },
+      { "t": "kurz und knackig online.", "tts": "kurz und knackig online." },
+      { "t": "Und die Heimspielserie!", "tts": "Und die Heimspielserie!", "card": "04" } ] },
 
-    { "id": "s08", "scene": "fleisch",    "q": true, "pause": 0.15, "text": "Was gibt's rund um Fleisch?",
-      "tts": "Was gibts rund um Fleisch?" },
-    { "id": "s09", "scene": "fleisch",    "pause": 0.25, "min": 4.8, "text": "Fleisch mit Profil, Grillschule, Bratenschule – mehr weiß nur Oma! – und die Meat Masterclass.",
-      "tts": "Fleisch mit Profil, Grillschule, Bratenschule, mehr weiß nur Oma! Und die Miet Masterklass." },
+    { "id": "s08", "scene": "fleisch", "q": true, "pause": 0.2, "lines": [
+      { "t": "Was gibt's rund um Fleisch?", "tts": "Was gibts rund um Fleisch?" } ] },
+    { "id": "s09", "scene": "fleisch", "pause": 0.45, "lines": [
+      { "t": "Fleisch mit Profil,", "tts": "Fleisch mit Profil,", "card": "05" },
+      { "t": "die Grillschule,", "tts": "die Grillschule,", "card": "06" },
+      { "t": "die Bratenschule –", "tts": "die Bratenschule.", "card": "07" },
+      { "t": "mehr weiß nur Oma!", "tts": "mehr weiß nur Oma!" },
+      { "t": "Und für echte Profis:", "tts": "Und für echte Profis:" },
+      { "t": "die Meat Masterclass.", "tts": "die Miet Masterklass.", "card": "10" } ] },
 
-    { "id": "s10", "scene": "wurst",      "q": true, "pause": 0.15, "text": "Und bei Wurst?",
-      "tts": "Und bei Wurst?" },
-    { "id": "s11", "scene": "wurst",      "pause": 0.25, "text": "Feine Wurst und Schinken aus aller Welt – und ihr werdet Food Stylist auf Platten und Fingern.",
-      "tts": "Feine Wurst und Schinken aus aller Welt, und ihr werdet Fuhd Steilist auf Platten und Fingern." },
+    { "id": "s10", "scene": "wurst", "q": true, "pause": 0.2, "lines": [
+      { "t": "Und bei Wurst?", "tts": "Und bei Wurst?" } ] },
+    { "id": "s11", "scene": "wurst", "pause": 0.45, "lines": [
+      { "t": "Feine Wurst und Schinken", "tts": "Feine Wurst und Schinken", "card": "11" },
+      { "t": "aus aller Welt.", "tts": "aus aller Welt." },
+      { "t": "Voll auf die Wurst!", "tts": "Voll auf die Wurst!", "card": "13" },
+      { "t": "Und ihr werdet Food Stylist", "tts": "Und ihr werdet Fuhd Steilist", "card": "12" },
+      { "t": "auf Platten und Fingern.", "tts": "auf Platten und Fingern." } ] },
 
-    { "id": "s12", "scene": "kaese",      "q": true, "pause": 0.15, "text": "Was geht beim Käse?",
-      "tts": "Was geht beim Käse?" },
-    { "id": "s13", "scene": "kaese",      "pause": 0.25, "min": 4.2, "text": "Kulinarische Reise, Fromage Voyage – bis zur Masterclass: High End für Profis.",
-      "tts": "Kulinarische Reise, Fromasch Wojasch, bis zur Masterklass: Hai End für Profis." },
+    { "id": "s12", "scene": "kaese", "q": true, "pause": 0.2, "lines": [
+      { "t": "Was geht beim Käse?", "tts": "Was geht beim Käse?" } ] },
+    { "id": "s13", "scene": "kaese", "pause": 0.45, "lines": [
+      { "t": "Eine kulinarische Reise,", "tts": "Eine kulinarische Reise,", "card": "14" },
+      { "t": "Fromage Voyage", "tts": "Fromasch Wojasch.", "card": "15" },
+      { "t": "und die Käse-Masterclass:", "tts": "und die Käse Masterklass:", "card": "18" },
+      { "t": "High End für Profis.", "tts": "Hai End für Profis." } ] },
 
-    { "id": "s14", "scene": "fisch",      "q": true, "pause": 0.15, "text": "Was gibt's rund um Fisch?",
-      "tts": "Was gibts rund um Fisch?" },
-    { "id": "s15", "scene": "fisch",      "pause": 0.25, "text": "Rock' die Küche mit Fisch – und Fisch hautnah: ab nach Bremerhaven!",
-      "tts": "Rock die Küche mit Fisch, und Fisch hautnah: ab nach Bremerhaven!" },
+    { "id": "s14", "scene": "fisch", "q": true, "pause": 0.2, "lines": [
+      { "t": "Was gibt's rund um Fisch?", "tts": "Was gibts rund um Fisch?" } ] },
+    { "id": "s15", "scene": "fisch", "pause": 0.45, "lines": [
+      { "t": "Rock' die Küche mit Fisch", "tts": "Rock die Küche mit Fisch.", "card": "19" },
+      { "t": "und Fisch hautnah –", "tts": "und Fisch hautnah.", "card": "21" },
+      { "t": "ab nach Bremerhaven!", "tts": "ab nach Bremerhaven!" } ] },
 
-    { "id": "s16", "scene": "fuehrung",   "q": true, "pause": 0.15, "text": "Ihr wollt führen?",
-      "tts": "Ihr wollt führen?" },
-    { "id": "s17", "scene": "fuehrung",   "pause": 0.25, "min": 5.6, "text": "Führungstraining Theke eins bis drei, Ausbilderschein – und Meisterpflicht in nur fünf Tagen.",
-      "tts": "Führungstraining Theke eins bis drei, Ausbilderschein, und Meisterpflicht in nur fünf Tagen." },
+    { "id": "s16", "scene": "fuehrung", "q": true, "pause": 0.2, "lines": [
+      { "t": "Ihr wollt führen?", "tts": "Ihr wollt führen?" } ] },
+    { "id": "s17", "scene": "fuehrung", "pause": 0.45, "lines": [
+      { "t": "Führungstraining Theke", "tts": "Führungstraining Theke", "card": "22" },
+      { "t": "eins, zwei und drei,", "tts": "eins, zwei und drei,", "card": "24" },
+      { "t": "der Ausbilderschein", "tts": "der Ausbilderschein.", "card": "26" },
+      { "t": "und Meisterpflicht –", "tts": "und Meisterpflicht.", "card": "25" },
+      { "t": "jetzt in nur fünf Tagen!", "tts": "jetzt in nur fünf Tagen!" } ] },
 
-    { "id": "s18", "scene": "azubis",     "q": true, "pause": 0.15, "text": "Und ihr Azubis?",
-      "tts": "Und ihr Azubis?" },
-    { "id": "s19", "scene": "azubis",     "pause": 0.25, "min": 3.8, "text": "Es ist Thekenzeit! Hands on Meat – im Handwerk wird gelernt.",
-      "tts": "Es ist Thekenzeit! Händs on Miet, im Handwerk wird gelernt." },
+    { "id": "s18", "scene": "azubis", "q": true, "pause": 0.2, "lines": [
+      { "t": "Und ihr Azubis?", "tts": "Und ihr Azubis?" } ] },
+    { "id": "s19", "scene": "azubis", "pause": 0.45, "lines": [
+      { "t": "Es ist Thekenzeit!", "tts": "Es ist Thekenzeit!", "card": "32" },
+      { "t": "Hands on Meat,", "tts": "Händs on Miet,", "card": "33" },
+      { "t": "im Handwerk wird gelernt –", "tts": "im Handwerk wird gelernt.", "card": "34" },
+      { "t": "und nach der Ausbildung", "tts": "und nach der Ausbildung", "card": "35" },
+      { "t": "geht's erst richtig los!", "tts": "gehts erst richtig los!" } ] },
 
-    { "id": "s20", "scene": "digital",    "q": true, "pause": 0.15, "text": "Und zwischendurch?",
-      "tts": "Und zwischendurch?" },
-    { "id": "s21", "scene": "digital",    "pause": 0.3,  "text": "100 Handgriffe als Video, Blended Learning und WizzUp – das Quiz-Duell.",
-      "tts": "Hundert Handgriffe als Video, Blended Lörning und Wiss app, das Quiz Duell." },
+    { "id": "s20", "scene": "digital", "q": true, "pause": 0.2, "lines": [
+      { "t": "Und zwischendurch?", "tts": "Und zwischendurch?" } ] },
+    { "id": "s21", "scene": "digital", "pause": 0.45, "lines": [
+      { "t": "100 Handgriffe als Video,", "tts": "Hundert Handgriffe als Video," },
+      { "t": "Blended Learning", "tts": "Blended Lörning." },
+      { "t": "und WizzUp – das Quiz-Duell!", "tts": "und Wiss app, das Quiz Duell!" } ] },
 
-    { "id": "s22", "scene": "share",      "pause": 0.25, "text": "Bock drauf? Schick das deiner Marktleitung!",
-      "tts": "Bock drauf? Schick das deiner Marktleitung!" },
-    { "id": "s23", "scene": "broschuere", "pause": 0.0,  "text": "Alle Details? Ab in die Broschüre! Wir sehen uns an der Theke!",
-      "tts": "Alle Details? Ab in die Broschüre! Wir sehen uns an der Theke!" }
+    { "id": "s22", "scene": "share", "pause": 0.3, "lines": [
+      { "t": "Bock drauf?", "tts": "Bock drauf?" },
+      { "t": "Schick das deiner Marktleitung!", "tts": "Schick das deiner Marktleitung!" } ] },
+    { "id": "s23", "scene": "broschuere", "pause": 0.0, "lines": [
+      { "t": "Alle Details?", "tts": "Alle Details?" },
+      { "t": "Ab in die Broschüre!", "tts": "Ab in die Broschüre!" },
+      { "t": "Wir sehen uns an der Theke!", "tts": "Wir sehen uns an der Theke!" } ] }
   ]
 }

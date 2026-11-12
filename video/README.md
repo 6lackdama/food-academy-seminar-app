@@ -11,27 +11,28 @@ HTML/CSS + [GSAP](https://gsap.com) für die Animation, Chromium (Playwright) re
 
 ## Ablauf (Szenen)
 
-| # | Szene | Inhalt |
-|---|---|---|
-| 0 | Hook | 3 Flash-Cuts in 0,9 s: NEU / 2027 / FRESH |
-| 1 | Intro | Steakboy, „HEY!“ 👋, Namensschild FRANZ · FRESH-TRAINER, Logo |
-| 2 | Cover | Broschüren-Cover fliegt in 3D rein, „SEMINARE 2027 – SIND DA! 🔥“ |
-| 3 | Menschen | „Menschen machen den Unterschied – also: DU!“ 🫵 |
-| 4 | Level | XP-Leiste, 4 Stufen Fresh-ling → Fresh-Master als Treppe, „LEVEL UP!“ |
-| 5–11 | Themen 1/7 … 7/7 | Jeweils **Frage-Beat** („Was gibt's rund um Fisch?“) mit Laufbändern, Emoji und Food-Foto, danach fliegen die Seminar-Titel aus der Broschüre als Karten rein – **genau auf dem Wort**, auf dem Franz sie nennt |
-| 12 | Fresh Digital | „Und zwischendurch?“ → 100 Handgriffe (Zähler), Blended Learning, WizzUp |
-| 13 | Share | „Bock drauf? Schick das deiner Marktleitung!“ mit Papierflieger |
-| 14 | Broschüre | Das Cover fliegt rein, Originalseiten fächern auf („AB IN DIE BROSCHÜRE! 📖“), Endcard mit Logo, „SEMINARE 2027“ und „Wir sehen uns an der Theke!“ |
+Durchgehender **Orange-Fresh-Look**: ein fester orangener Hintergrund (weiche Lichtflecken, Herz, „27“), oben eine Story-Fortschrittsleiste für die 7 Themen.
 
-Übergänge wechseln zwischen Whip-Pan (mit Bewegungsunschärfe), Zoom-Punch, Kreis-Iris und Diagonal-Wipe; dazu Film-Korn, Funkel-Sticker und Kamera-Shakes auf den Beats.
-Welche Karte bei welchem Wort reinfliegt, steht in `src/main.js` in der Liste `CATS` (Feld `cards`, z. B. `['07', 'Bratenschule']`).
+| # | Szene | Inhalt | Steakboy |
+|---|---|---|---|
+| 0 | Hook | 3 Flash-Cuts in 0,9 s: NEU / 2027 / FRESH | – |
+| 1 | Intro | „HEY LEUTE!“, Namensschild FRANZ · FRESH-TRAINER, Logo | winken |
+| 2 | Cover | Broschüren-Cover fliegt rein, „2027“, „Für die Frischetheke“, Konfetti bei „sind da!“ | party |
+| 3 | Menschen | „Menschen machen den Unterschied – also: DU!“ mit gezeichnetem Herz | zeigt |
+| 4 | Level | XP-Leiste, 4 Stufen als Treppe, „LEVEL UP!“, „KURZ ERKLÄRT“ | denkt → tanzen → zeigt-hoch |
+| 5–11 | Themen 1/7 … 7/7 | Weißes **Frage-Sheet** („Was gibt's rund um Fisch?“), dann Orange mit Seminar-Karten: **jede Karte erscheint genau auf dem Satzteil, in dem Franz sie nennt** und wischt wie eine Story weiter. Gags als gelbe Sticker („MEHR WEISS NUR OMA!“) | fragend/zeigt, grill, koch, klatschen, achtung, daumen, verlegen |
+| 12 | Fresh Digital | dunkles Sheet: „Und zwischendurch?“ → 100 Handgriffe, Blended Learning, WizzUp | schlafen |
+| 13 | Share | „Bock drauf? Schick das deiner Marktleitung!“ mit Papierflieger | tanzen |
+| 14 | Broschüre | „Alle Details?“ → Cover + Originalseiten fächern auf → Endcard „Wir sehen uns an der Theke!“ | fragend → präsentiert → winken |
+
+Es werden nur Seminare gezeigt, die auch gesprochen werden. Die Zuordnung steht direkt im Skript (`src/script.json`, Feld `card` am Satzteil).
 
 ## Ordner
 
 ```
 video/
   src/index.html, style.css, main.js   ← das Video (Animation)
-  src/script.json                      ← Sprechertext (hier Texte ändern)
+  src/script.json                      ← Sprechertext: Aufnahmen → Satzteile ('lines') → Karte ('card')
   src/timing.js                        ← automatisch erzeugt (Zeitpunkte aus der Sprachspur)
   assets/                              ← aus der PDF extrahierte Grafiken (Titel, Fotos, Logo als Vektor)
   audio/franz/                         ← HIER kommen Franz' Aufnahmen rein
@@ -39,6 +40,8 @@ video/
   tools/extract.py                     ← Grafiken aus der Broschüren-PDF holen
   tools/voice.py                       ← Sprachspur + Timing bauen
   tools/render.cjs                     ← Video rendern
+  tools/sticker.py                     ← Steakboy-Sticker freistellen (schwarzer Hintergrund → transparent)
+  assets/sb/                           ← freigestellte Steakboy-Sticker
   out/                                 ← Ergebnis (nicht im Git)
 ```
 
@@ -61,35 +64,35 @@ Grafiken neu aus der PDF holen: `python3 tools/extract.py <Broschüre.pdf>` und 
 
 ## Sprachaufnahme durch Franz (Option C)
 
-Franz nimmt **jeden Satz als eigene Datei** auf (23 kurze Sätze – die Fragen wie „Was gibt's rund um Fisch?“ sind eigene Dateien). Animation und Untertitel passen sich danach automatisch an sein Tempo an.
+Franz nimmt **jede Zeile unten als eigene Datei** auf (`s01.m4a` … `s23.m4a`, auch `.wav`/`.mp3`) und legt sie in `audio/franz/`. Danach `python3 tools/voice.py` und `node tools/render.cjs`.
 
-**Dateinamen:** `s01.m4a`, `s02.m4a`, … (auch `.wav` oder `.mp3`) → in den Ordner `audio/franz/` legen, dann `python3 tools/voice.py` und `node tools/render.cjs` ausführen. Einzelne Sätze können auch erst später kommen: Fehlende Sätze nimmt das Skript von der Platzhalter-Stimme.
+**Wichtig:** Die Schrägstriche `/` markieren die Satzteile. Dort bitte eine **kleine Atempause** machen (ca. eine Viertelsekunde, ganz natürlich). Daran erkennt das Skript die Satzteile, und Karten und Untertitel sitzen exakt auf seiner Stimme. Fehlende Dateien nimmt das Skript von der Platzhalter-Stimme.
 
-| Datei | Text |
+| Datei | Text (/ = kleine Pause) |
 |---|---|
-| s01 | Hey Leute, Franz hier – euer Fresh-Trainer! |
-| s02 | Die Seminare 2027 für die Frischetheke sind da! |
-| s03 | Denn Menschen machen den Unterschied. Also: du! |
-| s04 | Vier Level: Fresh-ling, Fresh-Kraft, Fresh-Alist, Fresh-Master. |
-| s05 | Ob Quereinsteiger oder Profi – hier levelst du auf. Ich erklär's euch kurz! |
+| s01 | Hey Leute, / Franz hier – / euer Fresh-Trainer! |
+| s02 | Die Seminare 2027 / für die Frischetheke / sind da! |
+| s03 | Denn Menschen / machen den Unterschied. / Also: du! |
+| s04 | Vier Level: / Fresh-ling, / Fresh-Kraft, / Fresh-Alist, / Fresh-Master. |
+| s05 | Egal ob Quereinsteiger / oder Profi – / hier levelst du auf! / Ich erklär's euch kurz. |
 | s06 | Was gibt's für den Start? |
-| s07 | Onboarding zum Durchstarten, Grundlagen – kurz und knackig online – und die Heimspielserie in Teilzeit. |
+| s07 | Onboarding – / bereit zum Durchstarten. / Grundlagen – / kurz und knackig online. / Und die Heimspielserie! |
 | s08 | Was gibt's rund um Fleisch? |
-| s09 | Fleisch mit Profil, Grillschule, Bratenschule – mehr weiß nur Oma! – und die Meat Masterclass. |
+| s09 | Fleisch mit Profil, / die Grillschule, / die Bratenschule – / mehr weiß nur Oma! / Und für echte Profis: / die Meat Masterclass. |
 | s10 | Und bei Wurst? |
-| s11 | Feine Wurst und Schinken aus aller Welt – und ihr werdet Food Stylist auf Platten und Fingern. |
+| s11 | Feine Wurst und Schinken / aus aller Welt. / Voll auf die Wurst! / Und ihr werdet Food Stylist / auf Platten und Fingern. |
 | s12 | Was geht beim Käse? |
-| s13 | Kulinarische Reise, Fromage Voyage – bis zur Masterclass: High End für Profis. |
+| s13 | Eine kulinarische Reise, / Fromage Voyage / und die Käse-Masterclass: / High End für Profis. |
 | s14 | Was gibt's rund um Fisch? |
-| s15 | Rock' die Küche mit Fisch – und Fisch hautnah: ab nach Bremerhaven! |
+| s15 | Rock' die Küche mit Fisch / und Fisch hautnah – / ab nach Bremerhaven! |
 | s16 | Ihr wollt führen? |
-| s17 | Führungstraining Theke eins bis drei, Ausbilderschein – und Meisterpflicht in nur fünf Tagen. |
+| s17 | Führungstraining Theke / eins, zwei und drei, / der Ausbilderschein / und Meisterpflicht – / jetzt in nur fünf Tagen! |
 | s18 | Und ihr Azubis? |
-| s19 | Es ist Thekenzeit! Hands on Meat – im Handwerk wird gelernt. |
+| s19 | Es ist Thekenzeit! / Hands on Meat, / im Handwerk wird gelernt – / und nach der Ausbildung / geht's erst richtig los! |
 | s20 | Und zwischendurch? |
-| s21 | 100 Handgriffe als Video, Blended Learning und WizzUp – das Quiz-Duell. |
-| s22 | Bock drauf? Schick das deiner Marktleitung! |
-| s23 | Alle Details? Ab in die Broschüre! Wir sehen uns an der Theke! |
+| s21 | 100 Handgriffe als Video, / Blended Learning / und WizzUp – das Quiz-Duell! |
+| s22 | Bock drauf? / Schick das deiner Marktleitung! |
+| s23 | Alle Details? / Ab in die Broschüre! / Wir sehen uns an der Theke! |
 
 **Tipps für eine gute Handy-Aufnahme**
 - Ruhiger Raum mit Teppich, Vorhängen oder Polstern, kein gefliester Raum. Ein Auto ist ein super Mini-Studio.

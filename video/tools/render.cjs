@@ -18,7 +18,7 @@ const args = process.argv.slice(2);
 const opt = (k, d) => { const i = args.indexOf('--' + k); return i >= 0 ? args[i + 1] : d; };
 
 const MIME = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.svg': 'image/svg+xml', '.webp': 'image/webp',
-  '.jpg': 'image/jpeg', '.png': 'image/png', '.woff2': 'font/woff2', '.wav': 'audio/wav', '.json': 'application/json' };
+  '.jpg': 'image/jpeg', '.png': 'image/png', '.woff2': 'font/woff2', '.woff': 'font/woff', '.wav': 'audio/wav', '.json': 'application/json' };
 
 function serve() {
   return new Promise((resolve) => {
@@ -36,7 +36,8 @@ async function openPage(browser, port) {
   page.on('console', (m) => { if (m.type() === 'warning' || m.type() === 'error') console.log('[Seite]', m.text()); });
   page.on('pageerror', (e) => console.log('[Seitenfehler]', e.message));
   await page.goto(`http://localhost:${port}/src/index.html?render`);
-  await page.evaluate(() => window.__ready);
+  const ok = await page.evaluate(() => window.__ready);
+  if (!ok) throw new Error('Szene konnte nicht geladen werden');
   return page;
 }
 
@@ -58,7 +59,7 @@ async function renderRange(browser, port, from, to, fps, file) {
 (async () => {
   const srv = await serve();
   const port = srv.address().port;
-  const browser = await chromium.launch();
+  const browser = await chromium.launch({ args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'] });
   fs.mkdirSync(OUT, { recursive: true });
 
   if (opt('stills')) {
@@ -80,7 +81,7 @@ async function renderRange(browser, port, from, to, fps, file) {
   await probe.close();
   const from = Math.round(+opt('from', 0) * fps);
   const to = Math.round(Math.min(+opt('to', total), total) * fps);
-  const workers = +opt('workers', 3);
+  const workers = +opt('workers', 4);
   const per = Math.ceil((to - from) / workers);
   console.log(`Rendere ${(to - from) / fps}s (${to - from} Bilder) mit ${workers} Workern …`);
   const t0 = Date.now();

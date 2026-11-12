@@ -3,16 +3,19 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Seminare 2027 – Motion Video</title>
+  <title>Seminare 2027 – 3D Motion Video</title>
   <link rel="stylesheet" href="style.css">
+  <script type="importmap">
+    { "imports": {
+        "three": "../node_modules/three/build/three.module.js",
+        "three/addons/": "../node_modules/three/examples/jsm/" } }
+  </script>
+  <script>window.__ready = new Promise((r) => { window.__resolveReady = r; });</script>
 </head>
 <body>
   <div id="viewport">
     <div id="stage">
-      <div id="bg"></div>
-      <div id="cam"></div>
-      <div id="story"></div>
-      <div id="kin"></div>
+      <div id="gl"></div>
       <div id="grain"></div>
     </div>
   </div>
@@ -25,6 +28,6 @@
 
   <script src="../node_modules/gsap/dist/gsap.min.js"></script>
   <script src="timing.js"></script>
-  <script src="main.js"></script>
+  <script type="module" src="main.js"></script>
 </body>
 </html>

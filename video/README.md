@@ -1,37 +1,33 @@
-# Motion-Video „Seminare 2027“ (Instagram Reel)
+# 3D-Motion-Video „Seminare 2027“ (Instagram Reel)
 
-Werbe-Video zur Broschüre *Seminare 2027 – Food Academy Fresh*, komplett aus Code gebaut:
-HTML/CSS + [GSAP](https://gsap.com) für die Animation, Chromium (Playwright) rendert Bild für Bild, ffmpeg macht daraus die MP4.
+Werbe-Video zur Broschüre *Seminare 2027 – Food Academy Fresh*, komplett aus Code gebaut – als **echte 3D-Produktion**:
+[Three.js](https://threejs.org) rendert eine 3D-Studioszene (Studiolicht, weiche Schatten, Glanz-Reflexionen), [GSAP](https://gsap.com) steuert die Animation, Chromium (Playwright) rendert Bild für Bild, ffmpeg macht daraus die MP4.
 
-- Format: 1080 × 1920 (9:16), 30 fps, H.264 + AAC, ca. 80–90 s
-- Ton: locker, Gen Z, für Mitarbeitende („ihr“ in den Fragen, „du“ wenn's persönlich wird). Alle 7 Themen und alle 35 Seminare erscheinen als Karten.
-- Eigenständiges Video zur Broschüre – ohne Verweis auf App oder Links. Ende: „Alle Details? Ab in die Broschüre!“
-- **Keine klassischen Untertitel:** Der gesprochene Text erscheint als Animations-Typo im Sprechtakt (Wörter steigen aus einer Maske auf, Schlüsselwörter bekommen einen gelben Marker, Pointen in Marker-Schrift). Was schon als Überschrift, Frage oder Kachel im Bild steht, wird nicht doppelt gezeigt. Einstellungen: `HL` (Schlüsselwörter) und `PUNCH` (Pointen) in `src/main.js`.
-- Inhalte im Instagram-„sicheren Bereich“: Unten bleiben ca. 370 px frei für Profilname und Bildunterschrift.
+- Format: 1080 × 1920 (9:16), 30 fps, H.264 + AAC, ca. 85 s
+- Ton: locker, Gen Z, für Mitarbeitende. Eigenständiges Video zur Broschüre, ohne Verweis auf App oder Links.
+- **Keine Untertitel:** Der gesprochene Text ist die Typografie der Szene. Jedes Wort klappt im Sprechtakt als extrudierte 3D-Schrift auf (weiß mit orangener Kante, Schlüsselwörter gelb, Pointen in 3D-Marker-Schrift). Einstellungen: `HL` und `PUNCH` in `src/main.js`.
+- 3D-Elemente: Seminar-Karten als 3D-Tafeln, die durch den Raum fliegen; die Broschüre als 3D-Buch, das aufklappt und blättert; 3D-Level-Treppe mit Gold-Herzen; schwebende Glanz-Herzen; 3D-Konfetti; Papierflieger; Kamerafahrten.
 
 ## Ablauf (Szenen)
 
-Durchgehender **Orange-Fresh-Look**: ein fester orangener Hintergrund (weiche Lichtflecken, Herz, „27“), oben eine Story-Fortschrittsleiste für die 7 Themen.
-
-| # | Szene | Inhalt | Steakboy |
+| # | Szene | 3D-Inhalt | Steakboy |
 |---|---|---|---|
-| 0 | Hook | 3 Flash-Cuts in 0,9 s: NEU / 2027 / FRESH | – |
-| 1 | Intro | „HEY LEUTE!“, Namensschild FRANZ · FRESH-TRAINER, Logo | winken |
-| 2 | Cover | Broschüren-Cover fliegt rein, „2027“, „Für die Frischetheke“, Konfetti bei „sind da!“ | party |
-| 3 | Menschen | „Menschen machen den Unterschied – also: DU!“ mit gezeichnetem Herz | zeigt |
-| 4 | Level | XP-Leiste, 4 Stufen als Treppe, „LEVEL UP!“, „KURZ ERKLÄRT“ | denkt → tanzen → idee (Glühbirne) |
-| 5–11 | Themen 1/7 … 7/7 | Weißes **Frage-Sheet** („Was gibt's rund um Fisch?“), dann Orange mit Seminar-Karten: **jede Karte erscheint genau auf dem Satzteil, in dem Franz sie nennt** und wischt wie eine Story weiter. Gags als gelbe Sticker („MEHR WEISS NUR OMA!“) | Frage → Antwort: schulterzucken → fingerpistole · grill → grill2 · koch-loeffel → koch · verliebt → klatschen · schock → achtung · stark → daumen · verlegen → winken2 → party2 |
-| 12 | Fresh Digital | dunkles Sheet: „Und zwischendurch?“ → 100 Handgriffe, Blended Learning, WizzUp | schlafen2 → achtung2 |
-| 13 | Share | „Bock drauf? Schick das deiner Marktleitung!“ mit Papierflieger | tanzen |
-| 14 | Broschüre | „Alle Details?“ → Cover + Originalseiten fächern auf → Endcard „Wir sehen uns an der Theke!“ | denkt2 → präsentiert → winken2 |
-
-Es werden nur Seminare gezeigt, die auch gesprochen werden. Die Zuordnung steht direkt im Skript (`src/script.json`, Feld `card` am Satzteil).
+| 0 | Hook | NEU / 2027 / FRESH knallen als 3D-Schrift rein | – |
+| 1 | Intro | Logo, Herz-Ring, „Hey Leute, / Franz hier – / euer Fresh-Trainer!“ | winken |
+| 2 | Cover | 3D-Broschüre dreht sich rein, „Die Seminare 2027 …“, Konfetti bei „sind da!“ | party |
+| 3 | Menschen | „Denn Menschen machen den Unterschied“ → Gold-Herz + „ALSO: DU!“ | zeigt |
+| 4 | Level | 3D-Level-Treppe (jede Stufe auf ihrem Wort), „Hier levelst du auf!“ | denkt → tanzen → idee |
+| 5–11 | Themen 1/7 … 7/7 | Frage als große 3D-Schrift, dann Antwort: jede Seminar-Karte fliegt als 3D-Tafel genau auf ihrem Satzteil rein | eigener Sticker für Frage und Antwort |
+| 12 | Fresh Digital | dunkles Studio, „Und zwischendurch?“, 3D-Kacheln | schlafen2 → achtung2 |
+| 13 | Share | „Bock drauf? Schick das deiner Marktleitung!“ + 3D-Papierflieger | tanzen |
+| 14 | Broschüre | 3D-Buch klappt auf und blättert, Endcard mit Logo, Gold-Herz, „Wir sehen uns an der Theke!“ | denkt2 → präsentiert → winken2 |
 
 ## Ordner
 
 ```
 video/
-  src/index.html, style.css, main.js   ← das Video (Animation)
+  src/index.html, style.css, main.js   ← das Video (3D-Szene + Animation)
+  src/main-2d.js                       ← ältere 2D-Version (nur als Referenz)
   src/script.json                      ← Sprechertext: Aufnahmen → Satzteile ('lines') → Karte ('card')
   src/timing.js                        ← automatisch erzeugt (Zeitpunkte aus der Sprachspur)
   assets/                              ← aus der PDF extrahierte Grafiken (Titel, Fotos, Logo als Vektor)
@@ -42,16 +38,17 @@ video/
   tools/render.cjs                     ← Video rendern
   tools/sticker.py                     ← Steakboy-Sticker freistellen (schwarzer Hintergrund → transparent)
   assets/sb/                           ← freigestellte Steakboy-Sticker
+  assets/fonts3d/                      ← Schriften für die 3D-Typografie
   out/                                 ← Ergebnis (nicht im Git)
 ```
 
 ## Befehle (im Ordner `video/`)
 
 ```bash
-npm install                     # einmalig (GSAP, Schriften)
+npm install                     # einmalig (Three.js, GSAP, Schriften)
 pip install piper-tts           # einmalig, nur für die Platzhalter-Stimme
 python3 tools/voice.py          # Sprachspur + Timing neu bauen (nach jeder Text- oder Audio-Änderung)
-node tools/render.cjs           # → out/seminare-2027-reel.mp4 (ca. 2–3 Min.)
+node tools/render.cjs           # → out/seminare-2027-reel.mp4 (3D: ca. 10–20 Min. ohne Grafikkarte)
 node tools/render.cjs --from 20 --to 30         # nur ein Ausschnitt
 node tools/render.cjs --stills 5,12.5           # Einzelbilder zum Prüfen
 node tools/render.cjs --music ../musik.mp3      # optional: Musik leise unter die Stimme mischen
@@ -66,7 +63,7 @@ Grafiken neu aus der PDF holen: `python3 tools/extract.py <Broschüre.pdf>` und 
 
 Franz nimmt **jede Zeile unten als eigene Datei** auf (`s01.m4a` … `s23.m4a`, auch `.wav`/`.mp3`) und legt sie in `audio/franz/`. Danach `python3 tools/voice.py` und `node tools/render.cjs`.
 
-**Wichtig:** Die Schrägstriche `/` markieren die Satzteile. Dort bitte eine **kleine Atempause** machen (ca. eine Viertelsekunde, ganz natürlich). Daran erkennt das Skript die Satzteile, und Karten und Untertitel sitzen exakt auf seiner Stimme. Fehlende Dateien nimmt das Skript von der Platzhalter-Stimme.
+**Wichtig:** Die Schrägstriche `/` markieren die Satzteile. Dort bitte eine **kleine Atempause** machen (ca. eine Viertelsekunde, ganz natürlich). Daran erkennt das Skript die Satzteile, und Karten und 3D-Schrift sitzen exakt auf seiner Stimme. Fehlende Dateien nimmt das Skript von der Platzhalter-Stimme.
 
 | Datei | Text (/ = kleine Pause) |
 |---|---|

@@ -162,7 +162,7 @@ function makeText(words, opt = {}) {
     row.forEach((it) => {
       const isHl = o.hl.has(strip(it.w));
       const mesh = new THREE.Mesh(it.g, STYLE[isHl ? o.hlStyle : o.style]);
-      mesh.castShadow = true;
+      mesh.castShadow = false; // Schrift wirkt über Tiefe + Kante; Wandschatten würde wie Doppeltext aussehen
       const piv = new THREE.Group();
       piv.position.set(x + it.width / 2, y, 0);
       mesh.position.x = -it.width / 2;
@@ -507,13 +507,13 @@ function build() {
     const tDu = s.lines[2].s;
     textOut(a, tDu - 0.4); textOut(b, tDu - 0.35);
     const heart = heartMesh(2.4, M.gold, 0.45);
-    heart.position.set(0, 0.6, -0.9);
+    heart.position.set(0, 0.2, -1.1);
     heart.visible = false;
     people.add(heart);
     tl.set(heart, { visible: true }, tDu - 0.1);
     tl.fromTo(heart.scale, { x: 0.01, y: 0.01, z: 0.01 }, { x: 1, y: 1, z: 1, duration: 0.8, ease: 'elastic.out(1, 0.55)' }, tDu - 0.1);
     updaters.push((t) => { heart.rotation.y = t < tDu - 0.1 ? -3 : (t < tDu + 0.9 ? -3 * Math.pow(1 - (t - tDu + 0.1), 3) : Math.sin((t - tDu - 0.9) * 1.2) * 0.25); });
-    const du = makeText(lineWords(s.lines[2]), { hl: new Set(['DU!', 'DU']), maxSize: 2.6, maxW: 8.4, maxRows: 2 });
+    const du = makeText(lineWords(s.lines[2]), { hl: new Set(['ALSO:', 'ALSO']), hlStyle: 'w', style: 'k', maxSize: 2.6, maxW: 8.0, maxRows: 2 });
     du.group.position.set(0, 1.2, 0.9);
     people.add(du.group);
     textIn(du, tDu - 0.12, 'slam');

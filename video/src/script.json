@@ -91,7 +91,7 @@
     { "id": "s20", "scene": "digital", "q": true, "pause": 0.2, "lines": [
       { "t": "Und zwischendurch?", "tts": "Und zwischendurch?" } ] },
     { "id": "s21", "scene": "digital", "pause": 0.45, "lines": [
-      { "t": "100 Handgriffe als Video,", "tts": "Hundert Handgriffe als Video," },
+      { "t": "100 Handgriffe als Videos,", "tts": "Hundert Handgriffe als Videos," },
       { "t": "Blended Learning", "tts": "Blended Lörning." },
       { "t": "und WizzUp – das Quiz-Duell!", "tts": "und Wiss app, das Quiz Duell!" } ] },
 

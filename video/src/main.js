@@ -190,6 +190,8 @@
       popIn(yr, ls('s02', 0) + 0.45, { rot: -8, rot0: -30, dur: 0.55, ease: 'back.out(2.4)' });
       tl.fromTo(fdf, { yPercent: 160, opacity: 0 }, { yPercent: 0, opacity: 1, duration: 0.55, ease: 'expo.out' }, ls('s02', 1) - 0.1);
       const tDa = ls('s02', 2);
+      const da = el('div', 'abs stamp', 'SIND DA!', s); css(da, { left: '80px', top: '1170px' });
+      popIn(da, tDa - 0.05, { rot: -7, rot0: -30, y0: 40, dur: 0.5, ease: 'back.out(2.6)' });
       popIn(sb, tDa - 0.1, { y0: 200, dur: 0.6 });
       confetti(s, 540, 700, tDa, 44);
       tl.fromTo(card, { scale: 1 }, { scale: 1.06, duration: 0.18, yoyo: true, repeat: 1, ease: 'power2.out', immediateRender: false }, tDa);
@@ -221,7 +223,7 @@
     // ================================================== 4) LEVEL
     {
       const s = layer();
-      const title = el('div', 'abs cx title-xl shadow-txt', 'DEIN LEVEL', s); css(title, { top: '175px', fontSize: '150px' });
+      const title = el('div', 'abs cx title-xl shadow-txt', 'VIER LEVEL', s); css(title, { top: '175px', fontSize: '150px' });
       const xp = el('div', 'abs xp', '<div class="xp-l">XP</div><div class="xp-bar"><div class="xp-fill"></div></div>', s);
       const fill = $('.xp-fill', xp);
       const names = ['FRESH-LING', 'FRESH-KRAFT', 'FRESH-ALIST', 'FRESH-MASTER'];
@@ -229,14 +231,12 @@
         const r = el('div', 'lvl', `<div class="hearts">${[0, 1, 2, 3].map((k) => heartSVG(k <= i)).join('')}</div><div class="lbl">${n}</div>`, s);
         return css(r, { left: 0, top: 1130 - i * 182 + 'px', width: 470 + i * 150 + 'px' });
       });
-      const qTag = el('div', 'tag', 'QUEREINSTEIGER', s); css(qTag, { left: '70px', top: '1310px' });
-      const pTag = el('div', 'tag', 'PROFI', s); css(pTag, { left: '790px', top: '500px' });
       const up = el('div', 'abs marker', 'LEVEL UP!', s);
       css(up, { left: '90px', top: '405px', fontSize: '120px', color: 'var(--y)', textShadow: '0 10px 0 rgba(120,35,0,.3)', zIndex: 7 });
       const sbThink = sticker('denkt', s, 740, 980, 300);
       const sbDance = sticker('tanzen', s, 710, 960, 330);
-      const sbGo = sticker('zeigt-hoch', s, 300, 560, 480);
-      const kurz = el('div', 'abs cx title-xl shadow-txt', 'KURZ<br>ERKLÄRT', s); css(kurz, { top: '230px', fontSize: '150px' });
+      const sbGo = sticker('idee', s, 310, 540, 460);
+      const kurz = el('div', 'abs cx title-xl shadow-txt', 'ICH ERKLÄR\'S<br>EUCH KURZ!', s); css(kurz, { top: '220px', fontSize: '128px' });
       push(s, segs.s04.start - 0.4);
       popLetters(title, ls('s04', 0) - 0.1, 0.03);
       tl.fromTo(xp, { scaleX: 0 }, { scaleX: 1, duration: 0.5, ease: 'expo.out' }, ls('s04', 0) + 0.2);
@@ -247,8 +247,6 @@
         tl.fromTo(r.querySelectorAll('svg'), { scale: 0 }, { scale: 1, duration: 0.4, stagger: 0.06, ease: 'back.out(2.6)' }, t + 0.2);
         tl.to(fill, { width: (i + 1) * 25 + '%', duration: 0.45, ease: 'power2.out' }, t + 0.15);
       });
-      popIn(qTag, ls('s05', 0), { rot: -4, rot0: -20, y0: 20, dur: 0.5, ease: 'back.out(2.4)' });
-      popIn(pTag, ls('s05', 1), { rot: 5, rot0: 20, y0: 20, dur: 0.5, ease: 'back.out(2.4)' });
       const tUp = ls('s05', 2);
       popOut(sbThink, tUp - 0.15, 0.25);
       popIn(sbDance, tUp + 0.05);
@@ -259,27 +257,27 @@
       // "Ich erklär's euch kurz." – alles raus, Steakboy mit Finger hoch
       const tK = ls('s05', 3) - 0.1;
       tl.to(rows, { xPercent: -110, duration: 0.45, stagger: 0.04, ease: 'power3.in' }, tK - 0.1);
-      tl.to([title, xp, qTag, pTag, up], { opacity: 0, y: -60, duration: 0.35, ease: 'power2.in' }, tK - 0.1);
+      tl.to([title, xp, up], { opacity: 0, y: -60, duration: 0.35, ease: 'power2.in' }, tK - 0.1);
       popOut(sbDance, tK - 0.1, 0.25);
-      riseWords(kurz, tK + 0.15, 0.08);
+      riseWords(kurz, tK + 0.08, 0.12);
       popIn(sbGo, tK + 0.2, { y0: 300 });
     }
 
     // ================================================== 5–11) THEMEN
     const CATS = [
-      { scene: 'onboarding', q: ['WAS GIBT\'S FÜR DEN', 'START'], name: 'ONBOARDING', sub: '& GRUNDLAGEN', qsb: 'fragend', sb: 'zeigt', sbFlip: false,
+      { scene: 'onboarding', q: ['WAS GIBT\'S FÜR DEN', 'START'], name: 'ONBOARDING', sub: '& GRUNDLAGEN', qsb: 'schulterzucken', sb: 'fingerpistole',
         food: ['img/petersilie', 'food/p05_308'], tags: {} },
-      { scene: 'fleisch', q: ['WAS GIBT\'S RUND UM', 'FLEISCH'], name: 'FLEISCH', qsb: 'grill', sb: 'grill',
+      { scene: 'fleisch', q: ['WAS GIBT\'S RUND UM', 'FLEISCH'], name: 'FLEISCH', qsb: 'grill', sb: 'grill2',
         food: ['food/p05_364', 'food/p17_1098'], tags: { 3: 'MEHR WEISS NUR OMA!', 4: 'FÜR ECHTE PROFIS' } },
-      { scene: 'wurst', q: ['UND BEI', 'WURST'], name: 'WURST', qsb: 'koch', sb: 'koch',
+      { scene: 'wurst', q: ['UND BEI', 'WURST'], name: 'WURST', qsb: 'koch-loeffel', sb: 'koch',
         food: ['food/p20_1257', 'food/p03_145'], tags: { 1: 'AUS ALLER WELT 🌍' } },
-      { scene: 'kaese', q: ['WAS GEHT BEIM', 'KÄSE'], name: 'KÄSE', qsb: 'klatschen', sb: 'klatschen',
+      { scene: 'kaese', q: ['WAS GEHT BEIM', 'KÄSE'], name: 'KÄSE', qsb: 'verliebt', sb: 'klatschen',
         food: ['food/p24_1408', 'food/p21_1277'], tags: { 3: 'HIGH END 💎' } },
-      { scene: 'fisch', q: ['WAS GIBT\'S RUND UM', 'FISCH'], name: 'FISCH', qsb: 'achtung', sb: 'achtung',
+      { scene: 'fisch', q: ['WAS GIBT\'S RUND UM', 'FISCH'], name: 'FISCH', qsb: 'schock', sb: 'achtung',
         food: ['food/p26_1450', 'food/p38_1906'], tags: { 2: 'AB NACH BREMERHAVEN!' } },
-      { scene: 'fuehrung', q: ['IHR WOLLT', 'FÜHREN'], name: 'FÜHRUNG', sub: '& MANAGEMENT', qsb: 'daumen', sb: 'daumen',
+      { scene: 'fuehrung', q: ['IHR WOLLT', 'FÜHREN'], name: 'FÜHRUNG', sub: '& MANAGEMENT', qsb: 'stark', sb: 'daumen',
         food: ['food/p29_1556'], tags: { 4: 'IN NUR 5 TAGEN! ⚡' } },
-      { scene: 'azubis', q: ['UND IHR', 'AZUBIS'], name: 'AUSBILDUNG', sub: '& WEITERBILDUNG', qsb: 'verlegen', sb: 'verlegen', pages: true,
+      { scene: 'azubis', q: ['UND IHR', 'AZUBIS'], name: 'AUSBILDUNG', sub: '& WEITERBILDUNG', qsb: 'verlegen', sb: 'winken2', swap: [4, 'party2'], pages: true,
         food: [], tags: { 4: 'GEHT\'S LOS! 🚀' } },
     ];
     const OPAQUE = ['24', '29', '30', '31'];
@@ -299,7 +297,7 @@
       if (c.sub) { sub = el('div', 'abs cat-sub', c.sub, a); css(sub, { top: 228 + fs * 0.98 + 'px' }); }
       const foods = c.food.map((f, i) => img(`${A}${f}.webp`, 'food', a, i === 0
         ? { left: '-70px', top: '1010px', width: '360px' } : { left: '800px', top: '400px', width: '280px' }));
-      const sb = sticker(c.sb, a, 760, 1000, 290, c.sbFlip);
+      const sb = sticker(c.sb, a, 760, 1000, 290);
 
       // ---- Frage-Sheet (Weiß)
       const q = layer('sheet');
@@ -338,7 +336,14 @@
         tl.to(f, { rotation: i ? 7 : -7, y: i ? 20 : -20, duration: Math.max(0.5, end - tA - 1.2), ease: 'sine.inOut' }, tA + 1.05);
       });
       popIn(sb, tA + 0.55, { y0: 260 });
-      idle(sb, tA + 1.25, end - 0.1, 10, 2.5);
+      const tSwap = c.swap ? as.lines[c.swap[0]].s - 0.12 : null;
+      idle(sb, tA + 1.25, (tSwap ?? end) - 0.1, 10, 2.5);
+      if (c.swap) {
+        const sb2 = sticker(c.swap[1], a, 730, 985, 320);
+        popOut(sb, tSwap, 0.25);
+        popIn(sb2, tSwap + 0.12, { y0: 200, dur: 0.55 });
+        idle(sb2, tSwap + 0.7, end - 0.1, 14, 4, 0.45);
+      }
 
       // Karten: genau eine Karte pro genanntem Seminar – wischt rein, wenn Franz sie nennt
       const cardLines = as.lines.map((l, i) => ({ l, i })).filter((x) => x.l.card);
@@ -358,12 +363,6 @@
         if (next) tl.to(k, { xPercent: -125, rotation: -14, scale: 0.9, duration: 0.5, ease: 'power3.in' }, cardLines[j + 1].l.s - 0.32);
         else tl.to(k, { scale: 1.03, duration: 0.25, yoyo: true, repeat: 1, ease: 'sine.inOut' }, tIn + 0.7);
       });
-      // Callouts auf Satzteilen ohne eigene Karte
-      Object.entries(c.tags).forEach(([idx, text]) => {
-        const l = as.lines[+idx];
-        const nextCard = cardLines.find((x) => x.i > +idx);
-        tag(a, text, 'right', 462, 4, l.s - 0.05, nextCard ? nextCard.l.s - 0.3 : null);
-      });
     });
 
     // ================================================== 12) FRESH DIGITAL (dunkles Sheet)
@@ -373,10 +372,11 @@
       const q1 = el('div', 'abs cx q1', 'UND', d); css(q1, { top: '330px' });
       const q2 = el('div', 'abs cx q2', '<span class="kw">ZWISCHEN-<br>DURCH</span><span class="qm">?</span>', d);
       css(q2, { fontSize: '160px', top: '420px' });
-      const zz = sticker('schlafen', d, 310, 790, 440);
+      const zz = sticker('schlafen2', d, 300, 800, 480);
+      const wake = sticker('achtung2', d, 800, 1150, 250);
       const logo = img(A + 'img/fresh-digital.webp', 'abs', d, { left: '150px', top: '150px', width: '780px', zIndex: 3 });
       const tiles = [
-        `<img class="art" src="${A}img/100-handgriffe.webp"><div><div class="big"><span class="cnt">0</span></div><div class="t1">HANDGRIFFE</div><div class="t2">als Video – kurz &amp; direkt aus der Praxis</div></div>`,
+        `<img class="art" src="${A}img/100-handgriffe.webp"><div><div class="big"><span class="cnt">0</span></div><div class="t1">HANDGRIFFE</div><div class="t2">als Videos – kurz &amp; direkt aus der Praxis</div></div>`,
         `<img class="art" src="${A}img/edeka-nx.webp" style="height:150px;border-radius:24px"><div><div class="t1">BLENDED<br>LEARNING</div><div class="t2">Wissen, das zu dir passt</div></div>`,
         `<div class="wizz">Wizz<br>Up!</div><div><div class="t1">QUIZ-DUELL</div><div class="t2">Lernen. Spielen.<br>Wissen pushen!</div></div>`,
       ].map((h, i) => css(el('div', 'tile', h, d), { top: 560 + i * 262 + 'px' }));
@@ -396,6 +396,8 @@
       as.lines.forEach((l, i) => {
         tl.fromTo(tiles[i], { xPercent: i % 2 ? 110 : -110, rotation: i % 2 ? 6 : -6 }, { xPercent: 0, rotation: 0, duration: 0.65, ease: 'expo.out' }, Math.max(tA + 0.2, l.s - 0.15));
       });
+      popIn(wake, as.lines[0].s + 0.3, { y0: 200 });
+      idle(wake, as.lines[0].s + 1.0, as.end + 0.4, 10, 3);
       const o = { v: 0 };
       tl.to(o, { v: 100, duration: 0.9, ease: 'power2.out', onUpdate: () => { cnt.textContent = Math.round(o.v); } }, as.lines[0].s);
       tl.fromTo($('.wizz', tiles[2]), { scale: 0.4, rotation: -25 }, { scale: 1, rotation: -4, duration: 0.55, ease: 'back.out(2.6)' }, as.lines[2].s + 0.1);
@@ -412,7 +414,7 @@
       css(trail, { left: 0, top: 0 });
       const plane = el('div', 'abs', `<svg viewBox="0 0 100 100" width="170" height="170"><path d="M8 46 L92 10 L66 90 L50 58 Z" fill="#fff" stroke="#fff" stroke-width="5" stroke-linejoin="round"/><path d="M50 58 L92 10" stroke="#F3703A" stroke-width="6"/></svg>`, s);
       css(plane, { left: '-190px', top: '1210px', zIndex: 6 });
-      const sb = sticker('tanzen', s, 680, 540, 340);
+      const sb = sticker('tanzen', s, 800, 110, 240);
       push(s, segs.s22.start - 0.4);
       popLetters(bock, ls('s22', 0) - 0.1, 0.035);
       popIn(sb, ls('s22', 0) + 0.15, { y0: 250 });
@@ -434,11 +436,11 @@
       const FAN = ['06', '17', '21', '28', '31', '39', '11'];
       const pages = FAN.map((n) => el('div', 'fan-page', `<img src="${A}pages/fan-${n}.webp">`, fan));
       const cover = el('div', 'fan-page cover', `<img src="${A}pages/cover.webp">`, fan);
-      const sbD = sticker('fragend', s, 730, 980, 300);
+      const sbD = sticker('denkt2', s, 730, 980, 300);
       const sbP = sticker('praesentiert', s, -10, 960, 360);
       const bro = el('div', 'tag', 'AB IN DIE BROSCHÜRE!', s); css(bro, { left: '330px', top: '1110px', fontSize: '66px' });
       const end = el('div', 'abs endcard', `<img src="${A}img/food-academy-fresh-logo.svg"><div style="margin-top:34px"><span class="pill" style="background:#fff;color:var(--o);font-size:54px">SEMINARE 2027</span></div><div class="see">WIR SEHEN UNS<br>AN DER THEKE!</div>`, s);
-      const sbW = sticker('winken', s, 330, 1030, 420);
+      const sbW = sticker('winken2', s, 330, 1030, 420);
       push(s, seg.start - 0.4);
       popLetters(head, ls('s23', 0) - 0.1, 0.03);
       popIn(sbD, ls('s23', 0) + 0.1, { y0: 250 });
@@ -475,39 +477,77 @@
     grain.style.backgroundImage = `url(${c.toDataURL()})`;
   }
 
-  // ---------------------------------------------------------------- Untertitel = exakt der aktuelle Satzteil
-  const subsEl = $('#subs');
-  const back = el('div', 'back', null, subsEl);
-  const front = el('div', 'front', null, subsEl);
-  const allLines = T.segments.flatMap((s) => s.lines);
-  allLines.forEach((l, i) => {
-    const nx = allLines[i + 1];
-    l.show = l.s - 0.06;
-    l.hide = Math.min(l.e + 0.22, nx ? nx.s - 0.06 : Infinity);
-  });
-  let shown = null;
-  function renderSubs(t) {
-    const l = allLines.find((x) => t >= x.show && t < x.hide);
-    if (l !== shown) {
-      shown = l;
-      const html = l ? l.words.map((x) => `<span class="w">${x.w.replace(/–/g, '')}</span>`).join(' ') : '';
-      back.innerHTML = html; front.innerHTML = html;
-    }
-    if (!l) return;
-    l.words.forEach((x, i) => {
-      const on = t >= x.s - 0.03 && (i === l.words.length - 1 ? t < l.e + 0.22 : t < l.words[i + 1].s - 0.03);
-      back.children[i].classList.toggle('on', on); front.children[i].classList.toggle('on', on);
+  // ---------------------------------------------------------------- Gesprochener Text als Animations-Typo
+  // Satzteile, die schon als Grafik in der Szene stehen (Überschriften, Fragen, Kacheln, Endcard),
+  // werden dort gezeigt. Alle anderen laufen hier Wort für Wort im Sprechtakt ein.
+  const IN_SCENE = (seg, i) => seg.q || ['s01', 's03', 's04', 's21', 's22', 's23'].includes(seg.id)
+    || (seg.id === 's02') || (seg.id === 's05' && i === 3);
+  // Schlüsselwörter (gelb markiert) und Pointen (Marker-Schrift)
+  const HL = {
+    's05:0': ['Quereinsteiger'], 's05:1': ['Profi'], 's05:2': ['levelst', 'auf!'],
+    's07:0': ['Onboarding'], 's07:1': ['Durchstarten.'], 's07:2': ['Grundlagen'], 's07:3': ['online.'], 's07:4': ['Heimspielserie!'],
+    's09:0': ['Fleisch', 'Profil,'], 's09:1': ['Grillschule,'], 's09:2': ['Bratenschule'], 's09:4': ['Profis:'], 's09:5': ['Meat', 'Masterclass.'],
+    's11:0': ['Wurst', 'Schinken'], 's11:1': ['Welt.'], 's11:2': ['Voll', 'Wurst!'], 's11:3': ['Food', 'Stylist'], 's11:4': ['Platten', 'Fingern.'],
+    's13:0': ['kulinarische', 'Reise,'], 's13:1': ['Fromage', 'Voyage'], 's13:2': ['Käse-Masterclass:'],
+    's15:0': ["Rock'", 'Küche', 'Fisch'], 's15:1': ['hautnah'],
+    's17:0': ['Führungstraining'], 's17:1': ['eins,', 'zwei', 'drei,'], 's17:2': ['Ausbilderschein'], 's17:3': ['Meisterpflicht'],
+    's19:1': ['Hands', 'Meat,'], 's19:2': ['Handwerk'], 's19:3': ['Ausbildung'],
+  };
+  const PUNCH = new Set(['s09:3', 's13:3', 's15:2', 's17:4', 's19:0', 's19:4']);
+  const kin = $('#kin');
+  function buildKinetic() {
+    const items = [];
+    T.segments.forEach((seg) => seg.lines.forEach((l, i) => { if (!IN_SCENE(seg, i)) items.push({ seg, l, i, key: `${seg.id}:${i}` }); }));
+    items.forEach((it, n) => {
+      const { l, key } = it;
+      const punch = PUNCH.has(key);
+      const hl = new Set((HL[key] || []).map((x) => x.toLowerCase()));
+      const words = l.words.map((x) => ({ ...x, txt: x.w.replace(/^–$/, '').replace(/\s*–\s*/g, '') })).filter((x) => x.txt);
+      // auf 1–2 Zeilen verteilen
+      const total = words.reduce((a, x) => a + x.txt.length + 1, 0);
+      let rows = [words];
+      if (total > 17) {
+        let best = 1, bestD = 1e9, acc = 0;
+        words.forEach((x, j) => { acc += x.txt.length + 1; const d = Math.abs(acc - total / 2); if (j < words.length - 1 && d < bestD) { bestD = d; best = j + 1; } });
+        rows = [words.slice(0, best), words.slice(best)];
+      }
+      const longest = Math.max(...rows.map((r) => r.reduce((a, x) => a + x.txt.length + 1, -1)));
+      const size = Math.min(punch ? 104 : 88, Math.floor(980 / (longest * (punch ? 0.56 : 0.64))));
+      const line = el('div', 'kin-line' + (punch ? ' punch' : ''), null, kin);
+      if (rows.length === 1) line.style.top = '1420px';
+      rows.forEach((r) => {
+        const row = el('div', 'kin-row', null, line);
+        r.forEach((x) => {
+          const isHl = !punch && hl.has(x.w.toLowerCase());
+          const m = el('span', 'km' + (isHl ? ' hl' : ''), null, row);
+          if (isHl) x.box = el('span', 'hl-box', null, m);
+          x.el = el('span', 'ki', x.txt, m);
+          x.el.style.fontSize = size + 'px';
+          m.style.margin = `0 ${Math.round(size * (punch ? 0.16 : 0.12))}px`;
+        });
+      });
+      const next = items[n + 1];
+      const show = l.s - 0.1;
+      const lastOfSeg = it.i === it.seg.lines.length - 1;
+      const hide = lastOfSeg ? l.e + 0.2 : (next && next.l.s - l.e < 0.6 ? next.l.s - 0.12 : l.e + 0.45);
+      tl.set(line, { visibility: 'visible' }, show);
+      words.forEach((x) => {
+        const t = Math.max(show, x.s - 0.05);
+        if (punch) tl.fromTo(x.el, { scale: 0, rotation: -18, opacity: 0 }, { scale: 1, rotation: 0, opacity: 1, duration: 0.42, ease: 'back.out(2.8)' }, t);
+        else tl.fromTo(x.el, { yPercent: 115, rotation: 7, opacity: 0 }, { yPercent: 0, rotation: 0, opacity: 1, duration: 0.42, ease: 'expo.out' }, t);
+        if (x.box) {
+          tl.fromTo(x.box, { scaleX: 0 }, { scaleX: 1, duration: 0.32, ease: 'power3.out' }, t + 0.04);
+          tl.to(x.el, { color: '#1d1d1b', duration: 0.12 }, t + 0.12);
+        }
+      });
+      tl.to(line, { yPercent: -35, opacity: 0, duration: 0.24, ease: 'power2.in' }, hide - 0.2);
+      tl.set(line, { visibility: 'hidden' }, hide + 0.05);
     });
-    const k = Math.min(1, Math.max(0, (t - l.show) / 0.18));
-    const e = 1 - Math.pow(1 - k, 3);
-    subsEl.style.transform = `translateY(${(1 - e) * 26}px) scale(${0.92 + 0.08 * e})`;
-    subsEl.style.opacity = String(Math.min(1, k * 1.6));
   }
 
   // ---------------------------------------------------------------- Steuerung
   function seek(t) {
     tl.time(Math.min(t, T.total), false);
-    renderSubs(t);
     const f = Math.round(t * T.fps);
     grain.style.backgroundPosition = `${(f * 73) % 256}px ${(f * 151) % 256}px`;
   }
@@ -518,6 +558,7 @@
     await document.fonts.ready;
     await Promise.all(['900 40px Outfit', '800 40px Outfit', '600 40px Outfit', '40px Marker', '40px "Noto Color Emoji"'].map((f) => document.fonts.load(f, '🌍A')));
     build();
+    buildKinetic();
     await Promise.all([...document.images].map((i) => (i.complete ? i.decode().catch(() => {}) : new Promise((r) => { i.onload = i.onerror = r; }))));
     seek(0);
     return true;

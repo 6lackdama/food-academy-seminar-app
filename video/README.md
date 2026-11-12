@@ -6,7 +6,7 @@ HTML/CSS + [GSAP](https://gsap.com) für die Animation, Chromium (Playwright) re
 - Format: 1080 × 1920 (9:16), 30 fps, H.264 + AAC, ca. 80–90 s
 - Ton: locker, Gen Z, für Mitarbeitende („ihr“ in den Fragen, „du“ wenn's persönlich wird). Alle 7 Themen und alle 35 Seminare erscheinen als Karten.
 - Eigenständiges Video zur Broschüre – ohne Verweis auf App oder Links. Ende: „Alle Details? Ab in die Broschüre!“
-- Untertitel sind eingebrannt (Wort für Wort gelb hervorgehoben)
+- **Keine klassischen Untertitel:** Der gesprochene Text erscheint als Animations-Typo im Sprechtakt (Wörter steigen aus einer Maske auf, Schlüsselwörter bekommen einen gelben Marker, Pointen in Marker-Schrift). Was schon als Überschrift, Frage oder Kachel im Bild steht, wird nicht doppelt gezeigt. Einstellungen: `HL` (Schlüsselwörter) und `PUNCH` (Pointen) in `src/main.js`.
 - Inhalte im Instagram-„sicheren Bereich“: Unten bleiben ca. 370 px frei für Profilname und Bildunterschrift.
 
 ## Ablauf (Szenen)
@@ -19,11 +19,11 @@ Durchgehender **Orange-Fresh-Look**: ein fester orangener Hintergrund (weiche Li
 | 1 | Intro | „HEY LEUTE!“, Namensschild FRANZ · FRESH-TRAINER, Logo | winken |
 | 2 | Cover | Broschüren-Cover fliegt rein, „2027“, „Für die Frischetheke“, Konfetti bei „sind da!“ | party |
 | 3 | Menschen | „Menschen machen den Unterschied – also: DU!“ mit gezeichnetem Herz | zeigt |
-| 4 | Level | XP-Leiste, 4 Stufen als Treppe, „LEVEL UP!“, „KURZ ERKLÄRT“ | denkt → tanzen → zeigt-hoch |
-| 5–11 | Themen 1/7 … 7/7 | Weißes **Frage-Sheet** („Was gibt's rund um Fisch?“), dann Orange mit Seminar-Karten: **jede Karte erscheint genau auf dem Satzteil, in dem Franz sie nennt** und wischt wie eine Story weiter. Gags als gelbe Sticker („MEHR WEISS NUR OMA!“) | fragend/zeigt, grill, koch, klatschen, achtung, daumen, verlegen |
-| 12 | Fresh Digital | dunkles Sheet: „Und zwischendurch?“ → 100 Handgriffe, Blended Learning, WizzUp | schlafen |
+| 4 | Level | XP-Leiste, 4 Stufen als Treppe, „LEVEL UP!“, „KURZ ERKLÄRT“ | denkt → tanzen → idee (Glühbirne) |
+| 5–11 | Themen 1/7 … 7/7 | Weißes **Frage-Sheet** („Was gibt's rund um Fisch?“), dann Orange mit Seminar-Karten: **jede Karte erscheint genau auf dem Satzteil, in dem Franz sie nennt** und wischt wie eine Story weiter. Gags als gelbe Sticker („MEHR WEISS NUR OMA!“) | Frage → Antwort: schulterzucken → fingerpistole · grill → grill2 · koch-loeffel → koch · verliebt → klatschen · schock → achtung · stark → daumen · verlegen → winken2 → party2 |
+| 12 | Fresh Digital | dunkles Sheet: „Und zwischendurch?“ → 100 Handgriffe, Blended Learning, WizzUp | schlafen2 → achtung2 |
 | 13 | Share | „Bock drauf? Schick das deiner Marktleitung!“ mit Papierflieger | tanzen |
-| 14 | Broschüre | „Alle Details?“ → Cover + Originalseiten fächern auf → Endcard „Wir sehen uns an der Theke!“ | fragend → präsentiert → winken |
+| 14 | Broschüre | „Alle Details?“ → Cover + Originalseiten fächern auf → Endcard „Wir sehen uns an der Theke!“ | denkt2 → präsentiert → winken2 |
 
 Es werden nur Seminare gezeigt, die auch gesprochen werden. Die Zuordnung steht direkt im Skript (`src/script.json`, Feld `card` am Satzteil).
 
